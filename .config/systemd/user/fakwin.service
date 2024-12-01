@@ -1,0 +1,15 @@
+[Unit]
+Description=Run fakwin binary to fix shutdowns on custom WM plasma.
+
+# For running before shutdown
+DefaultDependencies=no
+Before=shutdown.target reboot.target halt.target poweroff.target
+
+[Service]
+ExecStart=/home/duu/.local/bin/fakwin/fakwin
+Restart=always
+Type=simple
+
+[Install]
+# run before shutdown
+WantedBy=shutdown.target
