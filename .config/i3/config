@@ -261,7 +261,7 @@ gaps inner 5
   for_window [title="Desktop @ QRect.*"] kill; floating enable; border none
   
 # Compositor (Animations, Shadows, Transparency)
-exec --no-startup-id picom --config ~/.config/picom/picom.conf -b
+exec_always --no-startup-id "killall -q /usr/bin/picom; /usr/bin/picom --xrender-sync-fence --config ~/.config/picom/picom.conf -b"
 # >>> Window rules <<<
   # >>> Avoid tiling Plasma popups, dropdown windows, etc. <<<
   # For the first time, manually resize them, i3 will remember the setting for floating windows
