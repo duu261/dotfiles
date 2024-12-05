@@ -60,7 +60,6 @@ tiling_drag modifier titlebar
 
 # start a terminal
 bindsym $mod+Return exec kitty
-
 # kill focused window
 bindsym $mod+Shift+q kill
 
@@ -233,10 +232,11 @@ client.placeholder       $overlay0 $base $text  $overlay0  $overlay0
 client.background        $base
 bar {
     position top
-    font pango:FiraCode Nerd Font Mono 10
-    status_command i3status
-#    mode hide
-    height 35
+    font pango:FiraCode Nerd Font Mono 14
+    mode hide
+    height 44
+    modifier Mod1
+    strip_workspace_numbers yes
 #    tray_output primary
     colors {
     background         $base
@@ -252,8 +252,8 @@ bar {
     }
 }
 default_border pixel 3
-gaps outer 4
-gaps inner 5
+gaps outer 3
+gaps inner 3
 # Plasma compatibility improvements
 
 
