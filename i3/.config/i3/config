@@ -59,7 +59,7 @@ floating_modifier $mod
 tiling_drag modifier titlebar
 
 # start a terminal
-bindsym $mod+Return exec kitty
+bindsym $mod+Return exec wezterm
 # kill focused window
 bindsym $mod+Shift+q kill
 
@@ -69,7 +69,7 @@ bindsym $mod+Shift+q kill
 # bindcode $mod+40 exec "rofi -modi drun,run -show drun"
 # There also is i3-dmenu-desktop which only displays applications shipping a
 # .desktop file. It is a wrapper around dmenu, so you need that installed.
-bindsym $mod+d exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu -i -fn 'Fira Code Nerd Font Mono-12' -sf '$base' -nf '$text' -nb '$base' -sb '$lavender'"
+bindsym $mod+d exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu -i -fn 'Fira Code Nerd Font Mono-16' -l 3 -sf '$base' -nf '$text' -nb '$base' -sb '$lavender'"
 
 # change focus
 # vim motion patched
