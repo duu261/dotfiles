@@ -1,3 +1,15 @@
+
+addToPath() {
+    if [[ "$PATH" != *"$1"* ]]; then
+        export PATH=$PATH:$1
+    fi
+}
+#
+addToPathFront() {
+    if [[ "$PATH" != *"$1"* ]]; then
+        export PATH=$1:$PATH
+    fi
+}
 export GLFW_IM_MODULE=ibus
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
@@ -35,8 +47,8 @@ source /usr/share/fzf/completion.zsh
 #
 #addToPathFront $HOME/.zig
 #addToPathFront $HOME/.local/.npm-global/bin
-#addToPathFront $HOME/.local/scripts
-#addToPathFront $HOME/.local/bin
+addToPathFront $HOME/.local/scripts
+addToPathFront $HOME/.local/bin
 #addToPathFront $HOME/.local/n/bin/
 #addToPathFront $HOME/.local/go/bin
 #addToPathFront $HOME/go/bin
@@ -117,22 +129,11 @@ cat1Line() {
 #}
 #
 #
-die () {
-    echo >&2 "$@"
-    exit 1
-}
-#
-#addToPath() {
-#    if [[ "$PATH" != *"$1"* ]]; then
-#        export PATH=$PATH:$1
-#    fi
+#die () {
+#    echo >&2 "$@"
+#    exit 1
 #}
 #
-#addToPathFront() {
-#    if [[ "$PATH" != *"$1"* ]]; then
-#        export PATH=$1:$PATH
-#    fi
-#}
 #
 #commitDotFiles() {
 #    pushd $DOTFILES
