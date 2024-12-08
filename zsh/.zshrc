@@ -80,9 +80,15 @@ source ~/.aliases.zsh
 source $ZSH/custom/themes/zsh-syntax-highlighting/themes/catppuccin_macchiato-zsh-syntax-highlighting.zsh
 
 export MANPATH="/usr/local/man:$MANPATH"
+
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
 
+## If not running interactively dont do anything
+#[[ $- != *i* ]] && return
+#set -o vi
+#
+export MANPAGER='nvim +Man!'
 
 #Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
