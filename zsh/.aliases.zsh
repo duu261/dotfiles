@@ -2,7 +2,7 @@ alias sal="nvim ~/.aliases.zsh"
 alias soz="source ~/.zshrc"
 alias xsc="xclip -selection clipboard"
 alias rm="rm -i"
-alias ls="eza --git --color=always --icons=always --long --no-filesize --no-permissions --no-time --no-user --grid"
+alias ls="eza --git --color=always --icons=always --long --no-filesize --no-permissions --no-time --no-user --grid --ignore-glob='tmux*.log'"
 alias ls2="ls --tree --level=2"
 alias cd="z"
 
