@@ -233,9 +233,7 @@ client.background        $base
 bar {
     position top
     font pango:FiraCode Nerd Font Mono 14
-    mode hide
-    height 44
-    modifier Mod1
+    mode dock
     strip_workspace_numbers yes
 #    tray_output primary
     colors {
@@ -252,8 +250,8 @@ bar {
     }
 }
 default_border pixel 3
-gaps outer 3
-gaps inner 3
+gaps outer 5
+gaps inner 5
 # Plasma compatibility improvements
 
 

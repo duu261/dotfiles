@@ -77,8 +77,7 @@ source $ZSH/oh-my-zsh.sh
 
 source ~/.zsh_profile
 source ~/.aliases.zsh
-source $ZSH/custom/themes/zsh-syntax-highlighting/themes/catppuccin_macchiato-zsh-syntax-highlighting.zsh
-
+source ~/.zsh/catppuccin_mocha-zsh-syntax-highlighting.zsh
 export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment

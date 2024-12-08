@@ -3,7 +3,7 @@ local wezterm = require 'wezterm'
 local config = {}
 
 config.font = wezterm.font 'FiraCode Nerd Font Mono'
-config.font_size = 12
+config.font_size = 14
 
 config.color_scheme = 'Catppuccin Macchiato'
 
