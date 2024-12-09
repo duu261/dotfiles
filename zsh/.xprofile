@@ -1,3 +1,5 @@
+setxkbmap -option caps:swapescape
+
 export TERMINAL=wezterm
 # Configure Qt environment variables
 export QT_QPA_PLATFORMTHEME=qt5ct
