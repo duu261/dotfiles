@@ -1,5 +1,4 @@
 set $mod Mod1
-
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
 font pango: FiraCode Nerd Font Mono 15px
@@ -8,6 +7,8 @@ font pango: FiraCode Nerd Font Mono 15px
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 #font pango:DejaVu Sans Mono 8
 
+#Clipboard
+exec --no-startup-id clipmenud
 #Wallpaper
 exec --no-startup-id feh --bg-scale $HOME/Pictures/Wallpapers/catppuccin-macchiatio/anime-girl-skull.png  
 # i3 auto tiling
@@ -30,11 +31,16 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
 
 # Use pactl to adjust volume in PulseAudio.
-set $refresh_i3status killall -SIGUSR1 i3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id ~/.local/scripts/notify-sound.sh volume-up
+bindsym XF86AudioLowerVolume exec --no-startup-id ~/.local/scripts/notify-sound.sh volume-down
+bindsym XF86AudioMute exec --no-startup-id ~/.local/scripts/notify-sound.sh volume-mute
+bindsym XF86AudioMicMute exec --no-startup-id ~/.local/scripts/notify-sound.sh mic-mute
+#Bright controll
+bindsym XF86MonBrightnessUp exec --no-startup-id ~/.local/scripts/notify-brightness.sh +
+bindsym XF86MonBrightnessDown exec --no-startup-id ~/.local/scripts/notify-brightness.sh  -
+
+bindsym $mod+Shift+V exec --no-startup-id clipmenu -i -fn 'Fira Code Nerd Font Mono-16' -nb "$base" -nf "$text" -sb "$lavender" -sf "$base"
+
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -44,7 +50,7 @@ floating_modifier $mod
 tiling_drag modifier titlebar
 
 # start a terminal
-bindsym $mod+Return exec wezterm
+bindsym $mod+Return exec i3-sensible-terminal
 # kill focused window
 bindsym $mod+Shift+q kill
 
@@ -145,9 +151,12 @@ bindsym $mod+Shift+9 move container to workspace number $ws9
 bindsym $mod+Shift+0 move container to workspace number $ws10
 
 # reload the configuration file
-bindsym $mod+Shift+c reload
+bindsym $mod+Shift+c reload; exec --no-startup-id dunstify "System Status" "I3 configuration reloaded successfully!"
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r restart
+bindsym $mod+Shift+r exec --no-startup-id dunstify "System Status" "I3 configuration restart successfully!"; restart
+
+exec_always sleep 3;killall dunst; --no-startup-id dunst -config ~/.config/dunst/dunstrc
+
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 # resize window (you can also use the mouse for that)
@@ -218,7 +227,7 @@ bar {
     position top
     height 28
     font pango:FiraCode Nerd Font Mono 16
-    status_command i3status-rs 
+    status_command i3status-rs
     mode dock
     strip_workspace_numbers yes
     tray_output none
