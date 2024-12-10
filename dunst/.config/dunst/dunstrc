@@ -52,7 +52,7 @@ frame_color = "#f5a97f"
     #       and the given value is treated as the maximum height
 
     # Position the notification in the top right corner
-    origin = top-left
+    origin = top-right
 
     # Offset from the origin
     # NOTE: Dunst from version 1.11 and older use this alternative notation
@@ -133,7 +133,7 @@ frame_color = "#f5a97f"
     # If value is greater than 0, separator_height will be ignored and a border
     # of size frame_width will be drawn around each notification instead.
     # Click events on gaps do not currently propagate to applications below.
-    gap_size = 0
+    gap_size = 5
 
     # Define a color for the separator.
     # possible values are:
@@ -238,7 +238,7 @@ frame_color = "#f5a97f"
     enable_recursive_icon_lookup = true
 
     # Set icon theme (only used for recursive icon lookup)
-    icon_theme = Adwaita
+    icon_theme = Papirus-Dark 
     # You can also set multiple icon themes, with the leftmost one being used first.
     # icon_theme = "Adwaita, breeze"
 
