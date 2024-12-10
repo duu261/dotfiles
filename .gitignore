@@ -3,5 +3,5 @@ TODO.md
 todo.md
 nvim.bak
 tmux/.tmux/*
-!tmux/.tmux/plugins/tmux-fzf-url/
+!tmux/.tmux/plugins/tmux-fzf-url
 
