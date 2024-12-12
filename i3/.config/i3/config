@@ -226,7 +226,7 @@ bar {
 #        status_command i3status
         position top
 #height 28
-        font pango:FiraCode Nerd Font Mono 16
+        font pango:FiraCode Nerd Font Mono 15
 #    status_command i3status-rs
         mode hide
         strip_workspace_numbers yes
@@ -245,9 +245,9 @@ bar {
         }
 }
 
-default_border pixel 3
-gaps outer 5
-gaps inner 5
+default_border pixel 4
+gaps outer 0
+gaps inner 6
 # Suspend
 for_window [window_type="normal"] border pixel
 #bindsym $mod+Shift+period exec systemctl suspend
