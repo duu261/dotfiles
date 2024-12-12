@@ -26,8 +26,8 @@ export LS_COLORS="$(vivid generate catppuccin-macchiato)"
 #for i in `find -L $PERSONAL`; do
 #    source $i
 #done
-source /usr/share/fzf/key-bindings.zsh
-source /usr/share/fzf/completion.zsh
+#source /usr/share/fzf/key-bindings.zsh
+#source /usr/share/fzf/completion.zsh
 #
 #export NRDP="$HOME/work/nrdp"
 #export NRDP_BUILDS="$HOME/work/builds"

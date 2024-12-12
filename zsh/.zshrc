@@ -100,11 +100,9 @@ fi
 export ARCHFLAGS="-arch $(uname -m)"
 
 # Set up fzf key bindings and fuzzy completion
-source <(fzf --zsh)
+#source <(fzf --zsh)
 
-eval $(thefuck --alias)
 # You can use whatever you want as an alias, like for Mondays:
-eval $(thefuck --alias fk)
 eval "$(zoxide init zsh)"
 
 # -- Use fd instead of fzf --
@@ -151,3 +149,5 @@ _fzf_comprun() {
     *)            fzf --preview 'fzf-preview.sh {}'"$@" ;;
   esac
 }
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

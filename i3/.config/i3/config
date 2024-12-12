@@ -6,40 +6,35 @@ font pango: FiraCode Nerd Font Mono 15px
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 #font pango:DejaVu Sans Mono 8
-
+exec_always --no-startup-id setxkbmap -option caps:swapescape
 #Keyboard for vietnamese input
-exec --no-startup-id fcitx5 -d
 #Clipboard
 exec --no-startup-id clipmenud
-#Wallpaper
-exec --no-startup-id feh --bg-scale $HOME/Pictures/Wallpapers/catppuccin-macchiatio/anime-girl-skull.png  
-# i3 auto tiling
-exec_always --no-startup-id i3-auto-tiling
 #exec_always --no-startup-id "killall -q /usr/bin/picom; /usr/bin/picom --xrender-sync-fence --config ~/.config/picom/picom.conf -b"
-
+###exec --no-startup-id picom
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
-exec --no-startup-id dex --autostart --environment i3
+#exec --no-startup-id dex --autostart --environment i3
 
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
 # they are included here as an example. Modify as you see fit.
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+#exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet
 
 # Use pactl to adjust volume in PulseAudio.
-bindsym XF86AudioRaiseVolume exec --no-startup-id ~/.local/scripts/notify-sound.sh volume-up
-bindsym XF86AudioLowerVolume exec --no-startup-id ~/.local/scripts/notify-sound.sh volume-down
-bindsym XF86AudioMute exec --no-startup-id ~/.local/scripts/notify-sound.sh volume-mute
-bindsym XF86AudioMicMute exec --no-startup-id ~/.local/scripts/notify-sound.sh mic-mute
-#Bright controll
-bindsym XF86MonBrightnessUp exec --no-startup-id ~/.local/scripts/notify-brightness.sh +
-bindsym XF86MonBrightnessDown exec --no-startup-id ~/.local/scripts/notify-brightness.sh  -
+#bindsym XF86AudioRaiseVolume exec --no-startup-id ~/.local/scripts/notify-sound.sh volume-up
+#bindsym XF86AudioLowerVolume exec --no-startup-id ~/.local/scripts/notify-sound.sh volume-down
+#bindsym XF86AudioMute exec --no-startup-id ~/.local/scripts/notify-sound.sh volume-mute
+#bindsym XF86AudioMicMute exec --no-startup-id ~/.local/scripts/notify-sound.sh mic-mute
+##Bright controll
+#bindsym XF86MonBrightnessUp exec --no-startup-id ~/.local/scripts/notify-brightness.sh +
+#bindsym XF86MonBrightnessDown exec --no-startup-id ~/.local/scripts/notify-brightness.sh  -
 
 bindsym $mod+Shift+V exec --no-startup-id clipmenu -i -fn 'Fira Code Nerd Font Mono-16' -nb "$base" -nf "$text" -sb "$lavender" -sf "$base"
 
@@ -153,34 +148,36 @@ bindsym $mod+Shift+9 move container to workspace number $ws9
 bindsym $mod+Shift+0 move container to workspace number $ws10
 
 # reload the configuration file
-bindsym $mod+Shift+c reload; exec --no-startup-id dunstify "System Status" "I3 configuration reloaded successfully!"
+bindsym $mod+Shift+c reload; exec --no-startup-id notify-send "System Status" "I3 configuration reloaded successfully!"
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r exec --no-startup-id dunstify "System Status" "I3 configuration restart successfully!"; restart
+bindsym $mod+Shift+r exec --no-startup-id notify-send "System Status" "I3 configuration restart successfully!"; restart
 
 exec_always sleep 3;killall dunst; --no-startup-id dunst -config ~/.config/dunst/dunstrc
 
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+#bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+Shift+e exec --no-startup-id "mate-session-save --logout-dialog"
+#bindsym $mod+Shift+e exec --no-startup-id "mate-session-save --shutdown-dialog"
 # resize window (you can also use the mouse for that)
 mode "resize" {
-        # These bindings trigger as soon as you enter the resize mode
+# These bindings trigger as soon as you enter the resize mode
 
-        # Pressing left will shrink the window’s width.
-        # Pressing right will grow the window’s width.
-        # Pressing up will shrink the window’s height.
-        # Pressing down will grow the window’s height.
-        bindsym h resize shrink width 10 px or 10 ppt
+# Pressing left will shrink the window’s width.
+# Pressing right will grow the window’s width.
+# Pressing up will shrink the window’s height.
+# Pressing down will grow the window’s height.
+    bindsym h resize shrink width 10 px or 10 ppt
         bindsym j resize grow height 10 px or 10 ppt
         bindsym k resize shrink height 10 px or 10 ppt
         bindsym l resize grow width 10 px or 10 ppt
 
-        # same bindings, but for the arrow keys
+# same bindings, but for the arrow keys
         bindsym Left resize shrink width 10 px or 10 ppt
         bindsym Down resize grow height 10 px or 10 ppt
         bindsym Up resize shrink height 10 px or 10 ppt
         bindsym Right resize grow width 10 px or 10 ppt
 
-        # back to normal: Enter or Escape
+# back to normal: Enter or Escape
         bindsym Return mode "default"
         bindsym Escape mode "default"
         bindsym $mod+r mode "default"
@@ -225,28 +222,32 @@ client.urgent            $peach    $base $peach $overlay0  $peach
 client.placeholder       $overlay0 $base $text  $overlay0  $overlay0
 client.background        $base
 bar {
-    status_command i3status
-    position top
-    height 28
-    font pango:FiraCode Nerd Font Mono 16
-    status_command i3status-rs
-    mode dock
-    strip_workspace_numbers yes
-    tray_output none
-    colors {
-    background         $base
-    statusline         $text
-    focused_statusline $text
-    focused_separator  $base
+    modifier Mod1
+#        status_command i3status
+        position top
+#height 28
+        font pango:FiraCode Nerd Font Mono 16
+#    status_command i3status-rs
+        mode hide
+        strip_workspace_numbers yes
+        tray_output none
+        colors {
+            background         $base
+                statusline         $text
+                focused_statusline $text
+                focused_separator  $base
 
-    # target           border bg        text
-    focused_workspace  $base  $mauve    $crust
-    active_workspace   $base  $surface2 $text
-    inactive_workspace $base  $base     $text
-    urgent_workspace   $base  $red      $crust
-    }
+# target           border bg        text
+                focused_workspace  $base  $mauve    $crust
+                active_workspace   $base  $surface2 $text
+                inactive_workspace $base  $base     $text
+                urgent_workspace   $base  $red      $crust
+        }
 }
 
 default_border pixel 3
-gaps outer 6 
-gaps inner 6
+gaps outer 5
+gaps inner 5
+# Suspend
+for_window [window_type="normal"] border pixel
+#bindsym $mod+Shift+period exec systemctl suspend
