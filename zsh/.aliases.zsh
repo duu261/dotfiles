@@ -1,4 +1,3 @@
-alias kvim="nvim -u ~/.config/kvim/init.lua"
 alias sal="nvim ~/.aliases.zsh"
 alias soz="source ~/.zshrc"
 alias xsc="xclip -selection clipboard"
