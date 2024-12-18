@@ -1,3 +1,4 @@
+alias v="nvim"
 alias sal="nvim ~/.aliases.zsh"
 alias soz="source ~/.zshrc"
 alias xsc="xclip -selection clipboard"
