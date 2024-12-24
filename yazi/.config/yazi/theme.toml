@@ -1,0 +1,5 @@
+[flavor]
+use = "catppuccin-macchiato"
+# For upcoming Yazi 0.4 (nightly version):
+dark = "catppuccin-macchiato"
+light = "catppuccin-macchiato"

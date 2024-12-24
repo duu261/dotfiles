@@ -10,13 +10,10 @@ addToPathFront() {
         export PATH=$1:$PATH
     fi
 }
-export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-export CATALINA_HOME=/opt/tomcat
-export CATALINA_BASE=/opt/tomcat
-# export JAVA_HOME=/usr/local/java/jdk1.8.0_431
+# export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+export JAVA_HOME=/usr/local/java/jdk1.8.0_431
 # export JRE_HOME=/usr/local/java/jdk1.8.0_431/jre
 addToPath "$JAVA_HOME/bin"  # Appends Java to PATH
-addToPath "$CATALINA_HOME/bin"  # Appends tomcat to PATH
 
 #export GLFW_IM_MODULE=ibus
 #export GTK_IM_MODULE=ibus

@@ -1,3 +1,4 @@
+alias tvim="NVIM_APPNAME=testvim nvim"
 alias v="nvim"
 alias sal="nvim ~/.aliases.zsh"
 alias soz="source ~/.zshrc"
