@@ -1,0 +1,90 @@
+# export KUBECONFIG=$HOME/.kube/config:$HOME/.kube/config_user
+# export WINEDEBUG=-all
+# export SDL_VIDEO_FULLSCREEN_DISPLAY=0
+# export GPG_TTY=$(tty)
+# export GOPATH="$HOME/workspace/code/go"
+
+# Refresh gpg-agent tty in case user switches into an X session
+gpg-connect-agent updatestartuptty /bye >/dev/null
+
+# if [[ -n "$SSH_CLIENT" ]]; then
+#   export BROWSER=/usr/bin/lynx
+# else
+#   export BROWSER=/usr/bin/qutebrowser
+# fi
+
+# if [ -n "$NVIM" ]; then
+#   export VISUAL="nvr -cc split --remote-wait"
+# else
+#   export VISUAL="v"
+# fi
+
+export VISUAL="nvim"
+export MANPAGER="$VISUAL +Man! -"
+export EDITOR=$VISUAL
+export SUDO_EDIT=$VISUAL
+export DIFFPROG="$VISUAL -d"
+alias vi=$VISUAL
+
+
+myoutube() {
+    mpv $(youtube-dl -g $1)
+}
+
+greph() {
+    history 0 | grep $1
+}
+
+
+share_internet() {
+    if [[ -z "$1" ]] then
+        echo "share_internet <dev with internet> <dev with clients>"
+        return 1
+    fi
+    if [[ -z "$2" ]] then
+        echo "share_internet <dev with internet> <dev with clients>"
+        return 1
+    fi
+    # share_internet from(dev with clients) to (dev with internet)
+    sudo sysctl net.ipv4.ip_forward=1
+    sudo iptables -t nat -A POSTROUTING -o $1 -j MASQUERADE
+    sudo iptables -A FORWARD -i $2 -o $1 -j ACCEPT
+}
+
+#
+addToPath() {
+    if [[ "$PATH" != *"$1"* ]]; then
+        export PATH=$PATH:$1
+    fi
+}
+
+addToPathFront() {
+    if [[ "$PATH" != *"$1"* ]]; then
+        export PATH=$1:$PATH
+    fi
+}
+
+# kill all processes that use port $1
+portkill() {
+    lsof -i :$1 | tail -n +2 | awk '{ print $2 }' | xargs kill
+}
+
+clean_whiteboard() {
+    convert "$1" -morphology Convolve DoG:15,100,0 -negate -normalize -blur 0x1 -channel
+}
+
+update_mirrorlist() {
+    reflector -n 24 -c AT -c DE -f 10 -l 10 | sudo tee /etc/pacman.d/mirrorlist
+}
+
+
+mp42gif() {
+  palette="/tmp/palette.png"
+  filters="fps=10,scale=1280:-1:flags=lanczos"
+  ffmpeg -i "$1" -vf "$filters,palettegen" -y "$palette"
+  ffmpeg -i "$1" -i "$palette" -lavfi "$filters [x]; [x][1:v] paletteuse" -y "$2"
+}
+
+pick-color() {
+  grim -g "$(slurp -p)" -t ppm - | convert - -format '%[pixel:p{0,0}]' txt:-
+}

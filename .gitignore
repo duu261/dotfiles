@@ -5,3 +5,7 @@ nvim.bak
 tmux/.tmux/*
 !tmux/.tmux/plugins/tmux-fzf-url
 
+yazi/.config/yazi/flavors/catppuccin-macchiato.yazi
+yazi/.config/yazi/package.toml
+nvim/.config/testvim
+nvim/.config/github-copilot/versions.json
