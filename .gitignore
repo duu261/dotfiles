@@ -10,3 +10,4 @@ yazi/.config/yazi/package.toml
 nvim/.config/testvim
 nvim/.config/github-copilot/versions.json
 nvim/.config/github-copilot
+zsh/.zsh/plugins
