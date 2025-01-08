@@ -9,3 +9,4 @@ yazi/.config/yazi/flavors/catppuccin-macchiato.yazi
 yazi/.config/yazi/package.toml
 nvim/.config/testvim
 nvim/.config/github-copilot/versions.json
+nvim/.config/github-copilot

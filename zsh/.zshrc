@@ -12,6 +12,7 @@ source ~/.zsh/plugins/zsh-history-substring-search.zsh
 source ~/.zsh/plugins/zsh-autosuggestions.zsh
 source ~/.zsh/plugins/catppuccin_macchiato-zsh-syntax-highlighting.zsh
 source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
 eval "$(starship init zsh)"
 
 # Set up fzf key bindings and fuzzy completion

@@ -72,19 +72,17 @@ alias so="source ~/.zshrc"
 alias xsc="xclip -selection clipboard"
 alias rm="rm -i"
 alias ls="eza --git --color=always --icons=always --long --no-filesize --no-permissions --no-time --no-user --grid --ignore-glob='tmux*.log'"
-alias ls2="ls --tree --level=2"
 alias cd="z"
-alias ff="fastfetch"
+alias ff="fastfetch -c examples/13.jsonc"
+alias cat="bat"
 
-alias spS="sudo pacman -S"
-alias spSyu="sudo pacman -Syu"
 
 alias my_ip="ip address | grep -o \"inet 192.*/\" | awk '{ print \$2 }' | tr / ' ' | xargs"
 
 
 alias vim="$VIM"
 alias vims="NVIM_LISTEN_ADDRESS=/tmp/nvim $VIM"
-
+alias lg="lazygit"
 ##!/usr/bin/env bash
 #alias asdf="setxkbmap real-prog-dvorak"
 #alias aoeu="setxkbmap us"

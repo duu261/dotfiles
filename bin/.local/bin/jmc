@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+PATH=$JAVA_HOME/bin:$PATH ~/apps/jmc/jmc

@@ -51,7 +51,7 @@ share_internet() {
     sudo iptables -A FORWARD -i $2 -o $1 -j ACCEPT
 }
 
-#
+
 addToPath() {
     if [[ "$PATH" != *"$1"* ]]; then
         export PATH=$PATH:$1
