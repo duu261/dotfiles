@@ -20,7 +20,7 @@ source <(fzf --zsh)
 
 # You can use whatever you want as an alias, like for Mondays:
 eval "$(zoxide init zsh)"
-
+eval $(thefuck --alias fk)
 # -- Use fd instead of fzf --
 
 export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
@@ -65,3 +65,5 @@ _fzf_comprun() {
 }
 
 
+
+eval $(thefuck --alias)
