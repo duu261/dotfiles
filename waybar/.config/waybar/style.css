@@ -1,9 +1,16 @@
 @import "macchiato.css";
 
+@define-color surface0 transparent;
+@define-color surface1 transparent;
+
 * {
-  font-family: FiraCode Nerd Font Propo Medium;
+  font-family: FiraCode Nerd Font Propo Bold;
   font-size: 19px;
   min-height: 0;
+  text-shadow: 1px 1px 2px @crust;
+  box-shadow: none;
+  border: none;
+  border-radius: 0;
 }
 
 #waybar {
@@ -12,10 +19,12 @@
 }
 
 #workspaces {
+  margin: 0 5px;
   background-color: @surface1;
 }
 
 #workspaces button {
+  padding: 0 5px;
   color: @lavender;
 }
 
@@ -27,8 +36,11 @@
 }
 #workspaces button.special {
   font-weight: bold;
-  border-left: 1px solid @surface0;
-  border-radius: 0;
+  border-left: 1px solid @lavender;
+}
+#workspaces button.focused {
+  border-bottom: 1px solid @lavender;
+  border-top: 1px solid @lavender;
 }
 #workspaces button:hover {
   color: @peach;
@@ -45,9 +57,12 @@ tooltip * {
   text-shadow: none;
   font-size: 16px;
 }
+#custom-reboot,
+#custom-quit,
 #bluetooth,
 #network,
 #custom-music,
+#custom-capslock,
 #cava,
 #tray,
 #backlight,
@@ -114,6 +129,7 @@ tooltip * {
   color: @lavender;
 }
 
+#custom-capslock,
 #custom-power {
   color: @red;
 }

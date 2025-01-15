@@ -33,7 +33,7 @@
     // "spacing": 10
   },
   "hyprland/window": {
-    "format": "{}",
+    "format": "{title}",
     "rewrite": {
       "(.*) - Brave": "$1",
       "(.*) - Chromium": "$1",
@@ -41,10 +41,13 @@
       "(.*) - Outlook": "$1",
       "(.*) Microsoft Teams": "$1",
       "(.*) — Mozilla Firefox": "$1 ",
-      "(.*) zsh": " [$1]",
-      "(.*) - wezterm": " [$1]"
+      "(.*)zsh": " [$1]",
+      "(.*)nvim": " $1",
+      "(.*) - wezterm": " $1"
     },
-    "separate-outputs": true
+    "max-length": 100, //
+    "separate-outputs": true,
+    "on-click": "dunstify \"$(hyprctl activewindow -j | jq -r .title)\""
   },
   "custom/music": {
     "format": "   {}",
@@ -267,5 +270,11 @@
     "format": "",
     "tooltip": false,
     "on-click": "shutdown now"
+  },
+  "custom/capslock": {
+    "exec": "capslock-state.sh",
+    "format": "{}",
+    "interval": 1,
+    "return-type": "json"
   }
 }

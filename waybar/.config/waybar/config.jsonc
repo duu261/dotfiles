@@ -8,9 +8,14 @@
         "~/.config/waybar/modules.json"
     ],
 
-    "modules-left": ["custom/arch", "hyprland/window", "privacy"],
+    "modules-left": [
+        "custom/arch",
+        "hyprland/window",
+        "privacy"
+    ],
     "modules-center": ["hyprland/workspaces"],
     "modules-right": [
+        "custom/capslock",
         "custom/music",
         "cava",
         "pulseaudio",
@@ -19,7 +24,6 @@
         "clock",
         "bluetooth",
         "network",
-        "temperature",
         "custom/updates",
         "group/group-power",
     ]
