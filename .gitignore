@@ -1,13 +1,13 @@
 *.log
-TODO.md
-todo.md
 nvim.bak
 tmux/.tmux/*
 !tmux/.tmux/plugins/tmux-fzf-url
 
 yazi/.config/yazi/flavors/catppuccin-macchiato.yazi
 yazi/.config/yazi/package.toml
-nvim/.config/testvim
 nvim/.config/github-copilot/versions.json
 nvim/.config/github-copilot
 zsh/.zsh/plugins/*
+bin/.local/share
+yazi/.config/yazi/plugins/catppucci-macchiato.yazi
+bin/.local/state
