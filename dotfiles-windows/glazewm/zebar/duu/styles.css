@@ -1,0 +1,145 @@
+/**
+ * Import the Nerdfonts icon font.
+ * Ref https://www.nerdfonts.com/cheat-sheet for a cheatsheet of available Nerdfonts icons.
+ */
+@import "https://www.nerdfonts.com/assets/css/webfont.css";
+
+i {
+  color: rgb(198, 208, 245);
+  margin-right: 7px;
+}
+
+body {
+  background: transparent;
+  color: #cad3f5;
+  font-family: FiraCode Nerd Font Propo;
+  font-size: 15px;
+  overflow: hidden;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  background: transparent;
+}
+
+#root {
+  background: transparent;
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  height: 100%;
+  padding: 4px 1.5vw;
+  background: transparent;
+}
+
+.left,
+.center,
+.right {
+  display: flex;
+  align-items: center;
+}
+
+.center {
+  justify-self: center;
+}
+
+.right {
+  justify-self: end;
+}
+
+.logo,
+.binding-mode,
+.tiling-direction,
+.network,
+.memory,
+.cpu,
+.battery {
+  margin-right: 20px;
+}
+
+.workspaces {
+  display: flex;
+  align-items: center;
+}
+
+.workspace {
+  margin-right: 4px;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  background: transparent;
+}
+.workspace.focused .nf {
+  color: rgb(198, 160, 246);
+}
+
+.workspace:hover .nf {
+  color: rgb(245, 169, 127);
+}
+.binding-mode,
+.tiling-direction {
+  background: transparent;
+  line-height: 1;
+  border: 0;
+  cursor: pointer;
+}
+
+.binding-mode {
+  margin-right: 4px;
+}
+
+.cpu .high-usage {
+  color: rgb(237, 135, 150);
+}
+
+.battery {
+  position: relative;
+  color: #eed49f;
+}
+.battery .nf {
+  position: relative;
+  color: #eed49f;
+}
+
+.battery .charging-icon {
+  position: absolute;
+  font-size: 7px;
+  left: -8px;
+  top: 3px;
+  color: #eed49f;
+}
+
+.logo {
+  color: #8aadf4;
+}
+
+.weather,
+.weather .nf {
+  color: #8aadf4;
+}
+
+.cpu,
+.cpu .nf {
+  color: #a6da95;
+}
+
+.memory,
+.memory .nf {
+  color: #f5a97f;
+}
+
+.tiling-direction {
+  color: #ee99a0;
+}
+
+.network,
+.network .nf {
+  color: #c6a0f6;
+}
