@@ -25,35 +25,35 @@
 
 #workspaces button {
   padding: 0 5px;
-  color: @lavender;
+  color: @red;
 }
 
 #workspaces button.empty {
   color: @text;
 }
 #workspaces button.active {
-  color: @mauve;
+  color: @maroon;
 }
 #workspaces button.special {
   font-weight: bold;
-  border-left: 1px solid @lavender;
+  border-left: 1px solid @red;
 }
 #workspaces button.focused {
-  border-bottom: 1px solid @lavender;
-  border-top: 1px solid @lavender;
+  border-bottom: 1px solid @red;
+  border-top: 1px solid @red;
 }
 #workspaces button:hover {
   color: @peach;
 }
 tooltip {
-  color: @lavender;
+  color: @red;
   background-color: @surface1;
   text-shadow: none;
   border-radius: 0;
 }
 
 tooltip * {
-  color: @lavender;
+  color: @red;
   text-shadow: none;
   font-size: 16px;
 }
@@ -126,7 +126,7 @@ tooltip * {
 }
 
 #custom-lock {
-  color: @lavender;
+  color: @red;
 }
 
 #custom-capslock,
