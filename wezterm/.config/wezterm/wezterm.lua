@@ -7,6 +7,7 @@ return {
 	enable_wayland = false,
 
 	enable_tab_bar = false,
+	xcursor_theme = "catppuccin-macchiato-red-cursors",
 	window_decorations = "RESIZE",
 	scrollback_lines = 6000,
 	term = "xterm-256color",
