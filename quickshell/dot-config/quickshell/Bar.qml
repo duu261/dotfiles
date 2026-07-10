@@ -37,6 +37,6 @@ PanelWindow {
     anchors.verticalCenter: parent.verticalCenter
     anchors.rightMargin: 8
     spacing: 8
-    // Tray, battery, network, audio added in Tasks 7-9
+    Tray {}
   }
 }
