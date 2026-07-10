@@ -19,7 +19,7 @@ PanelWindow {
     anchors.verticalCenter: parent.verticalCenter
     anchors.leftMargin: 8
     spacing: 8
-    // Workspaces added in Task 4
+    Workspaces {}
   }
 
   RowLayout {
