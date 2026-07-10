@@ -1,0 +1,41 @@
+import QtQuick
+import QtQuick.Layouts
+import Quickshell
+import Quickshell.Wayland
+
+PanelWindow {
+  id: bar
+  anchors {
+    top: true
+    left: true
+    right: true
+  }
+  implicitHeight: 32
+  color: Theme.mantle
+
+  RowLayout {
+    id: leftGroup
+    anchors.left: parent.left
+    anchors.verticalCenter: parent.verticalCenter
+    anchors.leftMargin: 8
+    spacing: 8
+    // Workspaces added in Task 4
+  }
+
+  RowLayout {
+    id: centerGroup
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.verticalCenter: parent.verticalCenter
+    spacing: 8
+    // Window title added in Task 5, clock added in Task 6
+  }
+
+  RowLayout {
+    id: rightGroup
+    anchors.right: parent.right
+    anchors.verticalCenter: parent.verticalCenter
+    anchors.rightMargin: 8
+    spacing: 8
+    // Tray, battery, network, audio added in Tasks 7-9
+  }
+}
