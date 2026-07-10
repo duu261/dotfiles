@@ -34,9 +34,11 @@ hl.config({
 })
 
 -- Gesture bindings (caelestia specialws toggle dropped — no Quickshell surface backs it in v1)
+-- 4-finger swipe-down suspend gesture dropped: only "workspace"/"special" action strings are
+-- confirmed by the shipped reference; dispatcher-based gesture actions are unconfirmed.
+-- Suspend is still bound via keybindings.lua (SUPER+SHIFT+L).
 hl.gesture({ fingers = 4, direction = "horizontal", action = "workspace" })
 hl.gesture({ fingers = 3, direction = "up", action = "special" })
-hl.gesture({ fingers = 4, direction = "down", action = hl.dsp.exec_cmd("systemctl suspend-then-hibernate") })
 
 hl.device({
   name = "epic-mouse-v1",

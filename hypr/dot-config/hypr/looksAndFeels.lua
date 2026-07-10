@@ -70,10 +70,12 @@ hl.config({
   },
 
   group = {
-    ["col.border_active"] = "rgba(" .. Colors.red .. "ee) rgba(" .. Colors.maroon .. "ee) 45deg",
-    ["col.border_inactive"] = "rgba(" .. Colors.surface0 .. "ee) rgba(" .. Colors.surface2 .. "ee) 45deg",
-    ["col.border_locked_active"] = "rgba(" .. Colors.red .. "ee) rgba(" .. Colors.maroon .. "ee) 45deg",
-    ["col.border_locked_inactive"] = "rgba(" .. Colors.surface0 .. "ee) rgba(" .. Colors.surface2 .. "ee) 45deg",
+    col = {
+      border_active          = { colors = { "rgba(" .. Colors.red .. "ee)", "rgba(" .. Colors.maroon .. "ee)" }, angle = 45 },
+      border_inactive        = { colors = { "rgba(" .. Colors.surface0 .. "ee)", "rgba(" .. Colors.surface2 .. "ee)" }, angle = 45 },
+      border_locked_active   = { colors = { "rgba(" .. Colors.red .. "ee)", "rgba(" .. Colors.maroon .. "ee)" }, angle = 45 },
+      border_locked_inactive = { colors = { "rgba(" .. Colors.surface0 .. "ee)", "rgba(" .. Colors.surface2 .. "ee)" }, angle = 45 },
+    },
     groupbar = {
       font_family = "FiraCode Code Nerd Font Propo",
       font_size = 15,
@@ -84,11 +86,13 @@ hl.config({
       indicator_height = 0,
       gaps_in = 3,
       gaps_out = 3,
-      text_color = Colors.text,
-      ["col.active"] = "rgba(" .. Colors.red .. "ee)",
-      ["col.inactive"] = "rgba(" .. Colors.surface0 .. "ee)",
-      ["col.locked_active"] = "rgba(" .. Colors.maroon .. "ee)",
-      ["col.locked_inactive"] = "rgba(" .. Colors.surface2 .. "ee)",
+      text_color = "rgba(" .. Colors.text .. "ff)",
+      col = {
+        active          = "rgba(" .. Colors.red .. "ee)",
+        inactive        = "rgba(" .. Colors.surface0 .. "ee)",
+        locked_active   = "rgba(" .. Colors.maroon .. "ee)",
+        locked_inactive = "rgba(" .. Colors.surface2 .. "ee)",
+      },
     },
   },
 })

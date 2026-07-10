@@ -13,7 +13,7 @@ local menu = "rofi -show drun"
 hl.bind(mainMod .. " + SHIFT + L", hl.dsp.exec_cmd("systemctl suspend-then-hibernate"))
 
 -- Alternate paste
-hl.bind("Ctrl + Shift + Alt + V", hl.dsp.exec_cmd('sleep 0.5s && ydotool type -d 1 "$(cliphist list | head -1 | cliphist decode)"'))
+hl.bind("CONTROL + SHIFT + MOD1 + V", hl.dsp.exec_cmd('sleep 0.5s && ydotool type -d 1 "$(cliphist list | head -1 | cliphist decode)"'))
 
 -- Applications
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
@@ -24,23 +24,25 @@ hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(menu))
 -- Window management
 hl.bind(mainMod .. " + C", hl.dsp.window.close())
 hl.bind(mainMod .. " + SHIFT + C", hl.dsp.exec_cmd("hyprctl activewindow | grep pid | tr -d 'pid:' | xargs kill"))
-hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ mode = 0 })) -- namespaced guess, verify vs wiki fullscreen dispatcher
+hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ mode = 0 })) -- window.fullscreen confirmed present in dispatcher namespace list
 hl.bind(mainMod .. " + M", hl.dsp.window.fullscreen({ mode = 1 }))
 hl.bind(mainMod .. " + Space", hl.dsp.window.float({ action = "toggle" }))
-hl.bind(mainMod .. " + SHIFT + Space", hl.dsp.workspace.opt("allfloat")) -- namespaced guess
+-- workspace.opt/allfloat not in confirmed dispatcher namespace list — fall back to raw dispatch
+hl.bind(mainMod .. " + SHIFT + Space", hl.dsp.exec_cmd("hyprctl dispatch workspaceopt allfloat"))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + T", hl.dsp.layout("togglesplit"))
-hl.bind(mainMod .. " + G", hl.dsp.window.toggle_group()) -- namespaced guess
+-- window.toggle_group not in confirmed dispatcher namespace list — fall back to raw dispatch
+hl.bind(mainMod .. " + G", hl.dsp.exec_cmd("hyprctl dispatch togglegroup"))
 hl.bind(mainMod .. " + A", hl.dsp.layout("swapsplit"))
 
 -- Utilities
-hl.bind("Ctrl + Alt + C", hl.dsp.exec_cmd("hyprpicker -a"))
+hl.bind("CONTROL + MOD1 + C", hl.dsp.exec_cmd("hyprpicker -a"))
 
 -- Resize windows (holdable)
-hl.bind(mainMod .. " + Ctrl + L", hl.dsp.window.resize({ x = 100, y = 0 })) -- namespaced guess, was resizeactive
-hl.bind(mainMod .. " + Ctrl + H", hl.dsp.window.resize({ x = -100, y = 0 }))
-hl.bind(mainMod .. " + Ctrl + J", hl.dsp.window.resize({ x = 0, y = 100 }))
-hl.bind(mainMod .. " + Ctrl + K", hl.dsp.window.resize({ x = 0, y = -100 }))
+hl.bind(mainMod .. " + CONTROL + L", hl.dsp.window.resize({ x = 100, y = 0 })) -- namespaced guess, was resizeactive
+hl.bind(mainMod .. " + CONTROL + H", hl.dsp.window.resize({ x = -100, y = 0 }))
+hl.bind(mainMod .. " + CONTROL + J", hl.dsp.window.resize({ x = 0, y = 100 }))
+hl.bind(mainMod .. " + CONTROL + K", hl.dsp.window.resize({ x = 0, y = -100 }))
 
 -- Move focus
 hl.bind(mainMod .. " + H", hl.dsp.focus({ direction = "left" }))
@@ -49,10 +51,11 @@ hl.bind(mainMod .. " + K", hl.dsp.focus({ direction = "up" }))
 hl.bind(mainMod .. " + J", hl.dsp.focus({ direction = "down" }))
 
 -- Move window
-hl.bind(mainMod .. " + SHIFT + H", hl.dsp.window.move({ direction = "left" }))
-hl.bind(mainMod .. " + SHIFT + L", hl.dsp.window.move({ direction = "right" }))
-hl.bind(mainMod .. " + SHIFT + K", hl.dsp.window.move({ direction = "up" }))
-hl.bind(mainMod .. " + SHIFT + J", hl.dsp.window.move({ direction = "down" }))
+-- window.move({direction=}) directional form unconfirmed (only workspace= form is confirmed) — fall back to raw dispatch
+hl.bind(mainMod .. " + SHIFT + H", hl.dsp.exec_cmd("hyprctl dispatch movewindow l"))
+hl.bind(mainMod .. " + SHIFT + L", hl.dsp.exec_cmd("hyprctl dispatch movewindow r"))
+hl.bind(mainMod .. " + SHIFT + K", hl.dsp.exec_cmd("hyprctl dispatch movewindow u"))
+hl.bind(mainMod .. " + SHIFT + J", hl.dsp.exec_cmd("hyprctl dispatch movewindow d"))
 
 -- Switch workspaces
 for i = 1, 9 do
