@@ -2,13 +2,23 @@
 
 local Colors = require("macchiato")
 
+-- CLAUDE.md section 8: global reduce-motion escape hatch, cheap to wire now even unused
+local REDUCE_MOTION = false
+
+local function anim(opts)
+  if REDUCE_MOTION then
+    opts.enabled = false
+  end
+  hl.animation(opts)
+end
+
 hl.config({
   general = {
     layout = "dwindle",
     allow_tearing = false,
     gaps_workspaces = 20,
-    gaps_in = 10,
-    gaps_out = 40,
+    gaps_in = 12, -- CLAUDE.md spacing scale (4/8/12/16/20/24)
+    gaps_out = 24, -- CLAUDE.md spacing scale (4/8/12/16/20/24)
     border_size = 1, -- CLAUDE.md design system: 1px borders
     col = {
       active_border   = { colors = { "rgba(" .. Colors.red .. "ee)", "rgba(" .. Colors.maroon .. "ee)" }, angle = 45 },
@@ -84,8 +94,8 @@ hl.config({
       gradient_rounding = 5,
       height = 25,
       indicator_height = 0,
-      gaps_in = 3,
-      gaps_out = 3,
+      gaps_in = 4, -- CLAUDE.md spacing scale
+      gaps_out = 4, -- CLAUDE.md spacing scale
       text_color = "rgba(" .. Colors.text .. "ff)",
       col = {
         active          = "rgba(" .. Colors.red .. "ee)",
@@ -107,20 +117,20 @@ hl.curve("standard",         { type = "bezier", points = { { 0.2, 0 },   { 0, 1 
 -- old leaves with no direct new-leaf equivalent (windowsMove, fadeLayers, specialWorkspace,
 -- borderangle) are mapped to the closest confirmed leaf — verify against the wiki and
 -- adjust if `hyprctl reload` reports "no such animation leaf".
-hl.animation({ leaf = "layersIn",  enabled = true, speed = 5, bezier = "emphasizedDecel", style = "slide" })
-hl.animation({ leaf = "layersOut", enabled = true, speed = 4, bezier = "emphasizedAccel", style = "slide" })
-hl.animation({ leaf = "fadeLayersIn",  enabled = true, speed = 5, bezier = "standard" })
-hl.animation({ leaf = "fadeLayersOut", enabled = true, speed = 5, bezier = "standard" })
+anim({ leaf = "layersIn",  enabled = true, speed = 5, bezier = "emphasizedDecel", style = "slide" })
+anim({ leaf = "layersOut", enabled = true, speed = 4, bezier = "emphasizedAccel", style = "slide" })
+anim({ leaf = "fadeLayersIn",  enabled = true, speed = 5, bezier = "standard" })
+anim({ leaf = "fadeLayersOut", enabled = true, speed = 5, bezier = "standard" })
 
-hl.animation({ leaf = "windowsIn",  enabled = true, speed = 5, bezier = "emphasizedDecel" })
-hl.animation({ leaf = "windowsOut", enabled = true, speed = 3, bezier = "emphasizedAccel" })
-hl.animation({ leaf = "windows",    enabled = true, speed = 6, bezier = "standard" }) -- was windowsMove
-hl.animation({ leaf = "workspaces", enabled = true, speed = 5, bezier = "standard" })
+anim({ leaf = "windowsIn",  enabled = true, speed = 5, bezier = "emphasizedDecel" })
+anim({ leaf = "windowsOut", enabled = true, speed = 3, bezier = "emphasizedAccel" })
+anim({ leaf = "windows",    enabled = true, speed = 6, bezier = "standard" }) -- was windowsMove
+anim({ leaf = "workspaces", enabled = true, speed = 5, bezier = "standard" })
 
-hl.animation({ leaf = "workspacesIn",  enabled = true, speed = 4, bezier = "specialWorkSwitch", style = "slidefadevert 15%" })
-hl.animation({ leaf = "workspacesOut", enabled = true, speed = 4, bezier = "specialWorkSwitch", style = "slidefadevert 15%" })
+anim({ leaf = "workspacesIn",  enabled = true, speed = 4, bezier = "specialWorkSwitch", style = "slidefadevert 15%" })
+anim({ leaf = "workspacesOut", enabled = true, speed = 4, bezier = "specialWorkSwitch", style = "slidefadevert 15%" })
 
-hl.animation({ leaf = "fadeIn",  enabled = true, speed = 6, bezier = "standard" })
-hl.animation({ leaf = "fadeOut", enabled = true, speed = 6, bezier = "standard" })
-hl.animation({ leaf = "fade",    enabled = true, speed = 6, bezier = "standard" })
-hl.animation({ leaf = "border",  enabled = true, speed = 6, bezier = "standard" })
+anim({ leaf = "fadeIn",  enabled = true, speed = 6, bezier = "standard" })
+anim({ leaf = "fadeOut", enabled = true, speed = 6, bezier = "standard" })
+anim({ leaf = "fade",    enabled = true, speed = 6, bezier = "standard" })
+anim({ leaf = "border",  enabled = true, speed = 6, bezier = "standard" })
