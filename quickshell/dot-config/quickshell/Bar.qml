@@ -27,7 +27,8 @@ PanelWindow {
     anchors.horizontalCenter: parent.horizontalCenter
     anchors.verticalCenter: parent.verticalCenter
     spacing: 8
-    // Window title added in Task 5, clock added in Task 6
+    WindowTitle {}
+    // Clock added in Task 6
   }
 
   RowLayout {
