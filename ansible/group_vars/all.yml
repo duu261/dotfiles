@@ -32,6 +32,7 @@ base_packages:
   - jq
   - yq
   - unzip
+  - zip
   - wget
   - btop            # replaces htop
   - github-cli
@@ -40,6 +41,31 @@ base_packages:
   - nodejs           # required for claude CLI (npm install -g @anthropic-ai/claude-code)
   - npm
   - pnpm
+  - pacman-contrib  # paccache, keep package cache sane
+  - pkgfile         # find which package owns a missing command/file
+  - restic          # backups
+  - smartmontools   # disk health checks
+  - shellcheck      # shell script lint
+  - man-db
+  - man-pages
+  - plocate
+  - rsync
+  - bind            # dig
+  - mtr
+  - git-delta
+  - hyperfine
+  - entr
+  - shfmt
+  - strace
+  - gdb
+  - docker
+  - docker-compose
+  - tree
+  - lsof
+  - whois
+  - tcpdump
+  - nmap
+  - inetutils
 
 # zsh plugins shipped as official packages (sourced from /usr/share/zsh/plugins).
 zsh_plugin_packages:

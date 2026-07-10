@@ -56,7 +56,7 @@
 
 - name: Stow desktop packages (when profile=desktop)
   ansible.builtin.command: stow --dotfiles -d "{{ ansible_env.HOME }}/dotfiles" -t "{{ ansible_env.HOME }}" {{ item }}
-  loop: "{{ desktop_stow_packages }}"
+  loop: "{{ desktop_stow_packages | default([]) }}"
   when: profile == 'desktop'
   changed_when: true
 

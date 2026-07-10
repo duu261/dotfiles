@@ -121,6 +121,20 @@
   ansible.builtin.command: xdg-user-dirs-update
   changed_when: false
 
+- name: Enable docker service
+  ansible.builtin.systemd:
+    name: docker
+    enabled: true
+    state: started
+  become: true
+
+- name: Add user to docker group
+  ansible.builtin.user:
+    name: "{{ ansible_user_id }}"
+    groups: docker
+    append: true
+  become: true
+
 - name: Enable ufw firewall
   ansible.builtin.systemd:
     name: ufw

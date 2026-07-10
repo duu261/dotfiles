@@ -7,7 +7,6 @@ desktop_packages:
   - hyprlock
   - rofi
   - fuzzel
-  - foot            # referenced only in hypr window rules; keep for those to resolve
   - wezterm
   - qt6ct
   - swappy          # GUI screenshot annotator (grim/slurp pipeline)
@@ -45,6 +44,15 @@ desktop_packages:
   - wl-clipboard
   - grim
   - slurp
+  - brightnessctl
+  - playerctl
+  - nwg-look
+  - xdg-utils
+  - trash-cli
+  - imv
+  - mpv
+  - ffmpeg
+  - imagemagick
 
 # Installed via kewlfft.aur, same as base role's aur_packages.
 desktop_aur_packages:

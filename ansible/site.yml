@@ -7,8 +7,11 @@
 #   ansible-playbook site.yml --ask-vault-pass --tags java         # dev extras
 - name: Provision machine
   hosts: all
-  vars:
-    profile: tui
+  pre_tasks:
+    - name: Load desktop profile variables
+      ansible.builtin.include_vars: group_vars/desktop.yml
+      when: profile == 'desktop'
+
   roles:
     - base            # pacman tier1 + aur module + xdg-user-dirs
     - secrets         # vault-decrypt ~/.secrets

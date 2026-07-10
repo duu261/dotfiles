@@ -8,6 +8,7 @@
       - jdk-openjdk
       - maven
       - gradle
+      - visualvm
     state: present
   become: true
   tags: [java]
