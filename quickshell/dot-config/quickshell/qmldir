@@ -5,3 +5,5 @@ WindowTitle 1.0 WindowTitle.qml
 Clock 1.0 Clock.qml
 Tray 1.0 Tray.qml
 Battery 1.0 Battery.qml
+Network 1.0 Network.qml
+Audio 1.0 Audio.qml

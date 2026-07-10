@@ -39,5 +39,7 @@ PanelWindow {
     spacing: 8
     Tray {}
     Battery {}
+    Network {}
+    Audio {}
   }
 }
