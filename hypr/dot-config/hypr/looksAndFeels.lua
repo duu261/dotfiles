@@ -9,7 +9,7 @@ hl.config({
     gaps_workspaces = 20,
     gaps_in = 10,
     gaps_out = 40,
-    border_size = 3,
+    border_size = 1, -- CLAUDE.md design system: 1px borders
     col = {
       active_border   = { colors = { "rgba(" .. Colors.red .. "ee)", "rgba(" .. Colors.maroon .. "ee)" }, angle = 45 },
       inactive_border = { colors = { "rgba(" .. Colors.surface0 .. "ee)", "rgba(" .. Colors.surface2 .. "ee)" }, angle = 45 },
@@ -18,7 +18,7 @@ hl.config({
   },
 
   decoration = {
-    rounding = 10,
+    rounding = 4, -- CLAUDE.md design system: 4px max radius
     blur = {
       enabled = true,
       xray = false,
