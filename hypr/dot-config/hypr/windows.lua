@@ -5,6 +5,8 @@ hl.window_rule({ name = "fullscreen-opacity", match = { fullscreen = false }, op
 hl.window_rule({ name = "opaque-native-transparency", match = { class = "foot|equibop|org\\.quickshell|imv|swappy" }, opaque = true })
 hl.window_rule({ name = "center-floating", match = { float = true, xwayland = false }, center = true })
 
+hl.window_rule({ name = "tiled-no-shadow", match = { float = false }, no_shadow = true })
+
 -- Float
 hl.window_rule({ name = "float-guifetch", match = { class = "guifetch" }, float = true })
 hl.window_rule({ name = "float-yad", match = { class = "yad" }, float = true })
@@ -63,7 +65,7 @@ hl.window_rule({ name = "ueberzug-float", match = { class = "^(ueberzugpp_.*)$" 
 hl.window_rule({ name = "ueberzug-nofocus", match = { class = "^(ueberzugpp_.*)$" }, no_initial_focus = true })
 
 -- Steam
-hl.window_rule({ name = "steam-rounding", match = { class = "steam" }, rounding = 4 }) -- CLAUDE.md design system: 4px max radius
+hl.window_rule({ name = "steam-rounding", match = { class = "steam" }, rounding = 4 })
 hl.window_rule({ name = "steam-friends-float", match = { title = "Friends List", class = "steam" }, float = true })
 
 -- Games
@@ -81,7 +83,7 @@ hl.window_rule({ name = "fusion360-noblur", match = { title = "Fusion360|(Markin
 -- Xwayland popups
 hl.window_rule({ name = "xwayland-popup-nodim", match = { xwayland = 1, title = "win[0-9]+" }, no_dim = true })
 hl.window_rule({ name = "xwayland-popup-noshadow", match = { xwayland = 1, title = "win[0-9]+" }, no_shadow = true })
-hl.window_rule({ name = "xwayland-popup-rounding", match = { xwayland = 1, title = "win[0-9]+" }, rounding = 4 }) -- CLAUDE.md design system: 4px max radius
+hl.window_rule({ name = "xwayland-popup-rounding", match = { xwayland = 1, title = "win[0-9]+" }, rounding = 4 })
 
 -- Workspace gap overrides
 hl.workspace_rule({ workspace = "w[tv1]s[false]", gaps_out = 20 })

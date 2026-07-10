@@ -6,7 +6,7 @@ hl.env("QT_WAYLAND_DISABLE_WINDOWDECORATION", "1")
 hl.env("QT_AUTO_SCREEN_SCALE_FACTOR", "1")
 hl.env("XCURSOR_SIZE", "24")
 hl.env("HYPRCURSOR_SIZE", "24")
-hl.env("XCURSOR_THEME", "catppuccin-macchiato-red-cursors")
+hl.env("XCURSOR_THEME", "catppuccin-macchiato-mauve-cursors")
 
 -- Toolkit backends
 hl.env("GDK_BACKEND", "wayland,x11")

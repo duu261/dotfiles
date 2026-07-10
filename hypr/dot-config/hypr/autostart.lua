@@ -2,7 +2,7 @@
 
 hl.on("hyprland.start", function()
   hl.exec_cmd("hyprctl dispatch workspace 1")
-  hl.exec_cmd("hyprctl setcursor catppuccin-macchiato-red-cursors 24")
+  hl.exec_cmd("hyprctl setcursor catppuccin-macchiato-mauve-cursors 24")
   hl.exec_cmd("udiskie")
 
   -- Keyring and auth

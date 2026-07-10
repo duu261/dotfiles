@@ -2,7 +2,7 @@
 
 local Colors = require("macchiato")
 
--- CLAUDE.md section 8: global reduce-motion escape hatch, cheap to wire now even unused
+-- Global reduce-motion escape hatch, cheap to wire now even unused
 local REDUCE_MOTION = false
 
 local function anim(opts)
@@ -17,18 +17,18 @@ hl.config({
     layout = "dwindle",
     allow_tearing = false,
     gaps_workspaces = 20,
-    gaps_in = 12, -- CLAUDE.md spacing scale (4/8/12/16/20/24)
-    gaps_out = 24, -- CLAUDE.md spacing scale (4/8/12/16/20/24)
-    border_size = 1, -- CLAUDE.md design system: 1px borders
+    gaps_in = 12,
+    gaps_out = 24,
+    border_size = 1,
     col = {
-      active_border   = { colors = { "rgba(" .. Colors.red .. "ee)", "rgba(" .. Colors.maroon .. "ee)" }, angle = 45 },
+      active_border   = { colors = { "rgba(" .. Colors.mauve .. "ee)", "rgba(" .. Colors.lavender .. "ee)" }, angle = 45 },
       inactive_border = { colors = { "rgba(" .. Colors.surface0 .. "ee)", "rgba(" .. Colors.surface2 .. "ee)" }, angle = 45 },
     },
     resize_on_border = true,
   },
 
   decoration = {
-    rounding = 4, -- CLAUDE.md design system: 4px max radius
+    rounding = 4,
     blur = {
       enabled = true,
       xray = false,
@@ -81,26 +81,26 @@ hl.config({
 
   group = {
     col = {
-      border_active          = { colors = { "rgba(" .. Colors.red .. "ee)", "rgba(" .. Colors.maroon .. "ee)" }, angle = 45 },
+      border_active          = { colors = { "rgba(" .. Colors.mauve .. "ee)", "rgba(" .. Colors.lavender .. "ee)" }, angle = 45 },
       border_inactive        = { colors = { "rgba(" .. Colors.surface0 .. "ee)", "rgba(" .. Colors.surface2 .. "ee)" }, angle = 45 },
-      border_locked_active   = { colors = { "rgba(" .. Colors.red .. "ee)", "rgba(" .. Colors.maroon .. "ee)" }, angle = 45 },
+      border_locked_active   = { colors = { "rgba(" .. Colors.mauve .. "ee)", "rgba(" .. Colors.pink .. "ee)" }, angle = 45 },
       border_locked_inactive = { colors = { "rgba(" .. Colors.surface0 .. "ee)", "rgba(" .. Colors.surface2 .. "ee)" }, angle = 45 },
     },
     groupbar = {
-      font_family = "FiraCode Code Nerd Font Propo",
+      font_family = "FiraCode Nerd Font Propo",
       font_size = 15,
       gradients = true,
       gradient_round_only_edges = false,
-      gradient_rounding = 5,
+      gradient_rounding = 4,
       height = 25,
       indicator_height = 0,
-      gaps_in = 4, -- CLAUDE.md spacing scale
-      gaps_out = 4, -- CLAUDE.md spacing scale
+      gaps_in = 4,
+      gaps_out = 4,
       text_color = "rgba(" .. Colors.text .. "ff)",
       col = {
-        active          = "rgba(" .. Colors.red .. "ee)",
+        active          = "rgba(" .. Colors.mauve .. "ee)",
         inactive        = "rgba(" .. Colors.surface0 .. "ee)",
-        locked_active   = "rgba(" .. Colors.maroon .. "ee)",
+        locked_active   = "rgba(" .. Colors.pink .. "ee)",
         locked_inactive = "rgba(" .. Colors.surface2 .. "ee)",
       },
     },
@@ -108,7 +108,8 @@ hl.config({
 })
 
 -- Animation curves (hl.curve, NOT hl.bezier)
-hl.curve("specialWorkSwitch", { type = "bezier", points = { { 0.05, 0.7 }, { 0.1, 1 } } })
+-- Larger movements (workspace/panel) get spring easing with overshoot allowed
+hl.curve("spring",           { type = "bezier", points = { { 0.34, 1.56 }, { 0.64, 1 } } })
 hl.curve("emphasizedAccel",  { type = "bezier", points = { { 0.3, 0 },   { 0.8, 0.15 } } })
 hl.curve("emphasizedDecel",  { type = "bezier", points = { { 0.05, 0.7 }, { 0.1, 1 } } })
 hl.curve("standard",         { type = "bezier", points = { { 0.2, 0 },   { 0, 1 } } })
@@ -117,20 +118,24 @@ hl.curve("standard",         { type = "bezier", points = { { 0.2, 0 },   { 0, 1 
 -- old leaves with no direct new-leaf equivalent (windowsMove, fadeLayers, specialWorkspace,
 -- borderangle) are mapped to the closest confirmed leaf — verify against the wiki and
 -- adjust if `hyprctl reload` reports "no such animation leaf".
-anim({ leaf = "layersIn",  enabled = true, speed = 5, bezier = "emphasizedDecel", style = "slide" })
-anim({ leaf = "layersOut", enabled = true, speed = 4, bezier = "emphasizedAccel", style = "slide" })
-anim({ leaf = "fadeLayersIn",  enabled = true, speed = 5, bezier = "standard" })
-anim({ leaf = "fadeLayersOut", enabled = true, speed = 5, bezier = "standard" })
+--
+-- Speed unit ~= 100ms. Larger movements (workspace/panel swaps) sit in 300-450ms
+-- (speed 3-4.5) with spring/overshoot easing; micro-interactions (fade, border) sit
+-- in 120-200ms (speed 1.2-2) with plain ease, never spring.
+anim({ leaf = "layersIn",  enabled = true, speed = 4.5, bezier = "emphasizedDecel", style = "slide" })
+anim({ leaf = "layersOut", enabled = true, speed = 3.5, bezier = "emphasizedAccel", style = "slide" })
+anim({ leaf = "fadeLayersIn",  enabled = true, speed = 2, bezier = "standard" })
+anim({ leaf = "fadeLayersOut", enabled = true, speed = 2, bezier = "standard" })
 
-anim({ leaf = "windowsIn",  enabled = true, speed = 5, bezier = "emphasizedDecel" })
-anim({ leaf = "windowsOut", enabled = true, speed = 3, bezier = "emphasizedAccel" })
-anim({ leaf = "windows",    enabled = true, speed = 6, bezier = "standard" }) -- was windowsMove
-anim({ leaf = "workspaces", enabled = true, speed = 5, bezier = "standard" })
+anim({ leaf = "windowsIn",  enabled = true, speed = 4.5, bezier = "emphasizedDecel" })
+anim({ leaf = "windowsOut", enabled = true, speed = 3.5, bezier = "emphasizedAccel" })
+anim({ leaf = "windows",    enabled = true, speed = 4,   bezier = "standard" }) -- was windowsMove
+anim({ leaf = "workspaces", enabled = true, speed = 4,   bezier = "standard" })
 
-anim({ leaf = "workspacesIn",  enabled = true, speed = 4, bezier = "specialWorkSwitch", style = "slidefadevert 15%" })
-anim({ leaf = "workspacesOut", enabled = true, speed = 4, bezier = "specialWorkSwitch", style = "slidefadevert 15%" })
+anim({ leaf = "workspacesIn",  enabled = true, speed = 4,   bezier = "spring", style = "slidefadevert 15%" })
+anim({ leaf = "workspacesOut", enabled = true, speed = 3.5, bezier = "spring", style = "slidefadevert 15%" })
 
-anim({ leaf = "fadeIn",  enabled = true, speed = 6, bezier = "standard" })
-anim({ leaf = "fadeOut", enabled = true, speed = 6, bezier = "standard" })
-anim({ leaf = "fade",    enabled = true, speed = 6, bezier = "standard" })
-anim({ leaf = "border",  enabled = true, speed = 6, bezier = "standard" })
+anim({ leaf = "fadeIn",  enabled = true, speed = 2,   bezier = "standard" })
+anim({ leaf = "fadeOut", enabled = true, speed = 2,   bezier = "standard" })
+anim({ leaf = "fade",    enabled = true, speed = 1.5, bezier = "standard" })
+anim({ leaf = "border",  enabled = true, speed = 1.5, bezier = "standard" })
