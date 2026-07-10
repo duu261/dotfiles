@@ -4,7 +4,7 @@ import Quickshell.Services.Pipewire
 Text {
   color: Theme.text
   font.family: Theme.fontMono
-  font.pixelSize: 12
+  font.pixelSize: 13
   text: {
     if (!Pipewire.defaultSink) return ""
     const pct = Math.round(Pipewire.defaultSink.volume * 100)

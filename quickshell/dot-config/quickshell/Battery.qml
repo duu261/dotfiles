@@ -5,7 +5,7 @@ Text {
   visible: UPower.displayDevice && UPower.displayDevice.isPresent
   color: Theme.text
   font.family: Theme.fontMono
-  font.pixelSize: 12
+  font.pixelSize: 13
   text: {
     if (!UPower.displayDevice) return ""
     const pct = Math.round(UPower.displayDevice.percentage * 100)

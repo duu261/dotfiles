@@ -5,28 +5,35 @@ import Quickshell.Hyprland
 RowLayout {
   spacing: 4
 
+  readonly property int workspaceCount: 5
+
   Repeater {
-    model: Hyprland.workspaces
+    model: workspaceCount
     delegate: Rectangle {
-      required property var modelData
-      width: 20
-      height: 20
+      required property int modelData
+      readonly property int wsId: modelData + 1
+      readonly property bool active: Hyprland.workspaces.values.some(
+        ws => ws.id === wsId && ws.active
+      )
+
+      width: 22
+      height: 22
       radius: Theme.radius
-      color: modelData.active ? Theme.lavender : "transparent"
+      color: active ? Theme.lavender : "transparent"
       border.width: 1
       border.color: Theme.surface0
 
       Text {
         anchors.centerIn: parent
-        text: modelData.id
-        color: modelData.active ? Theme.crust : Theme.subtext0
+        text: wsId
+        color: active ? Theme.crust : Theme.subtext0
         font.family: Theme.fontMono
-        font.pixelSize: 12
+        font.pixelSize: 14
       }
 
       MouseArea {
         anchors.fill: parent
-        onClicked: Hyprland.dispatch("workspace " + modelData.id)
+        onClicked: Hyprland.dispatch("workspace " + wsId)
       }
     }
   }
