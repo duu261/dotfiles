@@ -28,7 +28,7 @@ PanelWindow {
     anchors.verticalCenter: parent.verticalCenter
     spacing: 8
     WindowTitle {}
-    // Clock added in Task 6
+    Clock {}
   }
 
   RowLayout {
