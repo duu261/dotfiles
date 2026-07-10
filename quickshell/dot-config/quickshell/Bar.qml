@@ -38,5 +38,6 @@ PanelWindow {
     anchors.rightMargin: 8
     spacing: 8
     Tray {}
+    Battery {}
   }
 }
