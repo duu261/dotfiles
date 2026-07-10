@@ -1,0 +1,27 @@
+# === XDG & Editor Setup ===
+export XDG_CONFIG_HOME=$HOME/.config
+VIM="nvim"
+export LS_COLORS="$(vivid generate catppuccin-macchiato)"
+export GIT_EDITOR=$VIM
+export EDITOR=$VIM
+export VISUAL=$VIM
+
+# === Java/JDK Setup ===
+export JDK8="/usr/lib/jvm/java-8-openjdk/"
+export JDK17="$HOME/.m2/jdks/jdk-17.0.10+7/"
+export JDK21="$HOME/.m2/jdks/jdk-21.0.2+13/"
+export JDK22="$HOME/.m2/jdks/jdk-22.0.2+9/"
+export JDK23="$HOME/.m2/jdks/jdk-23.0.1+11/"
+export JAVA_HOME="$JDK23"
+export PATH="$JAVA_HOME/bin:$PATH"
+export GRAALVM_HOME="$HOME/.m2/jdks/graalvm-community-openjdk-23+37.1/"
+export _JAVA_AWT_WM_NONREPARENTING=1
+
+# === PATH Configuration ===
+export PATH="$HOME/.bin:$PATH"
+export PATH="/home/duu/.cache/.bun/bin:$PATH"
+export PATH="$HOME/.npm-global/bin:$PATH"
+export PATH="/home/duu/.local/bin:$PATH"
+export PATH="$HOME/.local/share/pnpm/bin:$PATH"
+
+export HEADROOM_OUTPUT_SHAPER=1

@@ -1,0 +1,19 @@
+configuration{
+    modi: "run,drun,nerdy";
+    icon-theme: "Papirus";
+    show-icons: true;
+    terminal: "wezterm";
+    drun-display-format: "{icon} {name}";
+    location: 0;
+    disable-history: false;
+    hide-scrollbar: true;
+    display-drun: "   Apps ";
+    display-clipboard: "   Clipboard ";
+    display-run: "   Run ";
+    display-Network: " 󰤨  Network";
+    display-nerdy: " 󰇳  Nerd Fonts";
+    sidebar-mode: true;
+}
+
+@theme "catppuccin-macchiato"
+

@@ -1,0 +1,35 @@
+# === Core Plugins ===
+source ~/.zsh/history.plugin.zsh
+source ~/.zsh/completion.plugin.zsh
+source ~/.zsh/fzf-tab.plugin.zsh
+source ~/.zsh/systemd.plugin.zsh
+source ~/.zsh/utils.plugin.zsh
+source ~/.zsh/aliases.plugin.zsh
+
+# === External Plugins (must load before vi-keybindings, which binds their widgets) ===
+source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
+source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/.zsh/catppuccin-syntax-highlighting.plugin.zsh
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source ~/.zsh/zsh-abbr.plugin.zsh
+source ~/.zsh/you-should-use.plugin.zsh
+
+source ~/.zsh/vi-keybindings.plugin.zsh
+source ~/.zsh/git.plugin.zsh
+source ~/.zsh/fzf.plugin.zsh
+source ~/.zsh/tmux-sessionizer.plugin.zsh
+source ~/.zsh/autoreload.plugin.zsh
+source ~/.zsh/atuin.plugin.zsh
+source ~/.zsh/direnv.plugin.zsh
+
+# === Local & Secret Configuration ===
+source ~/.zshrc.local
+[ -f ~/.secrets ] && source ~/.secrets
+
+# === Prompt & Shell Initialization ===
+eval "$(starship init zsh)"
+eval "$(zoxide init zsh)"
+
+# === Tools & Utilities ===
+eval $(thefuck --alias fk)
+export LIBVIRT_DEFAULT_URI="qemu:///system"

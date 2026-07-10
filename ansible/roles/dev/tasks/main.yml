@@ -1,0 +1,40 @@
+---
+# Tag-gated development tool installation
+# Run with --tags java, rust, python, etc. to install language-specific packages
+
+- name: Install Java development tools
+  community.general.pacman:
+    name:
+      - jdk-openjdk
+      - maven
+      - gradle
+    state: present
+  become: true
+  tags: [java]
+
+# rustup and pacman's `rust` package both provide rustc/cargo and conflict -
+# rustup is the intended toolchain manager here, remove the plain package first.
+- name: Remove conflicting pacman rust package
+  community.general.pacman:
+    name: rust
+    state: absent
+  become: true
+  tags: [rust]
+
+- name: Install Rust development tools
+  community.general.pacman:
+    name:
+      - rustup
+    state: present
+  become: true
+  tags: [rust]
+
+- name: Install Python development tools
+  community.general.pacman:
+    name:
+      - python
+      - python-pip
+      - python-pipx
+    state: present
+  become: true
+  tags: [python]

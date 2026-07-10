@@ -1,0 +1,66 @@
+---
+# Shared across every machine (desktop + tui). Seeded from the 2026-07-10
+# package audit in ansible/todo.md. Keep tui-safe: nothing here may need a GUI.
+
+# Tier-1 CLI packages (official repos).
+base_packages:
+  - archlinux-keyring   # stale keys break pacman PGP checks on fresh installs
+  - base-devel          # fakeroot/gcc/make, required by makepkg -si (yay bootstrap, AUR builds)
+  - reflector           # auto mirror ranking, keeps mirrorlist fast/fresh
+  - stow
+  - git
+  - openssh
+  - zsh
+  - neovim          # replaces old `vim` role's pynvim/nvr helpers
+  - tmux
+  - bat
+  - fzf
+  - ripgrep
+  - fd
+  - eza
+  - zoxide
+  - starship
+  - atuin
+  - direnv
+  - lazygit
+  - yazi
+  - xdg-user-dirs    # provides xdg-user-dirs-update used by the `base` role
+  - ufw
+  - tealdeer
+  - wikiman
+  - vivid            # LS_COLORS generator, sourced in zsh/dot-zprofile
+  - jq
+  - yq
+  - unzip
+  - wget
+  - btop            # replaces htop
+  - github-cli
+  - uv               # python pkg/venv manager (fast pip replacement)
+  - bun               # JS runtime/bundler/pkg manager
+  - nodejs           # required for claude CLI (npm install -g @anthropic-ai/claude-code)
+  - npm
+  - pnpm
+
+# zsh plugins shipped as official packages (sourced from /usr/share/zsh/plugins).
+zsh_plugin_packages:
+  - zsh-autosuggestions
+  - zsh-syntax-highlighting
+  - zsh-history-substring-search
+
+# AUR packages needed everywhere (installed via the aur.py module in `base`).
+aur_packages:
+  - pay-respects        # thefuck replacement
+  - zsh-you-should-use  # zsh alias reminder plugin (verified via AUR RPC v5)
+  - fzf-tab             # fzf-tab completion, stable variant (fzf-tab-git conflicts with this pkg)
+  - zsh-abbr            # AUR-only, not in official repos
+  - gitmux              # tmux status-right git branch (tmux/dot-tmux.conf catppuccin_status_gitmux)
+
+# Stow packages deployed on every machine (dot-* dirs, mirror $HOME).
+stow_packages:
+  - zsh
+  - tmux
+  - bat
+  - starship
+  - yazi
+  - bin
+  - nvim

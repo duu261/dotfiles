@@ -1,0 +1,12 @@
+---
+- name: Install zsh plugin packages
+  community.general.pacman:
+    name: "{{ zsh_plugin_packages }}"
+    state: present
+  become: true
+
+- name: Set zsh as login shell
+  ansible.builtin.user:
+    name: "{{ ansible_user_id }}"
+    shell: /usr/bin/zsh
+  become: true

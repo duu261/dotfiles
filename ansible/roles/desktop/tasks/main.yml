@@ -1,0 +1,81 @@
+---
+- name: Install desktop packages
+  community.general.pacman:
+    name: "{{ desktop_packages }}"
+    state: present
+  become: true
+
+- name: Enable bluetooth service
+  ansible.builtin.systemd:
+    name: bluetooth
+    enabled: true
+    state: started
+  become: true
+
+- name: Enable NetworkManager service
+  ansible.builtin.systemd:
+    name: NetworkManager
+    enabled: true
+    state: started
+  become: true
+
+- name: Enable tlp power management
+  ansible.builtin.systemd:
+    name: tlp
+    enabled: true
+    state: started
+  become: true
+
+- name: Enable acpid
+  ansible.builtin.systemd:
+    name: acpid
+    enabled: true
+    state: started
+  become: true
+
+# No `state`: starting sddm mid-run would replace the current display manager
+# and kill the session; stopping it would do the same on a re-run where sddm
+# is already live. Enable only — takes effect next boot.
+- name: Enable sddm display manager
+  ansible.builtin.systemd:
+    name: sddm
+    enabled: true
+  become: true
+
+- name: Install desktop AUR packages
+  kewlfft.aur.aur:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ desktop_aur_packages }}"
+  become: true
+  become_user: aur_builder
+
+# sddm/ is system-owned (/etc, /usr/share), not a stow package — see dotfiles/CLAUDE.md.
+- name: Ensure /etc/sddm.conf.d exists
+  ansible.builtin.file:
+    path: /etc/sddm.conf.d
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Deploy sddm theme selection
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../sddm/sddm.conf"
+    dest: /etc/sddm.conf.d/catppuccin.conf
+    mode: '0644'
+  become: true
+
+- name: Deploy sddm theme.conf override
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../sddm/theme.conf"
+    dest: /usr/share/sddm/themes/catppuccin-macchiato-red/theme.conf
+    mode: '0644'
+  become: true
+
+# sddm theme.conf points Background at ~/Pictures/Wallpapers/...; clone provides it.
+- name: Clone wallpapers repo
+  ansible.builtin.git:
+    repo: https://github.com/duu261/wallpapers
+    dest: "{{ ansible_env.HOME }}/Pictures/Wallpapers"
+  async: 1200
+  poll: 1

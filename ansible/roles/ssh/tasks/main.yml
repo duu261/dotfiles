@@ -1,0 +1,30 @@
+---
+- name: Ensure ~/.ssh directory exists
+  ansible.builtin.file:
+    path: ~/.ssh
+    state: directory
+    mode: '0700'
+
+# Vault-encrypted keypair lives in ansible/.ssh/; decrypt:true mirrors the
+# secrets role's pattern (see dotfiles/CLAUDE.md "Secrets").
+- name: Deploy private key
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/.ssh/id_rsa"
+    dest: "{{ ansible_env.HOME }}/.ssh/id_rsa"
+    mode: '0600'
+    decrypt: true
+
+- name: Deploy public key
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/.ssh/id_rsa.pub"
+    dest: "{{ ansible_env.HOME }}/.ssh/id_rsa.pub"
+    mode: '0644'
+
+# Keypair is shared across every machine this playbook provisions (same
+# vault-encrypted id_rsa deployed everywhere), so authorizing it here lets
+# any of those machines SSH into this one with the shared identity.
+- name: Add key to authorized_keys
+  ansible.posix.authorized_key:
+    user: "{{ ansible_user_id }}"
+    state: present
+    key: "{{ lookup('file', playbook_dir + '/.ssh/id_rsa.pub') }}"

@@ -1,0 +1,129 @@
+---
+- name: Enable color output in pacman.conf
+  ansible.builtin.lineinfile:
+    path: /etc/pacman.conf
+    regexp: '^#?Color'
+    line: Color
+  become: true
+
+- name: Enable parallel downloads in pacman.conf
+  ansible.builtin.lineinfile:
+    path: /etc/pacman.conf
+    regexp: '^#?ParallelDownloads'
+    line: ParallelDownloads = 5
+  become: true
+
+- name: Set makepkg parallel compilation (MAKEFLAGS)
+  ansible.builtin.lineinfile:
+    path: /etc/makepkg.conf
+    regexp: '^#?MAKEFLAGS='
+    line: 'MAKEFLAGS="-j$(nproc)"'
+  become: true
+
+- name: Cap systemd journal size
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/journald.conf
+    regexp: '^#?SystemMaxUse='
+    line: SystemMaxUse=200M
+  become: true
+  register: journald_conf
+
+- name: Restart journald if config changed
+  ansible.builtin.systemd:
+    name: systemd-journald
+    state: restarted
+  become: true
+  when: journald_conf.changed
+
+- name: Enable fstrim timer (SSD/NVMe TRIM)
+  ansible.builtin.systemd:
+    name: fstrim.timer
+    enabled: true
+    state: started
+  become: true
+
+# tags: always — tag-filtered runs (e.g. --tags dev) skip the rest of base,
+# but any run that installs packages still needs a fresh keyring first.
+- name: Refresh keyring before any package install (stale keys break PGP checks)
+  community.general.pacman:
+    name: archlinux-keyring
+    state: latest
+    update_cache: true
+  become: true
+  tags: [always]
+
+- name: Install base packages
+  community.general.pacman:
+    name: "{{ base_packages }}"
+    state: present
+  become: true
+
+- name: Enable reflector timer (periodic mirrorlist refresh)
+  ansible.builtin.systemd:
+    name: reflector.timer
+    enabled: true
+    state: started
+  become: true
+
+# kewlfft.aur's own docs recommend a dedicated unprivileged builder user with
+# scoped NOPASSWD sudo, rather than relying on the invoking user's interactive
+# sudo ticket - that ticket doesn't exist on a fresh/unattended run and yay's
+# internal sudo calls (build deps, final pacman -U) have no tty to prompt on.
+- name: Create aur_builder user
+  ansible.builtin.user:
+    name: aur_builder
+    system: true
+    create_home: true
+    shell: /usr/bin/nologin
+  become: true
+
+- name: Grant aur_builder NOPASSWD sudo for pacman only
+  ansible.builtin.copy:
+    content: "aur_builder ALL=(ALL) NOPASSWD: /usr/bin/pacman\n"
+    dest: /etc/sudoers.d/aur_builder
+    mode: '0440'
+    validate: /usr/sbin/visudo -cf %s
+  become: true
+
+# kewlfft.aur only detects an existing helper on $PATH, never installs one -
+# bootstrap yay here so a fresh machine needs no manual pre-step.
+- name: Check for yay
+  ansible.builtin.command: which yay
+  register: yay_check
+  failed_when: false
+  changed_when: false
+
+- name: Clone yay AUR helper
+  ansible.builtin.git:
+    repo: https://aur.archlinux.org/yay.git
+    dest: /home/aur_builder/yay
+  become: true
+  become_user: aur_builder
+  when: yay_check.rc != 0
+
+- name: Build and install yay
+  ansible.builtin.command: makepkg -si --noconfirm
+  args:
+    chdir: /home/aur_builder/yay
+  become: true
+  become_user: aur_builder
+  when: yay_check.rc != 0
+
+- name: Install AUR packages
+  kewlfft.aur.aur:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ aur_packages }}"
+  become: true
+  become_user: aur_builder
+
+- name: Update user directories
+  ansible.builtin.command: xdg-user-dirs-update
+  changed_when: false
+
+- name: Enable ufw firewall
+  ansible.builtin.systemd:
+    name: ufw
+    enabled: true
+    state: started
+  become: true

@@ -1,0 +1,61 @@
+---
+# Desktop-only (Hyprland/Wayland). Merged into `all.yml` vars for hosts in the
+# `desktop` group / when profile == 'desktop'. All GUI, none tui-safe.
+
+desktop_packages:
+  - hyprland
+  - hyprlock
+  - rofi
+  - fuzzel
+  - foot            # referenced only in hypr window rules; keep for those to resolve
+  - wezterm
+  - qt6ct
+  - swappy          # GUI screenshot annotator (grim/slurp pipeline)
+  - sddm
+  - pipewire
+  - pipewire-pulse
+  - wireplumber
+  - pavucontrol
+  - gnome-keyring   # autostart.conf: gnome-keyring-daemon --start
+  - udiskie         # autostart.conf: udiskie &
+  - cliphist        # autostart.conf: wl-paste --watch cliphist store
+  - quickshell      # runtime for hypr shell config (autostart.conf), own config TBD
+  - papirus-icon-theme    # rofi config.rasi references icon-theme: "Papirus"
+  - ttf-jetbrains-mono-nerd  # fuzzel.ini font
+  - ttf-firacode-nerd        # rofi catppuccin-macchiato.rasi + sddm theme.conf font
+  - bluez
+  - bluez-utils
+  - blueman
+  - fcitx5
+  - fcitx5-configtool
+  - fcitx5-gtk
+  - fcitx5-qt
+  - tlp
+  - acpi
+  - acpid
+  - xorg-xwayland    # non-native-Wayland apps (some Electron, older GUI tools)
+  - qt5-wayland      # Qt5 apps blurry/broken without native Wayland support
+  - qt6-wayland      # Qt6 apps blurry/broken without native Wayland support
+  - noto-fonts       # CJK/emoji/symbol glyph fallback, avoids tofu boxes
+  - networkmanager
+  - network-manager-applet
+  - xdg-desktop-portal-hyprland
+  - xdg-desktop-portal-gtk
+  - polkit-gnome
+  - wl-clipboard
+  - grim
+  - slurp
+
+# Installed via kewlfft.aur, same as base role's aur_packages.
+desktop_aur_packages:
+  - catppuccin-sddm-theme-macchiato  # https://github.com/catppuccin/sddm
+  - papirus-folders-catppuccin-git   # colorizes papirus-icon-theme folders
+  - catppuccin-cursors-macchiato
+  - fcitx5-bamboo-git                # Vietnamese input engine
+
+desktop_stow_packages:
+  - hypr
+  - fuzzel
+  - rofi
+  - wezterm
+  - qt6ct

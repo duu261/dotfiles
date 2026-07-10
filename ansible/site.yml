@@ -1,0 +1,22 @@
+---
+# Single entry point. Pick behaviour with -e profile=desktop|tui (default: tui).
+# See ansible/todo.md for the package audit that seeds group_vars.
+#
+#   ansible-playbook site.yml --ask-vault-pass -e profile=desktop
+#   ansible-playbook site.yml --ask-vault-pass -e profile=tui      # WSL / headless
+#   ansible-playbook site.yml --ask-vault-pass --tags java         # dev extras
+- name: Provision machine
+  hosts: all
+  vars:
+    profile: tui
+  roles:
+    - base            # pacman tier1 + aur module + xdg-user-dirs
+    - secrets         # vault-decrypt ~/.secrets
+    - shell           # zsh + plugin packages
+    - git             # gitconfig + delta wiring
+    - ssh             # must run before dotfiles: dotfiles clone is over SSH
+    - dotfiles        # clone repo (--recurse-submodules) + stow
+    - role: desktop   # hyprland/wayland stack + theming
+      when: profile == 'desktop'
+    - role: dev       # languages/toolchains, opt-in
+      tags: [dev, never]
