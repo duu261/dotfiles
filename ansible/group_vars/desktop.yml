@@ -71,3 +71,5 @@ desktop_stow_packages:
   - caelestia
   - fuzzel
   - swappy
+  - gtk-3.0
+  - kvantum
