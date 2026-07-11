@@ -6,3 +6,6 @@ tmux/dot-tmux/plugins/
 .handoffs/
 
 .local/
+
+# caelestia-generated hyprland color scheme, regenerated on every `caelestia scheme` apply
+hypr/dot-config/hypr/scheme/current.lua
