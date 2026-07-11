@@ -2,3 +2,7 @@ yazi/.config/yazi/plugins/catppucci-macchiato.yazi
 
 # tmux plugins installed by TPM
 tmux/dot-tmux/plugins/
+
+.handoffs/
+
+.local/

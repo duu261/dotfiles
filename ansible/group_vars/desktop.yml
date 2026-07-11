@@ -18,7 +18,6 @@ desktop_packages:
   - gnome-keyring   # autostart.conf: gnome-keyring-daemon --start
   - udiskie         # autostart.conf: udiskie &
   - cliphist        # autostart.conf: wl-paste --watch cliphist store
-  - quickshell      # runtime for hypr shell config (autostart.conf), own config TBD
   - papirus-icon-theme    # rofi config.rasi references icon-theme: "Papirus"
   - ttf-jetbrains-mono-nerd  # fuzzel.ini font
   - ttf-firacode-nerd        # rofi catppuccin-macchiato.rasi + sddm theme.conf font
@@ -56,6 +55,7 @@ desktop_packages:
 
 # Installed via kewlfft.aur, same as base role's aur_packages.
 desktop_aur_packages:
+  - caelestia-shell                 # shell package pulls Caelestia runtime and shell dependencies
   - catppuccin-sddm-theme-macchiato  # https://github.com/catppuccin/sddm
   - papirus-folders-catppuccin-git   # colorizes papirus-icon-theme folders
   - catppuccin-cursors-macchiato
@@ -67,3 +67,4 @@ desktop_stow_packages:
   - rofi
   - wezterm
   - qt6ct
+  - caelestia

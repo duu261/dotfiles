@@ -1,0 +1,19 @@
+{
+    "bar": {
+        "status": {
+            "showAudio": false,
+            "showBattery": false,
+            "showBluetooth": true,
+            "showKbLayout": false,
+            "showMicrophone": false,
+            "showNetwork": false,
+            "showWifi": false
+        }
+    },
+    "launcher": {
+        "vimKeybinds": true
+    },
+    "services": {
+        "showLyrics": true
+    }
+}
