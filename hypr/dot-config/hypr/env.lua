@@ -1,12 +1,12 @@
--- Ported from environment.conf
+local vars = require("variables")
 
 -- Themes
 hl.env("QT_QPA_PLATFORMTHEME", "qt6ct")
 hl.env("QT_WAYLAND_DISABLE_WINDOWDECORATION", "1")
 hl.env("QT_AUTO_SCREEN_SCALE_FACTOR", "1")
-hl.env("XCURSOR_SIZE", "24")
-hl.env("HYPRCURSOR_SIZE", "24")
-hl.env("XCURSOR_THEME", "catppuccin-macchiato-mauve-cursors")
+hl.env("XCURSOR_SIZE", tostring(vars.cursorSize))
+hl.env("HYPRCURSOR_SIZE", tostring(vars.cursorSize))
+hl.env("XCURSOR_THEME", vars.cursorTheme)
 
 -- Toolkit backends
 hl.env("GDK_BACKEND", "wayland,x11")

@@ -1,6 +1,9 @@
+local fn = require("functions")
+local vars = require("variables")
+
 -- Ported from windows.conf
 
-hl.window_rule({ name = "fullscreen-opacity", match = { fullscreen = false }, opacity = "0.95 override" })
+hl.window_rule({ name = "fullscreen-opacity", match = { fullscreen = false }, opacity = vars.windowOpacity .. " override" })
 
 hl.window_rule({ name = "opaque-native-transparency", match = { class = "foot|equibop|org\\.quickshell|imv|swappy" }, opaque = true })
 hl.window_rule({ name = "center-floating", match = { float = true, xwayland = false }, center = true })
@@ -52,7 +55,7 @@ hl.window_rule({ name = "dialog-save-as", match = { title = "Save As" }, float =
 hl.window_rule({ name = "dialog-library", match = { title = "Library" }, float = true })
 
 -- Picture in picture
-hl.window_rule({ name = "pip-move", match = { title = "Picture(-| )in(-| )[Pp]icture" }, move = "100%-w-2% 100%-w-3%" })
+hl.window_rule({ name = "pip-move", match = { title = "Picture(-| )in(-| )[Pp]icture" }, move = "(monitor_w*0.98-window_w) (monitor_h*0.97-window_h)" })
 hl.window_rule({ name = "pip-aspect", match = { title = "Picture(-| )in(-| )[Pp]icture" }, keep_aspect_ratio = true })
 hl.window_rule({ name = "pip-float", match = { title = "Picture(-| )in(-| )[Pp]icture" }, float = true })
 hl.window_rule({ name = "pip-pin", match = { title = "Picture(-| )in(-| )[Pp]icture" }, pin = true })
@@ -65,7 +68,7 @@ hl.window_rule({ name = "ueberzug-float", match = { class = "^(ueberzugpp_.*)$" 
 hl.window_rule({ name = "ueberzug-nofocus", match = { class = "^(ueberzugpp_.*)$" }, no_initial_focus = true })
 
 -- Steam
-hl.window_rule({ name = "steam-rounding", match = { class = "steam" }, rounding = 4 })
+hl.window_rule({ name = "steam-rounding", match = { class = "steam" }, rounding = vars.windowRounding })
 hl.window_rule({ name = "steam-friends-float", match = { title = "Friends List", class = "steam" }, float = true })
 
 -- Games
@@ -83,13 +86,18 @@ hl.window_rule({ name = "fusion360-noblur", match = { title = "Fusion360|(Markin
 -- Xwayland popups
 hl.window_rule({ name = "xwayland-popup-nodim", match = { xwayland = 1, title = "win[0-9]+" }, no_dim = true })
 hl.window_rule({ name = "xwayland-popup-noshadow", match = { xwayland = 1, title = "win[0-9]+" }, no_shadow = true })
-hl.window_rule({ name = "xwayland-popup-rounding", match = { xwayland = 1, title = "win[0-9]+" }, rounding = 4 })
+hl.window_rule({ name = "xwayland-popup-rounding", match = { xwayland = 1, title = "win[0-9]+" }, rounding = vars.windowRounding })
+hl.window_rule({ name = "xwayland-empty-popup-nodim", match = { xwayland = true, title = "", class = "", initial_title = "", initial_class = "" }, no_dim = true })
+hl.window_rule({ name = "xwayland-empty-popup-noshadow", match = { xwayland = true, title = "", class = "", initial_title = "", initial_class = "" }, no_shadow = true })
+hl.window_rule({ name = "xwayland-empty-popup-noblur", match = { xwayland = true, title = "", class = "", initial_title = "", initial_class = "" }, no_blur = true })
+hl.window_rule({ name = "xwayland-empty-popup-opaque", match = { xwayland = true, title = "", class = "", initial_title = "", initial_class = "" }, opaque = true })
+hl.window_rule({ name = "xwayland-empty-popup-rounding", match = { xwayland = true, title = "", class = "", initial_title = "", initial_class = "" }, rounding = vars.windowRounding })
 
 -- Workspace gap overrides
-hl.workspace_rule({ workspace = "w[tv1]s[false]", gaps_out = 20 })
-hl.workspace_rule({ workspace = "f[1]s[false]", gaps_out = 20 })
+hl.workspace_rule({ workspace = "w[tv1]s[false]", gaps_out = vars.singleWindowGapsOut })
+hl.workspace_rule({ workspace = "f[1]s[false]", gaps_out = vars.singleWindowGapsOut })
 
--- Layer rules (caelestia namespaces dropped — no Quickshell surface uses that namespace)
+-- Layer rules
 hl.layer_rule({ name = "hyprpicker-fade", match = { namespace = "hyprpicker" }, animation = "fade" })
 hl.layer_rule({ name = "logout-dialog-fade", match = { namespace = "logout_dialog" }, animation = "fade" })
 hl.layer_rule({ name = "selection-fade", match = { namespace = "selection" }, animation = "fade" })
@@ -98,3 +106,7 @@ hl.layer_rule({ name = "wayfreeze-fade", match = { namespace = "wayfreeze" }, an
 -- Fuzzel
 hl.layer_rule({ name = "launcher-popin", match = { namespace = "launcher" }, animation = "popin 80%" })
 hl.layer_rule({ name = "launcher-blur", match = { namespace = "launcher" }, blur = true })
+
+-- Shell
+hl.layer_rule({ name = "caelestia-no-anim", match = { namespace = "caelestia-(border-exclusion|area-picker)" }, no_anim = true })
+hl.layer_rule({ name = "caelestia-fade", match = { namespace = "caelestia-(drawers|background)" }, animation = "fade" })

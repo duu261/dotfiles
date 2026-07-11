@@ -1,28 +1,14 @@
--- hypr/dot-config/hypr/hyprland.lua
-
--- Colors
 require("macchiato")
-
--- Monitors
 require("monitors")
-
--- Autostart
-require("autostart")
-
--- Environment variables
-require("environment")
-
--- Look and feel
-require("looksAndFeels")
-
--- Input
+require("env")
+require("general")
 require("input")
-
--- Keybindings
-require("keybindings")
-
--- Workspaces
+require("misc")
+require("animations")
+require("decoration")
+require("group")
+require("execs")
+require("rules")
+require("gestures")
 require("workspaces")
-
--- Windows
-require("windows")
+require("keybinds")

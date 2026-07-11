@@ -1,8 +1,10 @@
--- Ported from autostart.conf
+local vars = require("variables")
 
 hl.on("hyprland.start", function()
   hl.exec_cmd("hyprctl dispatch workspace 1")
-  hl.exec_cmd("hyprctl setcursor catppuccin-macchiato-mauve-cursors 24")
+  hl.exec_cmd("hyprctl setcursor " .. vars.cursorTheme .. " " .. vars.cursorSize)
+  hl.exec_cmd("gsettings set org.gnome.desktop.interface cursor-theme " .. vars.cursorTheme)
+  hl.exec_cmd("gsettings set org.gnome.desktop.interface cursor-size " .. vars.cursorSize)
   hl.exec_cmd("udiskie")
 
   -- Keyring and auth
@@ -16,5 +18,6 @@ hl.on("hyprland.start", function()
   -- Forward bluetooth media commands to MPRIS
   hl.exec_cmd("mpris-proxy")
 
-  -- caelestia resizer/shell dropped — no replacement until Quickshell surfaces ship
+  hl.exec_cmd("caelestia resizer -d")
+  hl.exec_cmd("caelestia shell -d")
 end)
