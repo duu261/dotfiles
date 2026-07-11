@@ -10,6 +10,21 @@ git clone --recurse-submodules https://github.com/<you>/dotfiles.git ~/dotfiles 
 make install PROFILE=desktop   # or PROFILE=tui
 ```
 
+## Make targets
+
+| Target          | What it does                                              |
+|-----------------|-------------------------------------------------------------|
+| `make galaxy`   | Install required ansible-galaxy collections                |
+| `make install`  | galaxy + run playbook (`PROFILE=desktop\|tui`, `TAGS=...`)  |
+| `make desktop`  | Shortcut for `install PROFILE=desktop`                      |
+| `make tui`      | Shortcut for `install PROFILE=tui`                          |
+| `make check-desktop` | Dry-run (`--check`) of the desktop profile             |
+| `make check-tui`     | Dry-run (`--check`) of the tui profile                 |
+
+`TAGS` filters to matching tasks only (plus anything tagged `always`) — everything
+else in the play is skipped, not just reordered. Used for opt-in roles like `dev`
+(tagged `never`, so it only runs when explicitly requested via `TAGS=dev`).
+
 Vault password comes from wherever you keep it (not in the repo). yay is bootstrapped
 automatically if missing — no separate AUR helper step.
 
@@ -24,3 +39,4 @@ another machine.
   creation)? Resume from `--start-at-task="Create aur_builder user"` instead.
 - Preview sddm theme without logout: `sddm-greeter-qt6 --test-mode --theme /usr/share/sddm/themes/catppuccin-macchiato`
 - `dev` role (language toolchains, e.g. jdk-openjdk) is opt-in, skipped by default: `make install TAGS=dev`.
+- sddm is preinstalled/enabled by archinstall before ansible ever runs; the "enable sddm" ansible task is a harmless no-op safety net, not the real work - the theme file copies right after it are.
