@@ -53,6 +53,125 @@
   when: ansible_facts.architecture == 'x86_64'
   tags: [java]
 
+- name: Create Java profiling tool directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - "{{ ansible_env.HOME }}/.cache/java-tools"
+    - "{{ ansible_env.HOME }}/apps/async-profiler-{{ dev_async_profiler_version }}"
+    - "{{ ansible_env.HOME }}/apps/jmc-{{ dev_jmc_version }}"
+    - "{{ ansible_env.HOME }}/apps/mcs-{{ dev_mcs_version }}"
+  tags: [java]
+
+- name: Download async-profiler
+  ansible.builtin.get_url:
+    url: >-
+      https://github.com/async-profiler/async-profiler/releases/download/v{{ dev_async_profiler_version
+      }}/async-profiler-{{ dev_async_profiler_version }}-linux-x64.tar.gz
+    dest: "{{ ansible_env.HOME }}/.cache/java-tools/async-profiler-{{ dev_async_profiler_version }}-linux-x64.tar.gz"
+    checksum: "sha256:{{ dev_async_profiler_sha256 }}"
+    mode: '0644'
+  when: ansible_facts.architecture == 'x86_64'
+  tags: [java]
+
+- name: Extract async-profiler
+  ansible.builtin.unarchive:
+    src: "{{ ansible_env.HOME }}/.cache/java-tools/async-profiler-{{ dev_async_profiler_version }}-linux-x64.tar.gz"
+    dest: "{{ ansible_env.HOME }}/apps/async-profiler-{{ dev_async_profiler_version }}"
+    remote_src: true
+    extra_opts:
+      - --strip-components=1
+    creates: "{{ ansible_env.HOME }}/apps/async-profiler-{{ dev_async_profiler_version }}/bin/asprof"
+  when: ansible_facts.architecture == 'x86_64'
+  tags: [java]
+
+- name: Link async-profiler tools
+  ansible.builtin.file:
+    src: "{{ ansible_env.HOME }}/apps/async-profiler-{{ dev_async_profiler_version }}/bin/{{ item }}"
+    dest: "{{ ansible_env.HOME }}/.local/bin/{{ item }}"
+    state: link
+    force: true
+  loop:
+    - asprof
+    - jfrconv
+  when: ansible_facts.architecture == 'x86_64'
+  tags: [java]
+
+- name: Download Java Mission Control
+  ansible.builtin.get_url:
+    url: "https://github.com/adoptium/jmc-build/releases/download/{{ dev_jmc_version }}/org.openjdk.jmc-{{ dev_jmc_version }}-linux.gtk.x86_64.tar.gz"
+    dest: "{{ ansible_env.HOME }}/.cache/java-tools/jmc-{{ dev_jmc_version }}-linux-x86_64.tar.gz"
+    checksum: "sha256:{{ dev_jmc_sha256 }}"
+    mode: '0644'
+  when: ansible_facts.architecture == 'x86_64'
+  tags: [java]
+
+- name: Extract Java Mission Control
+  ansible.builtin.unarchive:
+    src: "{{ ansible_env.HOME }}/.cache/java-tools/jmc-{{ dev_jmc_version }}-linux-x86_64.tar.gz"
+    dest: "{{ ansible_env.HOME }}/apps/jmc-{{ dev_jmc_version }}"
+    remote_src: true
+    creates: "{{ ansible_env.HOME }}/apps/jmc-{{ dev_jmc_version }}/JDK Mission Control/jmc"
+  when: ansible_facts.architecture == 'x86_64'
+  tags: [java]
+
+- name: Link Java Mission Control
+  ansible.builtin.file:
+    src: "{{ ansible_env.HOME }}/apps/jmc-{{ dev_jmc_version }}/JDK Mission Control/jmc"
+    dest: "{{ ansible_env.HOME }}/.local/bin/jmc"
+    state: link
+    force: true
+  when: ansible_facts.architecture == 'x86_64'
+  tags: [java]
+
+- name: Download Maven Central Search
+  ansible.builtin.get_url:
+    url: "https://github.com/mthmulders/mcs/releases/download/v{{ dev_mcs_version }}/mcs-{{ dev_mcs_version }}-linux-x86_64.tar.gz"
+    dest: "{{ ansible_env.HOME }}/.cache/java-tools/mcs-{{ dev_mcs_version }}-linux-x86_64.tar.gz"
+    checksum: "sha256:{{ dev_mcs_sha256 }}"
+    mode: '0644'
+  when: ansible_facts.architecture == 'x86_64'
+  tags: [java]
+
+- name: Extract Maven Central Search
+  ansible.builtin.unarchive:
+    src: "{{ ansible_env.HOME }}/.cache/java-tools/mcs-{{ dev_mcs_version }}-linux-x86_64.tar.gz"
+    dest: "{{ ansible_env.HOME }}/apps/mcs-{{ dev_mcs_version }}"
+    remote_src: true
+    extra_opts:
+      - --strip-components=1
+    creates: "{{ ansible_env.HOME }}/apps/mcs-{{ dev_mcs_version }}/bin/mcs"
+  when: ansible_facts.architecture == 'x86_64'
+  tags: [java]
+
+- name: Link Maven Central Search
+  ansible.builtin.file:
+    src: "{{ ansible_env.HOME }}/apps/mcs-{{ dev_mcs_version }}/bin/mcs"
+    dest: "{{ ansible_env.HOME }}/.local/bin/mcs"
+    state: link
+    force: true
+  when: ansible_facts.architecture == 'x86_64'
+  tags: [java]
+
+- name: Download Java Object Layout
+  ansible.builtin.get_url:
+    url: "https://repo1.maven.org/maven2/org/openjdk/jol/jol-cli/{{ dev_jol_version }}/jol-cli-{{ dev_jol_version }}-full.jar"
+    dest: "{{ ansible_env.HOME }}/apps/jol-{{ dev_jol_version }}.jar"
+    checksum: "sha256:{{ dev_jol_sha256 }}"
+    mode: '0644'
+  tags: [java]
+
+- name: Create Java Object Layout launcher
+  ansible.builtin.copy:
+    dest: "{{ ansible_env.HOME }}/.local/bin/jol"
+    mode: '0755'
+    content: |
+      #!/usr/bin/env sh
+      exec java -jar "{{ ansible_env.HOME }}/apps/jol-{{ dev_jol_version }}.jar" "$@"
+  tags: [java]
+
 # rustup and pacman's `rust` package both provide rustc/cargo and conflict -
 # rustup is the intended toolchain manager here, remove the plain package first.
 - name: Remove conflicting pacman rust package
