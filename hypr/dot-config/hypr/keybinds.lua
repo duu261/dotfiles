@@ -2,7 +2,6 @@ local mainMod = "SUPER"
 local terminal = "wezterm"
 local browser = "zen-browser"
 local fileManager = "yazi"
-local menu = "rofi -show drun"
 local fn = require("functions")
 local vars = require("variables")
 
@@ -74,7 +73,7 @@ hl.bind("CONTROL + SUPER + MOD1 + R", hl.dsp.exec_cmd("qs -c caelestia kill; sle
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(browser))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
-hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(menu))
+hl.bind(mainMod .. " + R", hl.dsp.global("caelestia:launcher"))
 
 -- Window management
 hl.bind(mainMod .. " + C", hl.dsp.window.close())
