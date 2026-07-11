@@ -50,7 +50,7 @@ return {
   inactiveWindowBorderColour = "rgba(" .. Colors.overlay1Alpha .. "11)",
 
   -- Groupbar
-  groupbarFontFamily = "FiraCode Code Nerd Font Propo",
+  groupbarFontFamily = "FiraCode Nerd Font Propo",
   groupbarFontSize = 15,
   groupbarGradientRounding = 5,
   groupbarHeight = 25,
