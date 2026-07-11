@@ -6,10 +6,6 @@ export SUDO_EDIT=$VISUAL
 export DIFFPROG="$VISUAL -d"
 
 
-myoutube() {
-    mpv $(youtube-dl -g $1)
-}
-
 greph() {
     history 0 | grep $1
 }

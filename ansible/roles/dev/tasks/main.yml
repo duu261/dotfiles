@@ -13,6 +13,46 @@
   become: true
   tags: [java]
 
+- name: Create Maven Daemon directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - "{{ ansible_env.HOME }}/.cache/mvnd"
+    - "{{ ansible_env.HOME }}/.local/bin"
+    - "{{ ansible_env.HOME }}/apps/mvnd-{{ dev_mvnd_version }}"
+  tags: [java]
+
+- name: Download Maven Daemon
+  ansible.builtin.get_url:
+    url: "https://dlcdn.apache.org/maven/mvnd/{{ dev_mvnd_version }}/maven-mvnd-{{ dev_mvnd_version }}-linux-amd64.tar.gz"
+    dest: "{{ ansible_env.HOME }}/.cache/mvnd/maven-mvnd-{{ dev_mvnd_version }}-linux-amd64.tar.gz"
+    checksum: "sha512:{{ dev_mvnd_sha512 }}"
+    mode: '0644'
+  when: ansible_facts.architecture == 'x86_64'
+  tags: [java]
+
+- name: Extract Maven Daemon
+  ansible.builtin.unarchive:
+    src: "{{ ansible_env.HOME }}/.cache/mvnd/maven-mvnd-{{ dev_mvnd_version }}-linux-amd64.tar.gz"
+    dest: "{{ ansible_env.HOME }}/apps/mvnd-{{ dev_mvnd_version }}"
+    remote_src: true
+    extra_opts:
+      - --strip-components=1
+    creates: "{{ ansible_env.HOME }}/apps/mvnd-{{ dev_mvnd_version }}/bin/mvnd"
+  when: ansible_facts.architecture == 'x86_64'
+  tags: [java]
+
+- name: Link Maven Daemon executable
+  ansible.builtin.file:
+    src: "{{ ansible_env.HOME }}/apps/mvnd-{{ dev_mvnd_version }}/bin/mvnd"
+    dest: "{{ ansible_env.HOME }}/.local/bin/mvnd"
+    state: link
+    force: true
+  when: ansible_facts.architecture == 'x86_64'
+  tags: [java]
+
 # rustup and pacman's `rust` package both provide rustc/cargo and conflict -
 # rustup is the intended toolchain manager here, remove the plain package first.
 - name: Remove conflicting pacman rust package

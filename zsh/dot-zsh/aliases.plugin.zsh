@@ -23,15 +23,10 @@ alias vgdisplay='sudo vgdisplay'
 
 
 
-## yay python smtpd
-alias smtpd="python -m smtpd -n -c DebuggingServer localhost:1025"
-
-
 ## global aliases
 alias -g L='| less'
 alias -g N='2> /dev/null'
 alias -g G='| rg'
-alias -g J='| jless'
 alias -g H='| head'
 alias -g T='| tail'
 alias -g F='| fzf'
@@ -46,7 +41,6 @@ fi
 
 ## misc
 alias s='ssh'
-alias c="date -R && echo -e && khal calendar --notstarted"
 alias :q="exit"
 alias eject='sudo eject'
 alias rcp='rsync --progress'
@@ -69,7 +63,6 @@ alias tablet="scrcpy --v4l2-sink=/dev/video7 --no-display"
 alias v="nvim"
 alias sal="nvim ~/.zsh/aliases.plugin.zsh"
 alias so="source ~/.zshrc"
-alias xsc="xclip -selection clipboard"
 alias ls="eza --git --color=always --icons=always --long --no-filesize --no-permissions --no-time --no-user --grid --ignore-glob='tmux*.log'"
 alias ff="fastfetch -c examples/13.jsonc"
 alias cat="bat"
@@ -82,4 +75,3 @@ alias vim="$VIM"
 alias vims="NVIM_LISTEN_ADDRESS=/tmp/nvim $VIM"
 alias lg="lazygit"
 alias mvn="mvnd"
-alias cbm="codebase-memory-mcp"

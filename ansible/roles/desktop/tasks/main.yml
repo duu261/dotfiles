@@ -5,6 +5,13 @@
     state: present
   become: true
 
+- name: Enable ydotool user daemon
+  ansible.builtin.systemd_service:
+    name: ydotool.service
+    scope: user
+    enabled: true
+    state: started
+
 - name: Enable bluetooth service
   ansible.builtin.systemd:
     name: bluetooth
@@ -65,7 +72,14 @@
     mode: '0644'
   become: true
 
-# sddm theme.conf points Background at ~/Pictures/Wallpapers/...; clone provides it.
+- name: Set SDDM wallpaper path for provisioned user
+  ansible.builtin.lineinfile:
+    path: /usr/share/sddm/themes/catppuccin-macchiato-red/theme.conf
+    regexp: '^Background='
+    line: 'Background="{{ ansible_env.HOME }}/Pictures/Wallpapers/default.png"'
+  become: true
+
+# The dynamic SDDM Background path above points into this clone.
 - name: Clone wallpapers repo
   ansible.builtin.git:
     repo: https://github.com/duu261/wallpapers

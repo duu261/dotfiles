@@ -37,6 +37,7 @@ base_packages:
   - zip
   - wget
   - btop            # replaces htop
+  - fastfetch       # aliases.plugin.zsh: ff system summary preset
   - github-cli
   - uv               # python pkg/venv manager (fast pip replacement)
   - bun               # JS runtime/bundler/pkg manager

@@ -17,6 +17,7 @@ desktop_packages:
   - gnome-keyring   # execs.lua: gnome-keyring-daemon --start
   - udiskie         # execs.lua: udiskie
   - cliphist        # execs.lua: wl-paste --watch cliphist store
+  - ydotool         # keybinds.lua: type clipboard text through virtual keyboard input
   - papirus-icon-theme    # icon theme for nwg-look/GTK apps
   - thunar          # GUI file manager, drag-drop UF2 flashing for zmk keyboard
   - gvfs            # mount/trash backend for thunar
@@ -39,6 +40,7 @@ desktop_packages:
   - xdg-desktop-portal-hyprland
   - xdg-desktop-portal-gtk
   - hyprpolkitagent
+  - hyprpicker      # keybinds.lua: interactive Wayland color picker
   - wl-clipboard
   - grim
   - slurp
@@ -56,6 +58,7 @@ desktop_packages:
 
 # Installed via kewlfft.aur, same as base role's aur_packages.
 desktop_aur_packages:
+  - quickshell-git                   # caelestia-shell provider; install first to avoid yay nested AUR dependency failure
   - caelestia-shell                 # shell package pulls Caelestia runtime and shell dependencies
   - catppuccin-sddm-theme-macchiato  # https://github.com/catppuccin/sddm
   - catppuccin-cursors-macchiato
