@@ -7,6 +7,7 @@ desktop_packages:
   - hyprlock
   - wezterm
   - qt6ct
+  - kvantum         # Qt style engine, needed for a real catppuccin Qt theme (qt6ct fallback style has no dark theme)
   - swappy          # GUI screenshot annotator (grim/slurp pipeline)
   - fuzzel          # dmenu backend for caelestia emoji/clipboard subcommands
   - sddm
@@ -58,9 +59,9 @@ desktop_packages:
 desktop_aur_packages:
   - caelestia-shell                 # shell package pulls Caelestia runtime and shell dependencies
   - catppuccin-sddm-theme-macchiato  # https://github.com/catppuccin/sddm
-  - papirus-folders-catppuccin-git   # colorizes papirus-icon-theme folders
   - catppuccin-cursors-macchiato
   - catppuccin-gtk-theme-macchiato  # https://github.com/catppuccin/gtk
+  - kvantum-theme-catppuccin-git    # https://github.com/catppuccin/Kvantum, Qt-side match for the GTK theme above
   - fcitx5-bamboo-git                # Vietnamese input engine
 
 desktop_stow_packages:

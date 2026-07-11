@@ -3,6 +3,7 @@
         "enableTerm": false,
         "enableFuzzel": false,
         "enableChromium": false,
-        "enableGtk": false
+        "enableGtk": false,
+        "enableQt": false
     }
 }

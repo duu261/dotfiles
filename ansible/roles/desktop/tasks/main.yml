@@ -79,3 +79,46 @@
 - name: Set GTK theme to catppuccin macchiato
   ansible.builtin.command: dconf write /org/gnome/desktop/interface/gtk-theme "'catppuccin-macchiato-red-standard+default'"
   changed_when: true
+
+# GTK3/webkit2gtk apps (e.g. cc-switch, a Tauri app) read this key, not
+# org.gnome.desktop.interface color-scheme (that's the GTK4/libadwaita
+# portal path) - without it they ignore dark mode entirely.
+- name: Prefer dark GTK theme variant
+  ansible.builtin.command: dconf write /org/gnome/desktop/interface/gtk-application-prefer-dark-theme true
+  changed_when: true
+
+# qt6ct's own "style" had been left pointing at a nonexistent style name
+# (no theme by that name was ever installed), so Qt apps (dolphin,
+# quickshell, hyprpolkitagent) silently fell back to stock Fusion/light.
+# kvantum-theme-catppuccin-git installs into /usr/share/Kvantum/ - verify
+# the exact installed folder name before trusting this value (the GTK theme
+# name was guessed wrong once already; check `ls /usr/share/Kvantum/`).
+- name: Set qt6ct style to Kvantum
+  community.general.ini_file:
+    path: "{{ ansible_env.HOME }}/.config/qt6ct/qt6ct.conf"
+    section: Appearance
+    option: style
+    value: kvantum
+    no_extra_spaces: true
+
+# custom_palette + color_scheme_path is a stale manual override from before
+# Kvantum was set up: it forced text colours from an old qt6ct colour
+# scheme file on top of Kvantum's own theme background, causing
+# dark-on-dark unreadable text. Kvantum's theme already ships a full,
+# consistent palette - let it own colours alone.
+- name: Disable qt6ct custom palette so Kvantum theme colours aren't overridden
+  community.general.ini_file:
+    path: "{{ ansible_env.HOME }}/.config/qt6ct/qt6ct.conf"
+    section: Appearance
+    option: custom_palette
+    value: "false"
+    no_extra_spaces: true
+
+- name: Set Kvantum theme to catppuccin macchiato
+  community.general.ini_file:
+    path: "{{ ansible_env.HOME }}/.config/Kvantum/kvantum.kvconfig"
+    section: General
+    option: theme
+    value: catppuccin-macchiato-red
+    no_extra_spaces: true
+    create: true
