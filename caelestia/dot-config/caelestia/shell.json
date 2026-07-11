@@ -1,4 +1,25 @@
 {
+    "appearance": {
+        "font": {
+            "body": {
+                "family": "FiraCode Nerd Font Propo"
+            },
+            "clock": "FiraCode Nerd Font Propo",
+            "headline": {
+                "family": "FiraCode Nerd Font Propo"
+            },
+            "label": {
+                "family": "FiraCode Nerd Font Propo"
+            },
+            "mono": {
+                "family": "FiraCode Nerd Font Mono"
+            },
+            "title": {
+                "family": "FiraCode Nerd Font Propo"
+            },
+            "workspaces": "FiraCode Nerd Font Propo"
+        }
+    },
     "bar": {
         "status": {
             "showAudio": false,
@@ -12,8 +33,5 @@
     },
     "launcher": {
         "vimKeybinds": true
-    },
-    "services": {
-        "showLyrics": true
     }
 }

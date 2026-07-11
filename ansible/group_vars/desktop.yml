@@ -6,7 +6,6 @@ desktop_packages:
   - hyprland
   - hyprlock
   - rofi
-  - fuzzel
   - wezterm
   - qt6ct
   - swappy          # GUI screenshot annotator (grim/slurp pipeline)
@@ -34,7 +33,9 @@ desktop_packages:
   - xorg-xwayland    # non-native-Wayland apps (some Electron, older GUI tools)
   - qt5-wayland      # Qt5 apps blurry/broken without native Wayland support
   - qt6-wayland      # Qt6 apps blurry/broken without native Wayland support
-  - noto-fonts       # CJK/emoji/symbol glyph fallback, avoids tofu boxes
+  - noto-fonts       # broad glyph fallback
+  - noto-fonts-cjk   # CJK fallback for Caelestia and desktop UI
+  - noto-fonts-emoji # emoji fallback
   - networkmanager
   - network-manager-applet
   - xdg-desktop-portal-hyprland
@@ -63,7 +64,6 @@ desktop_aur_packages:
 
 desktop_stow_packages:
   - hypr
-  - fuzzel
   - rofi
   - wezterm
   - qt6ct
