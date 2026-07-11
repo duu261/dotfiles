@@ -4,7 +4,6 @@
 
 desktop_packages:
   - hyprland
-  - hyprlock
   - wezterm
   - qt6ct
   - kvantum         # Qt style engine, needed for a real catppuccin Qt theme (qt6ct fallback style has no dark theme)

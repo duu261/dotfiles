@@ -8,6 +8,12 @@
 - name: Provision machine
   hosts: all
   pre_tasks:
+    - name: Validate provisioning profile
+      ansible.builtin.assert:
+        that:
+          - profile in ['tui', 'desktop']
+        fail_msg: "profile must be 'tui' or 'desktop'"
+
     - name: Load desktop profile variables
       ansible.builtin.include_vars: group_vars/desktop.yml
       when: profile == 'desktop'

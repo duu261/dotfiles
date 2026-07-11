@@ -4,6 +4,7 @@
     repo: git@github.com:duu261/dotfiles.git
     dest: ~/dotfiles
     recursive: true
+    version: main
     update: false          # clone only if absent; never reset an existing working repo
     accept_hostkey: true
   async: 1200
@@ -30,13 +31,13 @@
     - .bash_profile
     - .bash_logout
     - .zshrc
-  register: skel_check
+  register: dotfiles_skel_check
 
 - name: Remove conflicting skeleton dotfiles (regular files only, not symlinks)
   ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/{{ item.item }}"
     state: absent
-  loop: "{{ skel_check.results | selectattr('stat.exists') | rejectattr('stat.islnk') | list }}"
+  loop: "{{ dotfiles_skel_check.results | selectattr('stat.exists') | rejectattr('stat.islnk') | list }}"
 
 # Pre-create the shared parent dirs so `stow` symlinks individual leaves into
 # them instead of symlinking a whole top-level dir (e.g. ~/.config) to the repo.

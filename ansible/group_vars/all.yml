@@ -3,6 +3,8 @@
 # package audit in ansible/todo.md. Keep tui-safe: nothing here may need a GUI.
 
 # Tier-1 CLI packages (official repos).
+profile: tui
+
 base_packages:
   - archlinux-keyring   # stale keys break pacman PGP checks on fresh installs
   - base-devel          # fakeroot/gcc/make, required by makepkg -si (yay bootstrap, AUR builds)

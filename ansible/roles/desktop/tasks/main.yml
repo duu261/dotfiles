@@ -70,6 +70,7 @@
   ansible.builtin.git:
     repo: https://github.com/duu261/wallpapers
     dest: "{{ ansible_env.HOME }}/Pictures/Wallpapers"
+    version: main
   async: 1200
   poll: 1
 

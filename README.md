@@ -6,7 +6,7 @@ Arch Linux, Hyprland, Catppuccin Macchiato. Stow-managed dotfiles + ansible prov
 
 ```bash
 sudo pacman -S --needed base-devel git ansible-core ansible make
-git clone --recurse-submodules https://github.com/<you>/dotfiles.git ~/dotfiles && cd ~/dotfiles
+git clone --recurse-submodules https://github.com/duu261/dotfiles.git ~/dotfiles && cd ~/dotfiles
 make install PROFILE=desktop   # or PROFILE=tui
 ```
 
