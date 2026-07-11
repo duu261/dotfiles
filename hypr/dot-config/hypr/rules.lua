@@ -5,7 +5,7 @@ local vars = require("variables")
 
 hl.window_rule({ name = "fullscreen-opacity", match = { fullscreen = false }, opacity = vars.windowOpacity .. " override" })
 
-hl.window_rule({ name = "opaque-native-transparency", match = { class = "foot|equibop|org\\.quickshell|imv|swappy" }, opaque = true })
+hl.window_rule({ name = "opaque-native-transparency", match = { class = "equibop|org\\.quickshell|imv|swappy" }, opaque = true })
 hl.window_rule({ name = "center-floating", match = { float = true, xwayland = false }, center = true })
 
 hl.window_rule({ name = "tiled-no-shadow", match = { float = false }, no_shadow = true })
@@ -17,7 +17,6 @@ hl.window_rule({ name = "float-zenity", match = { class = "zenity" }, float = tr
 hl.window_rule({ name = "float-wev", match = { class = "wev" }, float = true })
 hl.window_rule({ name = "float-filerollerA", match = { class = "org\\.gnome\\.FileRoller" }, float = true })
 hl.window_rule({ name = "float-filerollerB", match = { class = "file-roller" }, float = true })
-hl.window_rule({ name = "float-blueman", match = { class = "blueman-manager" }, float = true })
 hl.window_rule({ name = "float-gradience", match = { class = "com\\.github\\.GradienceTeam\\.Gradience" }, float = true })
 hl.window_rule({ name = "float-feh", match = { class = "feh" }, float = true })
 hl.window_rule({ name = "float-imv", match = { class = "imv" }, float = true })
@@ -25,9 +24,6 @@ hl.window_rule({ name = "float-printer", match = { class = "system-config-printe
 hl.window_rule({ name = "float-quickshell", match = { class = "org\\.quickshell" }, float = true })
 
 -- Float, resize and center
-hl.window_rule({ name = "nmtui-float", match = { class = "foot", title = "nmtui" }, float = true })
-hl.window_rule({ name = "nmtui-size", match = { class = "foot", title = "nmtui" }, size = "60% 70%" })
-hl.window_rule({ name = "nmtui-center", match = { class = "foot", title = "nmtui" }, center = 1 })
 hl.window_rule({ name = "gnome-settings-float", match = { class = "org\\.gnome\\.Settings" }, float = true })
 hl.window_rule({ name = "gnome-settings-size", match = { class = "org\\.gnome\\.Settings" }, size = "70% 80%" })
 hl.window_rule({ name = "gnome-settings-center", match = { class = "org\\.gnome\\.Settings" }, center = 1 })

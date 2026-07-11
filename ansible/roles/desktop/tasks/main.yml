@@ -19,13 +19,6 @@
     state: started
   become: true
 
-- name: Enable tlp power management
-  ansible.builtin.systemd:
-    name: tlp
-    enabled: true
-    state: started
-  become: true
-
 - name: Enable acpid
   ansible.builtin.systemd:
     name: acpid
@@ -79,3 +72,10 @@
     dest: "{{ ansible_env.HOME }}/Pictures/Wallpapers"
   async: 1200
   poll: 1
+
+# caelestia's theme.enableGtk is disabled (cli.json) so it stops overwriting
+# this back to the nonexistent adw-gtk3-dark on every scheme change - accent
+# matches catppuccin-cursors-macchiato's "red" variant for consistency.
+- name: Set GTK theme to catppuccin macchiato
+  ansible.builtin.command: dconf write /org/gnome/desktop/interface/gtk-theme "'catppuccin-macchiato-red-standard+default'"
+  changed_when: true

@@ -8,25 +8,25 @@ desktop_packages:
   - wezterm
   - qt6ct
   - swappy          # GUI screenshot annotator (grim/slurp pipeline)
+  - fuzzel          # dmenu backend for caelestia emoji/clipboard subcommands
   - sddm
   - pipewire
   - pipewire-pulse
   - wireplumber
   - pavucontrol
-  - gnome-keyring   # autostart.conf: gnome-keyring-daemon --start
-  - udiskie         # autostart.conf: udiskie &
-  - cliphist        # autostart.conf: wl-paste --watch cliphist store
-  - papirus-icon-theme    # rofi config.rasi references icon-theme: "Papirus"
-  - ttf-jetbrains-mono-nerd  # fuzzel.ini font
-  - ttf-firacode-nerd        # rofi catppuccin-macchiato.rasi + sddm theme.conf font
+  - gnome-keyring   # execs.lua: gnome-keyring-daemon --start
+  - udiskie         # execs.lua: udiskie
+  - cliphist        # execs.lua: wl-paste --watch cliphist store
+  - papirus-icon-theme    # icon theme for nwg-look/GTK apps
+  - thunar          # GUI file manager, drag-drop UF2 flashing for zmk keyboard
+  - gvfs            # mount/trash backend for thunar
+  - ttf-firacode-nerd        # fuzzel.ini + sddm theme.conf font
   - bluez
   - bluez-utils
-  - blueman
   - fcitx5
   - fcitx5-configtool
   - fcitx5-gtk
   - fcitx5-qt
-  - tlp
   - acpi
   - acpid
   - xorg-xwayland    # non-native-Wayland apps (some Electron, older GUI tools)
@@ -36,10 +36,9 @@ desktop_packages:
   - noto-fonts-cjk   # CJK fallback for Caelestia and desktop UI
   - noto-fonts-emoji # emoji fallback
   - networkmanager
-  - network-manager-applet
   - xdg-desktop-portal-hyprland
   - xdg-desktop-portal-gtk
-  - polkit-gnome
+  - hyprpolkitagent
   - wl-clipboard
   - grim
   - slurp
@@ -48,6 +47,8 @@ desktop_packages:
   - nwg-look
   - xdg-utils
   - trash-cli
+  - geoclue2         # location provider for gammastep night light
+  - gammastep        # night light
   - imv
   - mpv
   - ffmpeg
@@ -59,6 +60,7 @@ desktop_aur_packages:
   - catppuccin-sddm-theme-macchiato  # https://github.com/catppuccin/sddm
   - papirus-folders-catppuccin-git   # colorizes papirus-icon-theme folders
   - catppuccin-cursors-macchiato
+  - catppuccin-gtk-theme-macchiato  # https://github.com/catppuccin/gtk
   - fcitx5-bamboo-git                # Vietnamese input engine
 
 desktop_stow_packages:
@@ -66,3 +68,5 @@ desktop_stow_packages:
   - wezterm
   - qt6ct
   - caelestia
+  - fuzzel
+  - swappy

@@ -1,9 +1,0 @@
-singleton Theme 1.0 Theme.qml
-Bar 1.0 Bar.qml
-Workspaces 1.0 Workspaces.qml
-WindowTitle 1.0 WindowTitle.qml
-Clock 1.0 Clock.qml
-Tray 1.0 Tray.qml
-Battery 1.0 Battery.qml
-Network 1.0 Network.qml
-Audio 1.0 Audio.qml

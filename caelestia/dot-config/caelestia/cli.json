@@ -2,6 +2,7 @@
     "theme": {
         "enableTerm": false,
         "enableFuzzel": false,
-        "enableChromium": false
+        "enableChromium": false,
+        "enableGtk": false
     }
 }

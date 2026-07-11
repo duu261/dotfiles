@@ -16,22 +16,52 @@
             },
             "title": {
                 "family": "FiraCode Nerd Font Propo"
-            },
-            "workspaces": "FiraCode Nerd Font Propo"
+            }
+        }
+    },
+    "background": {
+        "desktopClock": {
+            "enabled": true
         }
     },
     "bar": {
+        "clock": {
+            "showDate": true
+        },
+        "persistent": true,
         "status": {
             "showAudio": false,
-            "showBattery": false,
+            "showBattery": true,
             "showBluetooth": true,
             "showKbLayout": false,
             "showMicrophone": false,
-            "showNetwork": false,
-            "showWifi": false
+            "showNetwork": true,
+            "showWifi": true
+        }
+    },
+    "general": {
+        "apps": {
+            "terminal": [
+                "wezterm"
+            ]
         }
     },
     "launcher": {
+        "vimKeybinds": true
+    },
+    "lock": {
+        "enableFprint": false
+    },
+    "notifs": {
+        "actionOnClick": true,
+        "expire": true
+    },
+    "services": {
+        "audioIncrement": 0.1,
+        "brightnessIncrement": 0.1,
+        "useTwelveHourClock": false
+    },
+    "session": {
         "vimKeybinds": true
     }
 }
