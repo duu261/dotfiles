@@ -28,3 +28,17 @@
     user: "{{ ansible_user_id }}"
     state: present
     key: "{{ lookup('file', playbook_dir + '/.ssh/id_rsa.pub') }}"
+
+- name: Enable sshd
+  ansible.builtin.systemd:
+    name: sshd
+    enabled: true
+    state: started
+  become: true
+
+- name: Allow SSH through ufw
+  community.general.ufw:
+    rule: allow
+    port: '22'
+    proto: tcp
+  become: true
