@@ -73,14 +73,10 @@
 # Stow symlinks ~/.tmux → ~/dotfiles/tmux/dot-tmux. Install tpm + plugins via
 # ansible here; the auto-install snippet in .tmux.conf is a safety net for manual installs.
 
-- name: Ensure ~/.tmux/plugins directory exists
-  ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/.tmux/plugins"
-    state: directory
-    mode: '0755'
-
 - name: Resolve ~/.tmux/plugins real path
-  ansible.builtin.command: readlink -f "{{ ansible_env.HOME }}/.tmux/plugins"
+  ansible.builtin.shell: |
+    test -d ~/.tmux/plugins || mkdir -p ~/.tmux/plugins
+    readlink -f ~/.tmux/plugins
   changed_when: false
   register: tmux_plugins_dir
 
