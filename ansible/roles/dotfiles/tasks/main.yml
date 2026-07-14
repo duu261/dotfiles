@@ -74,12 +74,15 @@
 # ansible here; the auto-install snippet in .tmux.conf is a safety net for manual installs.
 
 - name: Resolve ~/.tmux/plugins real path
-  ansible.builtin.shell: |
-    plugins_dir="$(readlink -f ~/.tmux/plugins)"
-    mkdir -p "$plugins_dir"
-    echo "$plugins_dir"
+  ansible.builtin.shell: readlink -f ~/.tmux/plugins
   changed_when: false
   register: tmux_plugins_dir
+
+- name: Ensure tmux plugins directory exists
+  ansible.builtin.file:
+    path: "{{ tmux_plugins_dir.stdout }}"
+    state: directory
+    mode: '0755'
 
 - name: Clone tpm plugin manager
   ansible.builtin.git:
