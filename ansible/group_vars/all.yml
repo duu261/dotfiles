@@ -14,6 +14,7 @@ base_packages:
   - ast-grep
   - git
   - openssh
+  - mosh # roaming ssh, survives net switch/sleep/ip-change (mobile ssh)
   - zsh
   - neovim # replaces old `vim` role's pynvim/nvr helpers
   - tmux

@@ -26,6 +26,13 @@ source ~/.zsh/direnv.plugin.zsh
 source ~/.zshrc.local
 [ -f ~/.secrets ] && source ~/.secrets
 
+# === SSH: resume tmux session on connect ===
+# Reattach existing session (or start one) so a dropped mobile connection
+# picks up exactly where it left off. Interactive ssh only, skip if nested.
+if [[ -n $SSH_CONNECTION && -z $TMUX && $- == *i* ]]; then
+  tmux attach 2>/dev/null || tmux new
+fi
+
 # === Prompt & Shell Initialization ===
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
