@@ -69,3 +69,29 @@
   args:
     chdir: "{{ ansible_env.HOME }}/.config/yazi"
     creates: "{{ ansible_env.HOME }}/.config/yazi/flavors/catppuccin-macchiato.yazi"
+
+# Stow symlinks ~/.tmux → ~/dotfiles/tmux/dot-tmux, but plugins/ is .gitignored
+# so it's empty on a fresh clone. Install tpm + plugins via ansible here;
+# the auto-install snippet in .tmux.conf is a safety net for manual installs.
+
+- name: Resolve ~/.tmux/plugins real path
+  ansible.builtin.shell:
+    cmd: "mkdir -p ~/.tmux/plugins && readlink -f ~/.tmux/plugins"
+    chdir: "{{ ansible_env.HOME }}"
+  changed_when: false
+  register: tmux_plugins_dir
+
+- name: Clone tpm plugin manager
+  ansible.builtin.git:
+    repo: https://github.com/tmux-plugins/tpm
+    dest: "{{ tmux_plugins_dir.stdout }}/tpm"
+    version: master
+    depth: 1
+
+- name: Install tpm plugins (catppuccin, battery, etc.)
+  ansible.builtin.command:
+    cmd: "{{ tmux_plugins_dir.stdout }}/tpm/bin/install_plugins"
+    chdir: "{{ ansible_env.HOME }}"
+  register: tpm_result
+  changed_when: "'Already installed' not in tpm_result.stdout"
+  failed_when: tpm_result.rc != 0 and 'Could not' not in tpm_result.stderr
