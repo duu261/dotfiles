@@ -61,9 +61,6 @@ base_packages:
   - shfmt
   - strace
   - gdb
-  - jdk21-openjdk   # nvim jdtls + google-java-format need java 17+ on PATH; JDK17/21 env vars in zsh/dot-zprofile point at manual ~/.m2/jdks installs and are optional (ftplugin/java.lua skips unset ones)
-  - maven           # nvim <leader>Jr run keymap, neotest-java, school java projects
-  - graphviz        # nvim :DapVisualize renders via dot
   - docker
   - docker-compose
   - tree

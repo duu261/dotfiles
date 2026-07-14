@@ -9,6 +9,7 @@
       - maven
       - gradle
       - visualvm
+      - graphviz     # nvim :DapVisualize renders via dot
     state: present
   become: true
   tags: [java]
@@ -97,6 +98,19 @@
     - asprof
     - jfrconv
   when: ansible_facts.architecture == 'x86_64'
+  tags: [java]
+
+# nvim ftplugin/java.lua loads ~/apps/async-profiler/lib/libasyncProfiler.so -
+# keep an unversioned symlink as the stable interface
+- name: Link unversioned async-profiler directory
+  ansible.builtin.file:
+    src: "{{ ansible_env.HOME }}/apps/async-profiler-{{ dev_async_profiler_version }}"
+    dest: "{{ ansible_env.HOME }}/apps/async-profiler"
+    state: link
+    force: true
+  when:
+    - ansible_facts.architecture == 'x86_64'
+    - not (ansible_env.HOME + '/apps/async-profiler') is directory
   tags: [java]
 
 - name: Download Java Mission Control
