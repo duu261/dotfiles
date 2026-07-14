@@ -70,14 +70,17 @@
     chdir: "{{ ansible_env.HOME }}/.config/yazi"
     creates: "{{ ansible_env.HOME }}/.config/yazi/flavors/catppuccin-macchiato.yazi"
 
-# Stow symlinks ~/.tmux → ~/dotfiles/tmux/dot-tmux, but plugins/ is .gitignored
-# so it's empty on a fresh clone. Install tpm + plugins via ansible here;
-# the auto-install snippet in .tmux.conf is a safety net for manual installs.
+# Stow symlinks ~/.tmux → ~/dotfiles/tmux/dot-tmux. Install tpm + plugins via
+# ansible here; the auto-install snippet in .tmux.conf is a safety net for manual installs.
+
+- name: Ensure ~/.tmux/plugins directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.tmux/plugins"
+    state: directory
+    mode: '0755'
 
 - name: Resolve ~/.tmux/plugins real path
-  ansible.builtin.shell:
-    cmd: "mkdir -p ~/.tmux/plugins && readlink -f ~/.tmux/plugins"
-    chdir: "{{ ansible_env.HOME }}"
+  ansible.builtin.command: readlink -f "{{ ansible_env.HOME }}/.tmux/plugins"
   changed_when: false
   register: tmux_plugins_dir
 
