@@ -7,14 +7,16 @@ export EDITOR=$VIM
 export VISUAL=$VIM
 
 # === Java/JDK Setup ===
-export JDK8="/usr/lib/jvm/java-8-openjdk/"
-export JDK17="$HOME/.m2/jdks/jdk-17.0.10+7/"
-export JDK21="$HOME/.m2/jdks/jdk-21.0.2+13/"
-export JDK22="$HOME/.m2/jdks/jdk-22.0.2+9/"
-export JDK23="$HOME/.m2/jdks/jdk-23.0.1+11/"
-export JAVA_HOME="$JDK23"
+# only export JDKs that exist on this machine; nvim ftplugin/java.lua skips
+# unset ones. Fresh machines fall back to pacman's /usr/lib/jvm/default.
+[ -d "/usr/lib/jvm/java-8-openjdk/" ] && export JDK8="/usr/lib/jvm/java-8-openjdk/"
+[ -d "$HOME/.m2/jdks/jdk-17.0.10+7/" ] && export JDK17="$HOME/.m2/jdks/jdk-17.0.10+7/"
+[ -d "$HOME/.m2/jdks/jdk-21.0.2+13/" ] && export JDK21="$HOME/.m2/jdks/jdk-21.0.2+13/"
+[ -d "$HOME/.m2/jdks/jdk-22.0.2+9/" ] && export JDK22="$HOME/.m2/jdks/jdk-22.0.2+9/"
+[ -d "$HOME/.m2/jdks/jdk-23.0.1+11/" ] && export JDK23="$HOME/.m2/jdks/jdk-23.0.1+11/"
+export JAVA_HOME="${JDK23:-/usr/lib/jvm/default}"
 export PATH="$JAVA_HOME/bin:$PATH"
-export GRAALVM_HOME="$HOME/.m2/jdks/graalvm-community-openjdk-23+37.1/"
+[ -d "$HOME/.m2/jdks/graalvm-community-openjdk-23+37.1/" ] && export GRAALVM_HOME="$HOME/.m2/jdks/graalvm-community-openjdk-23+37.1/"
 export _JAVA_AWT_WM_NONREPARENTING=1
 
 # === PATH Configuration ===
@@ -26,3 +28,4 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.local/share/pnpm/bin:$PATH"
 
 export HEADROOM_OUTPUT_SHAPER=1
+export ATUIN_CONFIG_DIR="$HOME/.config/atuin-stow"
