@@ -24,6 +24,7 @@
     - shell           # zsh + plugin packages
     - git             # gitconfig + delta wiring
     - ssh             # must run before dotfiles: dotfiles clone is over SSH
+    - tailscale       # mesh VPN, needs vaulted authkey in ~/.secrets
     - dotfiles        # clone repo (--recurse-submodules) + stow
     - role: desktop   # hyprland/wayland stack + theming
       when: profile == 'desktop'

@@ -1,0 +1,39 @@
+---
+- name: Install tailscale
+  community.general.pacman:
+    name: tailscale
+    state: present
+  become: true
+
+# tailscaled needs the tun module to create tailscale0; without it the daemon
+# crashes with tstun.New("tailscale0"): no such device. persistent:true writes
+# /etc/modules-load.d so it survives reboot / fresh provision.
+- name: Load tun kernel module
+  community.general.modprobe:
+    name: tun
+    state: present
+    persistent: present
+  become: true
+
+- name: Enable tailscaled
+  ansible.builtin.systemd:
+    name: tailscaled
+    enabled: true
+    state: started
+  become: true
+
+# authkey lives in the deploying user's ~/.secrets (deployed by the secrets
+# role). become runs this as root whose $HOME is /root, so reference the real
+# user's home explicitly - `~/.secrets` under become would read /root/.secrets
+# (missing) and tailscale up would fall back to interactive browser login.
+- name: Join tailnet
+  ansible.builtin.shell: |
+    set -o pipefail
+    set -a; source {{ ansible_env.HOME }}/.secrets; set +a
+    tailscale up --authkey="$TAILSCALE_AUTHKEY"
+  args:
+    executable: /bin/bash
+  become: true
+  register: ts_result
+  changed_when: "'Success' in ts_result.stdout"
+  no_log: true

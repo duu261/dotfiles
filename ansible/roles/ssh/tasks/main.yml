@@ -9,36 +9,29 @@
 # secrets role's pattern (see dotfiles/CLAUDE.md "Secrets").
 - name: Deploy private key
   ansible.builtin.copy:
-    src: "{{ playbook_dir }}/.ssh/id_rsa"
-    dest: "{{ ansible_env.HOME }}/.ssh/id_rsa"
+    src: "{{ playbook_dir }}/.ssh/id_ed25519"
+    dest: "{{ ansible_env.HOME }}/.ssh/id_ed25519"
     mode: '0600'
     decrypt: true
 
 - name: Deploy public key
   ansible.builtin.copy:
-    src: "{{ playbook_dir }}/.ssh/id_rsa.pub"
-    dest: "{{ ansible_env.HOME }}/.ssh/id_rsa.pub"
+    src: "{{ playbook_dir }}/.ssh/id_ed25519.pub"
+    dest: "{{ ansible_env.HOME }}/.ssh/id_ed25519.pub"
     mode: '0644'
 
 # Keypair is shared across every machine this playbook provisions (same
-# vault-encrypted id_rsa deployed everywhere), so authorizing it here lets
+# vault-encrypted id_ed25519 deployed everywhere), so authorizing it here lets
 # any of those machines SSH into this one with the shared identity.
 - name: Add key to authorized_keys
   ansible.posix.authorized_key:
     user: "{{ ansible_user_id }}"
     state: present
-    key: "{{ lookup('file', playbook_dir + '/.ssh/id_rsa.pub') }}"
+    key: "{{ lookup('file', playbook_dir + '/.ssh/id_ed25519.pub') }}"
 
 - name: Enable sshd
   ansible.builtin.systemd:
     name: sshd
     enabled: true
     state: started
-  become: true
-
-- name: Allow SSH through ufw
-  community.general.ufw:
-    rule: allow
-    port: '22'
-    proto: tcp
   become: true
