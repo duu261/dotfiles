@@ -6,14 +6,14 @@
 profile: tui
 
 base_packages:
-  - archlinux-keyring   # stale keys break pacman PGP checks on fresh installs
-  - base-devel          # fakeroot/gcc/make, required by makepkg -si (yay bootstrap, AUR builds)
-  - reflector           # auto mirror ranking, keeps mirrorlist fast/fresh
+  - archlinux-keyring # stale keys break pacman PGP checks on fresh installs
+  - base-devel # fakeroot/gcc/make, required by makepkg -si (yay bootstrap, AUR builds)
+  - reflector # auto mirror ranking, keeps mirrorlist fast/fresh
   - stow
   - git
   - openssh
   - zsh
-  - neovim          # replaces old `vim` role's pynvim/nvr helpers
+  - neovim # replaces old `vim` role's pynvim/nvr helpers
   - tmux
   - bat
   - fzf
@@ -26,34 +26,34 @@ base_packages:
   - direnv
   - lazygit
   - yazi
-  - xdg-user-dirs    # provides xdg-user-dirs-update used by the `base` role
+  - xdg-user-dirs # provides xdg-user-dirs-update used by the `base` role
   - ufw
   - tealdeer
   - wikiman
-  - vivid            # LS_COLORS generator, sourced in zsh/dot-zprofile
+  - vivid # LS_COLORS generator, sourced in zsh/dot-zprofile
   - jq
   - yq
   - unzip
   - zip
   - wget
-  - btop            # replaces htop
-  - fastfetch       # aliases.plugin.zsh: ff system summary preset
+  - btop # replaces htop
+  - fastfetch # aliases.plugin.zsh: ff system summary preset
   - github-cli
-  - uv               # python pkg/venv manager (fast pip replacement)
-  - bun               # JS runtime/bundler/pkg manager
-  - nodejs           # required for claude CLI (npm install -g @anthropic-ai/claude-code)
+  - uv # python pkg/venv manager (fast pip replacement)
+  - bun # JS runtime/bundler/pkg manager
+  - nodejs # required for claude CLI (npm install -g @anthropic-ai/claude-code)
   - npm
   - pnpm
-  - pacman-contrib  # paccache, keep package cache sane
-  - pkgfile         # find which package owns a missing command/file
-  - restic          # backups
-  - smartmontools   # disk health checks
-  - shellcheck      # shell script lint
+  - pacman-contrib # paccache, keep package cache sane
+  - pkgfile # find which package owns a missing command/file
+  - restic # backups
+  - smartmontools # disk health checks
+  - shellcheck # shell script lint
   - man-db
   - man-pages
   - plocate
   - rsync
-  - bind            # dig
+  - bind # dig
   - mtr
   - git-delta
   - hyperfine
@@ -78,11 +78,11 @@ zsh_plugin_packages:
 
 # AUR packages needed everywhere (installed via the aur.py module in `base`).
 aur_packages:
-  - pay-respects        # thefuck replacement
-  - zsh-you-should-use  # zsh alias reminder plugin (verified via AUR RPC v5)
-  - fzf-tab             # fzf-tab completion, stable variant (fzf-tab-git conflicts with this pkg)
-  - zsh-abbr            # AUR-only, not in official repos
-  - gitmux              # tmux status-right git branch (tmux/dot-tmux.conf catppuccin_status_gitmux)
+  - pay-respects # thefuck replacement
+  - zsh-you-should-use # zsh alias reminder plugin (verified via AUR RPC v5)
+  - fzf-tab # fzf-tab completion, stable variant (fzf-tab-git conflicts with this pkg)
+  - zsh-abbr # AUR-only, not in official repos
+  - gitmux # tmux status-right git branch (tmux/dot-tmux.conf catppuccin_status_gitmux)
 
 # Stow packages deployed on every machine (dot-* dirs, mirror $HOME).
 stow_packages:
@@ -93,3 +93,4 @@ stow_packages:
   - yazi
   - bin
   - nvim
+  - atuin
