@@ -75,8 +75,9 @@
 
 - name: Resolve ~/.tmux/plugins real path
   ansible.builtin.shell: |
-    test -d ~/.tmux/plugins || mkdir -p ~/.tmux/plugins
-    readlink -f ~/.tmux/plugins
+    plugins_dir="$(readlink -f ~/.tmux/plugins)"
+    mkdir -p "$plugins_dir"
+    echo "$plugins_dir"
   changed_when: false
   register: tmux_plugins_dir
 
