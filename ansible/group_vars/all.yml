@@ -10,6 +10,8 @@ base_packages:
   - base-devel # fakeroot/gcc/make, required by makepkg -si (yay bootstrap, AUR builds)
   - reflector # auto mirror ranking, keeps mirrorlist fast/fresh
   - stow
+  - tree-sitter-cli
+  - ast-grep
   - git
   - openssh
   - zsh
