@@ -198,6 +198,12 @@
   become: true
   become_user: aur_builder
 
+- name: Ensure yay config directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.config/yay"
+    state: directory
+    mode: '0755'
+
 - name: Deploy yay config (auto-clean build deps, keep sudo alive)
   ansible.builtin.copy:
     dest: "{{ ansible_env.HOME }}/.config/yay/config.json"
