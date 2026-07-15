@@ -34,6 +34,6 @@
   args:
     executable: /bin/bash
   become: true
-  register: ts_result
-  changed_when: "'Success' in ts_result.stdout"
+  register: tailscale_result
+  changed_when: "'Success' in tailscale_result.stdout"
   no_log: true

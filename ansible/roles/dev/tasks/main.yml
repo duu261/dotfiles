@@ -12,6 +12,7 @@
       - gradle
       - visualvm
       - graphviz     # nvim :DapVisualize renders via dot
+      - flamelens    # nvim Java profiler viewer (<leader>Jp)
     state: present
   become: true
   tags: [java]
