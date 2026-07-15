@@ -49,6 +49,7 @@ base_packages:
   - pnpm
   - pacman-contrib # paccache, keep package cache sane
   - pkgfile # find which package owns a missing command/file
+  - rebuild-detector # detect AUR packages needing rebuild after python/perl upgrade
   - restic # backups
   - smartmontools # disk health checks
   - shellcheck # shell script lint
@@ -97,3 +98,4 @@ stow_packages:
   - bin
   - nvim
   - atuin
+  - fontconfig

@@ -13,6 +13,13 @@
     line: ParallelDownloads = 5
   become: true
 
+- name: Enable verbose package lists in pacman.conf
+  ansible.builtin.lineinfile:
+    path: /etc/pacman.conf
+    regexp: '^#?VerbosePkgLists'
+    line: VerbosePkgLists
+  become: true
+
 - name: Set makepkg parallel compilation (MAKEFLAGS)
   ansible.builtin.lineinfile:
     path: /etc/makepkg.conf
@@ -56,6 +63,73 @@
     name: reflector.timer
     enabled: true
     state: started
+  become: true
+
+- name: Enable paccache timer (weekly package cache cleanup)
+  ansible.builtin.systemd:
+    name: paccache.timer
+    enabled: true
+    state: started
+  become: true
+
+- name: Enable pkgfile-update timer (command-not-found database refresh)
+  ansible.builtin.systemd:
+    name: pkgfile-update.timer
+    enabled: true
+    state: started
+  become: true
+
+- name: Deploy paccache pacman hook (keep last 2 versions)
+  ansible.builtin.copy:
+    dest: /etc/pacman.d/hooks/paccache.hook
+    content: |
+      [Trigger]
+      Operation = Upgrade
+      Operation = Install
+      Operation = Remove
+      Type = Package
+      Target = *
+
+      [Action]
+      Description = Cleaning package cache...
+      When = PostTransaction
+      Exec = /usr/bin/paccache -rvk2
+    mode: '0644'
+  become: true
+
+- name: Deploy orphan check pacman hook
+  ansible.builtin.copy:
+    dest: /etc/pacman.d/hooks/orphans.hook
+    content: |
+      [Trigger]
+      Operation = Install
+      Operation = Upgrade
+      Operation = Remove
+      Type = Package
+      Target = *
+
+      [Action]
+      Description = Checking for orphaned packages...
+      When = PostTransaction
+      Exec = /usr/bin/bash -c "/usr/bin/pacman -Qtd || /usr/bin/echo '=> No orphans found.'"
+    mode: '0644'
+  become: true
+
+- name: Deploy rebuild-detector pacman hook
+  ansible.builtin.copy:
+    dest: /etc/pacman.d/hooks/rebuild-detector.hook
+    content: |
+      [Trigger]
+      Operation = Upgrade
+      Type = Package
+      Target = python
+      Target = perl
+
+      [Action]
+      Description = Checking for AUR packages that need rebuild...
+      When = PostTransaction
+      Exec = /usr/bin/rebuild-detector
+    mode: '0644'
   become: true
 
 # kewlfft.aur's own docs recommend a dedicated unprivileged builder user with
