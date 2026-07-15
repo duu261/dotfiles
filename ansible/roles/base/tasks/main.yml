@@ -84,6 +84,13 @@
   become: true
   changed_when: false
 
+- name: Ensure pacman hooks directory exists
+  ansible.builtin.file:
+    path: /etc/pacman.d/hooks
+    state: directory
+    mode: '0755'
+  become: true
+
 - name: Deploy paccache pacman hook (keep last 2 versions)
   ansible.builtin.copy:
     dest: /etc/pacman.d/hooks/paccache.hook
