@@ -79,6 +79,11 @@
     state: started
   become: true
 
+- name: Populate pkgfile database (first run)
+  ansible.builtin.command: pkgfile -u
+  become: true
+  changed_when: false
+
 - name: Deploy paccache pacman hook (keep last 2 versions)
   ansible.builtin.copy:
     dest: /etc/pacman.d/hooks/paccache.hook
@@ -185,6 +190,16 @@
   loop: "{{ aur_packages }}"
   become: true
   become_user: aur_builder
+
+- name: Deploy yay config (auto-clean build deps, keep sudo alive)
+  ansible.builtin.copy:
+    dest: "{{ ansible_env.HOME }}/.config/yay/config.json"
+    content: |
+      {
+        "answerclean": "All",
+        "sudoloop": true
+      }
+    mode: '0644'
 
 - name: Update user directories
   ansible.builtin.command: xdg-user-dirs-update
