@@ -65,6 +65,13 @@
     mode: '0644'
   become: true
 
+- name: Ensure sddm theme directory exists
+  ansible.builtin.file:
+    path: /usr/share/sddm/themes/catppuccin-macchiato-red
+    state: directory
+    mode: '0755'
+  become: true
+
 - name: Deploy sddm theme.conf override
   ansible.builtin.copy:
     src: "{{ playbook_dir }}/../sddm/theme.conf"
