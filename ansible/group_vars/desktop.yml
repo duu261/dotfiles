@@ -74,4 +74,5 @@ desktop_stow_packages:
   - fuzzel
   - swappy
   - gtk-3.0
+  - gtk-4.0
   - kvantum
