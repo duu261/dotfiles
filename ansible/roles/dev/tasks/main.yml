@@ -3,6 +3,8 @@
 # Run with --tags java, rust, python, etc. to install language-specific packages
 
 - name: Install Java development tools
+  # TODO(java-toolchains): persist manually verified jdk25-openjdk,
+  # jdk11-openjdk, and jdk8-openjdk for LTS/current/course compatibility.
   community.general.pacman:
     name:
       - jdk-openjdk
