@@ -31,8 +31,8 @@ make install PROFILE=desktop TAGS=dev
 else in the play is skipped, not just reordered. Used for opt-in roles like `dev`
 (tagged `never`, so it only runs when explicitly requested via `TAGS=dev`).
 
-Vault password comes from wherever you keep it (not in the repo). yay is bootstrapped
-automatically if missing — no separate AUR helper step.
+Vault password comes from wherever you keep it (not in the repo). paru handles AUR
+packages (installed from extra repo, no bootstrap needed).
 
 Tailored to my own setup — review `ansible/group_vars/` and roles before running on
 another machine.

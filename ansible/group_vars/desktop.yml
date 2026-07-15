@@ -58,7 +58,7 @@ desktop_packages:
 
 # Installed via kewlfft.aur, same as base role's aur_packages.
 desktop_aur_packages:
-  - quickshell-git                   # caelestia-shell provider; install first to avoid yay nested AUR dependency failure
+  - quickshell-git                   # caelestia-shell provider; install first to avoid paru nested AUR dependency failure
   - caelestia-shell                 # shell package pulls Caelestia runtime and shell dependencies
   - catppuccin-sddm-theme-macchiato  # https://github.com/catppuccin/sddm
   - catppuccin-cursors-macchiato
