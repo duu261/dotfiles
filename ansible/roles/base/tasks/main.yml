@@ -165,31 +165,7 @@
   become: true
 
 # kewlfft.aur only detects an existing helper on $PATH, never installs one -
-# bootstrap yay here so a fresh machine needs no manual pre-step.
-- name: Check for yay
-  ansible.builtin.command: which yay
-  register: base_yay_check
-  failed_when: false
-  changed_when: false
-
-- name: Clone yay AUR helper
-  ansible.builtin.git:
-    repo: https://aur.archlinux.org/yay.git
-    dest: /home/aur_builder/yay
-    version: master
-  become: true
-  become_user: aur_builder
-  when: base_yay_check.rc != 0
-
-- name: Build and install yay
-  ansible.builtin.command: makepkg -si --noconfirm
-  args:
-    chdir: /home/aur_builder/yay
-  become: true
-  become_user: aur_builder
-  when: base_yay_check.rc != 0
-  changed_when: true
-
+# paru is in extra repo and installed in base packages above, no bootstrap needed.
 - name: Install AUR packages
   kewlfft.aur.aur:
     name: "{{ item }}"
@@ -198,20 +174,19 @@
   become: true
   become_user: aur_builder
 
-- name: Ensure yay config directory exists
+- name: Ensure paru config directory exists
   ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/.config/yay"
+    path: "{{ ansible_env.HOME }}/.config/paru"
     state: directory
     mode: '0755'
 
-- name: Deploy yay config (auto-clean build deps, keep sudo alive)
+- name: Deploy paru config (auto-clean build deps, keep sudo alive)
   ansible.builtin.copy:
-    dest: "{{ ansible_env.HOME }}/.config/yay/config.json"
+    dest: "{{ ansible_env.HOME }}/.config/paru/paru.conf"
     content: |
-      {
-        "answerclean": "All",
-        "sudoloop": true
-      }
+      [options]
+      CleanAfter
+      SudoLoop
     mode: '0644'
 
 - name: Update user directories

@@ -60,6 +60,7 @@ base_packages:
   - bind # dig
   - mtr
   - git-delta
+  - paru # AUR helper (extra repo, replaces yay bootstrap)
   - hyperfine
   - entr
   - shfmt
