@@ -98,4 +98,3 @@ stow_packages:
   - bin
   - nvim
   - atuin
-  - fontconfig
