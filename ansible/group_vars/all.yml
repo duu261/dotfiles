@@ -7,7 +7,7 @@ profile: tui
 
 base_packages:
   - archlinux-keyring # stale keys break pacman PGP checks on fresh installs
-  - base-devel # fakeroot/gcc/make, required by makepkg -si (yay bootstrap, AUR builds)
+  - base-devel # fakeroot/gcc/make, required by makepkg (paru AUR builds)
   - reflector # auto mirror ranking, keeps mirrorlist fast/fresh
   - stow
   - tree-sitter-cli

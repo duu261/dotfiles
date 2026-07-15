@@ -146,7 +146,7 @@
 
 # kewlfft.aur's own docs recommend a dedicated unprivileged builder user with
 # scoped NOPASSWD sudo, rather than relying on the invoking user's interactive
-# sudo ticket - that ticket doesn't exist on a fresh/unattended run and yay's
+# sudo ticket - that ticket doesn't exist on a fresh/unattended run and paru's
 # internal sudo calls (build deps, final pacman -U) have no tty to prompt on.
 - name: Create aur_builder user
   ansible.builtin.user:
