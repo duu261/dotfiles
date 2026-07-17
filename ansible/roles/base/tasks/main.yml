@@ -217,14 +217,6 @@
     repo: https://github.com/tmux-plugins/tpm
     dest: "{{ ansible_facts.env.HOME }}/.local/share/tmux/plugins/tpm"
 
-- name: Install tmux plugins (headless)
-  ansible.builtin.command:
-    cmd: "{{ ansible_facts.env.HOME }}/.local/share/tmux/plugins/tpm/bin/install_plugins"
-  environment:
-    TMUX_PLUGIN_MANAGER_PATH: "{{ ansible_facts.env.HOME }}/.local/share/tmux/plugins"
-  register: tpm_install
-  changed_when: "'Installing' in tpm_install.stdout or 'Updating' in tpm_install.stdout"
-
 - name: Ensure paru config directory exists
   ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/.config/paru"
