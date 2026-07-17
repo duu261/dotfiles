@@ -164,8 +164,31 @@
     validate: /usr/sbin/visudo -cf %s
   become: true
 
-# kewlfft.aur only detects an existing helper on $PATH, never installs one -
-# paru is in extra repo and installed in base packages above, no bootstrap needed.
+# kewlfft.aur only detects an existing helper on $PATH, never installs one.
+# paru is AUR-only (not in official repos), so bootstrap from source with makepkg.
+- name: Clone paru (AUR helper) PKGBUILD
+  ansible.builtin.git:
+    repo: https://aur.archlinux.org/paru.git
+    dest: /tmp/paru-build
+    single_branch: true
+    version: master
+  become: true
+  become_user: aur_builder
+
+- name: Build + install paru (makepkg as aur_builder)
+  ansible.builtin.command:
+    cmd: makepkg -si --noconfirm
+    chdir: /tmp/paru-build
+  become: true
+  become_user: aur_builder
+  register: paru_build
+  changed_when: "'installed' in paru_build.stdout or 'upgraded' in paru_build.stdout"
+
+- name: Clean up paru build directory
+  ansible.builtin.file:
+    path: /tmp/paru-build
+    state: absent
+  become: true
 - name: Install AUR packages
   kewlfft.aur.aur:
     name: "{{ item }}"

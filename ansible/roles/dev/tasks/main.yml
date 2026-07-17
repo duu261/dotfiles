@@ -3,16 +3,17 @@
 # Run with --tags java, rust, python, etc. to install language-specific packages
 
 - name: Install Java development tools
-  # TODO(java-toolchains): persist manually verified jdk25-openjdk,
-  # jdk11-openjdk, and jdk8-openjdk for LTS/current/course compatibility.
   community.general.pacman:
     name:
-      - jdk-openjdk
+      - jdk-openjdk # latest (currently 26)
+      - jdk25-openjdk # current LTS
+      - jdk11-openjdk # course/framework compat
+      - jdk8-openjdk # legacy course compat
       - maven
       - gradle
       - visualvm
-      - graphviz     # nvim :DapVisualize renders via dot
-      - flamelens    # nvim Java profiler viewer (<leader>Jp)
+      - graphviz # nvim :DapVisualize renders via dot
+      - flamelens # nvim Java profiler viewer (<leader>Jp)
     state: present
   become: true
   tags: [java]
@@ -21,7 +22,7 @@
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
-    mode: '0755'
+    mode: "0755"
   loop:
     - "{{ ansible_env.HOME }}/.cache/mvnd"
     - "{{ ansible_env.HOME }}/.local/bin"
@@ -33,7 +34,7 @@
     url: "https://dlcdn.apache.org/maven/mvnd/{{ dev_mvnd_version }}/maven-mvnd-{{ dev_mvnd_version }}-linux-amd64.tar.gz"
     dest: "{{ ansible_env.HOME }}/.cache/mvnd/maven-mvnd-{{ dev_mvnd_version }}-linux-amd64.tar.gz"
     checksum: "sha512:{{ dev_mvnd_sha512 }}"
-    mode: '0644'
+    mode: "0644"
   when: ansible_facts.architecture == 'x86_64'
   tags: [java]
 
@@ -61,7 +62,7 @@
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
-    mode: '0755'
+    mode: "0755"
   loop:
     - "{{ ansible_env.HOME }}/.cache/java-tools"
     - "{{ ansible_env.HOME }}/apps/async-profiler-{{ dev_async_profiler_version }}"
@@ -76,7 +77,7 @@
       }}/async-profiler-{{ dev_async_profiler_version }}-linux-x64.tar.gz
     dest: "{{ ansible_env.HOME }}/.cache/java-tools/async-profiler-{{ dev_async_profiler_version }}-linux-x64.tar.gz"
     checksum: "sha256:{{ dev_async_profiler_sha256 }}"
-    mode: '0644'
+    mode: "0644"
   when: ansible_facts.architecture == 'x86_64'
   tags: [java]
 
@@ -121,7 +122,7 @@
     url: "https://github.com/adoptium/jmc-build/releases/download/{{ dev_jmc_version }}/org.openjdk.jmc-{{ dev_jmc_version }}-linux.gtk.x86_64.tar.gz"
     dest: "{{ ansible_env.HOME }}/.cache/java-tools/jmc-{{ dev_jmc_version }}-linux-x86_64.tar.gz"
     checksum: "sha256:{{ dev_jmc_sha256 }}"
-    mode: '0644'
+    mode: "0644"
   when: ansible_facts.architecture == 'x86_64'
   tags: [java]
 
@@ -148,7 +149,7 @@
     url: "https://github.com/mthmulders/mcs/releases/download/v{{ dev_mcs_version }}/mcs-{{ dev_mcs_version }}-linux-x86_64.tar.gz"
     dest: "{{ ansible_env.HOME }}/.cache/java-tools/mcs-{{ dev_mcs_version }}-linux-x86_64.tar.gz"
     checksum: "sha256:{{ dev_mcs_sha256 }}"
-    mode: '0644'
+    mode: "0644"
   when: ansible_facts.architecture == 'x86_64'
   tags: [java]
 
@@ -177,13 +178,13 @@
     url: "https://repo1.maven.org/maven2/org/openjdk/jol/jol-cli/{{ dev_jol_version }}/jol-cli-{{ dev_jol_version }}-full.jar"
     dest: "{{ ansible_env.HOME }}/apps/jol-{{ dev_jol_version }}.jar"
     checksum: "sha256:{{ dev_jol_sha256 }}"
-    mode: '0644'
+    mode: "0644"
   tags: [java]
 
 - name: Create Java Object Layout launcher
   ansible.builtin.copy:
     dest: "{{ ansible_env.HOME }}/.local/bin/jol"
-    mode: '0755'
+    mode: "0755"
     content: |
       #!/usr/bin/env sh
       exec java -jar "{{ ansible_env.HOME }}/apps/jol-{{ dev_jol_version }}.jar" "$@"
