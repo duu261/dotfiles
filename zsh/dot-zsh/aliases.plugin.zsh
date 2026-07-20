@@ -74,4 +74,3 @@ alias my_ip="ip address | grep -o \"inet 192.*/\" | awk '{ print \$2 }' | tr / '
 alias vim="$VIM"
 alias vims="NVIM_LISTEN_ADDRESS=/tmp/nvim $VIM"
 alias lg="lazygit"
-alias mvn="mvnd"
