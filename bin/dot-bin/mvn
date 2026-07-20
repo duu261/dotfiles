@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# Preserve process-scoped runner selection; use system Java only as fallback.
+if [[ -z "${JAVA_HOME:-}" ]]; then
+  export JAVA_HOME="/usr/lib/jvm/default"
+fi
+
+exec mvnd "$@"

@@ -58,6 +58,13 @@
   when: ansible_facts.architecture == 'x86_64'
   tags: [java]
 
+- name: Remove legacy Maven shim location
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.local/bin/mvn"
+    state: absent
+  when: ansible_facts.architecture == 'x86_64'
+  tags: [java]
+
 - name: Create Java profiling tool directories
   ansible.builtin.file:
     path: "{{ item }}"
