@@ -51,6 +51,22 @@
   become_user: aur_builder
 
 # sddm/ is system-owned (/etc, /usr/share), not a stow package — see dotfiles/CLAUDE.md.
+# openrgb/ is system-owned (/etc/systemd/system), not a stow package - see dotfiles/CLAUDE.md.
+- name: Deploy openrgb systemd service
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../openrgb/openrgb-off.service"
+    dest: /etc/systemd/system/openrgb-off.service
+    mode: '0644'
+  become: true
+
+- name: Enable and start openrgb-off
+  ansible.builtin.systemd:
+    name: openrgb-off
+    enabled: true
+    state: started
+    daemon_reload: true
+  become: true
+
 - name: Ensure /etc/sddm.conf.d exists
   ansible.builtin.file:
     path: /etc/sddm.conf.d

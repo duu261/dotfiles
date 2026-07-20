@@ -1,0 +1,13 @@
+[Unit]
+Description=Turn off all RGB LEDs at boot
+After=multi-user.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/openrgb --noautoconnect --mode direct --color 000000
+RemainAfterExit=yes
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

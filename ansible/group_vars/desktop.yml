@@ -39,6 +39,7 @@ desktop_packages:
   - networkmanager
   - xdg-desktop-portal-hyprland
   - xdg-desktop-portal-gtk
+  - openrgb         # RGB LED control, openrgb-off.service turns off at boot
   - hyprpolkitagent
   - hyprpicker      # keybinds.lua: interactive Wayland color picker
   - wl-clipboard
