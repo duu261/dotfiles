@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+# server-mode — low-power headless mode; preserve server/Hermes services
+set -euo pipefail
+
+STATE_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/power-mode"
+STATE_FILE="$STATE_DIR/desktop.state"
+DRY_RUN=false
+[[ "${1:-}" == "--dry-run" ]] && DRY_RUN=true
+[[ $# -le 1 ]] || {
+    printf 'Usage: %s [--dry-run]\n' "${0##*/}" >&2
+    exit 2
+}
+
+log() { printf '[server] %s\n' "$*"; }
+run() {
+    if $DRY_RUN; then
+        printf '[dry-run]'
+        printf ' %q' "$@"
+        printf '\n'
+    else
+        "$@"
+    fi
+}
+
+profile="$(powerprofilesctl get)"
+sddm_active=no
+bluetooth_active=no
+systemctl is-active --quiet sddm && sddm_active=yes
+systemctl is-active --quiet bluetooth && bluetooth_active=yes
+
+if [[ ! -e "$STATE_FILE" ]]; then
+    if $DRY_RUN; then
+        log "Would save profile=$profile sddm=$sddm_active bluetooth=$bluetooth_active"
+    else
+        install -d -m 700 "$STATE_DIR"
+        printf 'profile=%q\nsddm_active=%q\nbluetooth_active=%q\n' \
+            "$profile" "$sddm_active" "$bluetooth_active" >"$STATE_FILE"
+        chmod 600 "$STATE_FILE"
+    fi
+else
+    log "Existing state retained: $STATE_FILE"
+fi
+
+log 'Power profile → power-saver'
+run powerprofilesctl set power-saver
+
+if [[ "$bluetooth_active" == yes ]]; then
+    log 'Bluetooth → stopped'
+    run sudo systemctl stop bluetooth
+fi
+
+if command -v ddcutil >/dev/null && [[ "$sddm_active" == yes ]]; then
+    log 'Monitor → power off'
+    run sudo ddcutil setvcp D6 04 || log 'Warning: DDC monitor power-off failed; continuing'
+fi
+
+if [[ "$sddm_active" == yes ]]; then
+    log 'SDDM/Hyprland/Caelestia → stopped'
+    run sudo systemctl stop sddm
+else
+    log 'SDDM already stopped'
+fi
+
+log 'Preserved: LAN, NetworkManager, Tailscale, Docker, Hermes, OmniRoute'
+log 'Server mode active; run desktop-mode to restore recorded state'

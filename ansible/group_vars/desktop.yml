@@ -50,6 +50,8 @@ desktop_packages:
   - nwg-look
   - xdg-utils
   - trash-cli
+  - ddcutil          # server/desktop mode monitor power control
+  - power-profiles-daemon # amd_pstate profile switching via powerprofilesctl
   - geoclue2         # location provider for gammastep night light
   - gammastep        # night light
   - imv

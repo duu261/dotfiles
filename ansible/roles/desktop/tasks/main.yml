@@ -26,6 +26,27 @@
     state: started
   become: true
 
+- name: Enable power profiles daemon
+  ansible.builtin.systemd:
+    name: power-profiles-daemon
+    enabled: true
+    state: started
+  become: true
+
+- name: Deploy scoped power-mode sudo policy
+  ansible.builtin.copy:
+    dest: /etc/sudoers.d/hermes-power
+    mode: '0440'
+    validate: /usr/sbin/visudo -cf %s
+    content: |
+      {{ ansible_user_id }} ALL=(root) NOPASSWD: /usr/bin/systemctl stop sddm.service
+      {{ ansible_user_id }} ALL=(root) NOPASSWD: /usr/bin/systemctl start sddm.service
+      {{ ansible_user_id }} ALL=(root) NOPASSWD: /usr/bin/systemctl stop bluetooth.service
+      {{ ansible_user_id }} ALL=(root) NOPASSWD: /usr/bin/systemctl start bluetooth.service
+      {{ ansible_user_id }} ALL=(root) NOPASSWD: /usr/bin/ddcutil setvcp D6 04
+      {{ ansible_user_id }} ALL=(root) NOPASSWD: /usr/bin/ddcutil setvcp D6 01
+  become: true
+
 - name: Enable acpid
   ansible.builtin.systemd:
     name: acpid
