@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+set -uo pipefail
+
+ok(){ printf '✓ %s\n' "$*"; }
+bad(){ printf '✗ %s\n' "$*"; FAIL=1; }
+note(){ printf '○ %s\n' "$*"; }
+check_user_unit(){ systemctl --user is-active --quiet "$1" && ok "$1 active" || bad "$1 inactive"; }
+check_sys_unit(){ systemctl is-active --quiet "$1" && ok "$1 active" || bad "$1 inactive"; }
+check_url(){ curl -fsS --max-time 8 "$1" >/dev/null && ok "$2" || bad "$2"; }
+check_hindsight(){
+  local attempt
+  for attempt in 1 2 3; do
+    curl -fsS --max-time 8 http://127.0.0.1:9177/health 2>/dev/null \
+      | grep -q '"status":"healthy"' && { ok hindsight; return; }
+    [ "$attempt" -lt 3 ] && sleep 2
+  done
+  if ps -eo stat=,args= | awk '$1 !~ /^Z/ && $2 ~ /python/ && /hindsight-api --daemon/ { found=1 } END { exit !found }'; then
+    bad 'hindsight probe failed (daemon running)'
+  else
+    note 'hindsight idle (auto-starts on memory use)'
+  fi
+}
+
+FAIL=0
+TS_IP="$(tailscale ip -4 2>/dev/null | awk 'NR==1{print; exit}')"
+[ -n "$TS_IP" ] && ok "tailscale ${TS_IP}" || bad "tailscale no IPv4"
+
+check_user_unit hermes-gateway.service
+check_user_unit omniroute.service
+check_user_unit hermes-dashboard.service
+check_sys_unit docker.service
+
+check_url http://127.0.0.1:20128/v1/models omniroute
+check_url http://127.0.0.1:3002/ firecrawl
+check_hindsight
+
+SOUL_GUARD="$(hermes config get quick_commands.soul-guard.command 2>/dev/null || true)"
+if [ -n "$SOUL_GUARD" ]; then
+  bash -lc "$SOUL_GUARD" >/dev/null 2>&1 && ok 'SOUL unchanged' || bad 'SOUL modified'
+else
+  bad 'SOUL guard unconfigured'
+fi
+
+ss -ltn | grep -q "${TS_IP}:9119" && ok "dashboard http://${TS_IP}:9119" || bad dashboard-bind
+ss -ltn | grep -q '127.0.0.1:3002' && ok firecrawl-localhost || bad firecrawl-bind
+for p in 3128 3129 3130 3131 3132; do ss -ltn | grep -q "127.0.0.1:${p}" && ok "squid ${p}" || bad "squid ${p}"; done
+
+failed="$(systemctl --user --failed --no-legend --plain 2>/dev/null | awk '{print $1}' | paste -sd, -)"
+[ -z "$failed" ] && ok 'no failed user units' || bad "failed user units: ${failed}"
+
+exit "$FAIL"
