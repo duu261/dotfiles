@@ -8,9 +8,9 @@ researcher_soul="${HERMES_RESEARCHER_SOUL:-$HOME/.hermes/profiles/researcher/SOU
 usage() {
   printf '%s\n' \
     'Usage: soul-guard check|status|diff|recover [global|researcher|all]' \
-    '  check/status  Verify live SOUL files against protected baselines.' \
-    '  diff          Show changes from protected baselines.' \
-    '  recover       Back up live SOUL files, then restore protected baselines.' \
+    '  check/status  Verify live SOUL files against recorded known-good baselines.' \
+    '  diff          Show changes from recorded known-good baselines.' \
+    '  recover       Back up live SOUL files, then restore recorded known-good baselines.' \
     '  target        Defaults to all.'
 }
 
@@ -50,9 +50,9 @@ check_one() {
   set_target "$1"
   verify_baseline || return
   if cmp --silent -- "$baseline" "$soul"; then
-    printf 'OK [%s]: %s matches protected baseline\n' "$label" "$soul"
+    printf 'OK [%s]: %s matches recorded known-good baseline\n' "$label" "$soul"
   else
-    printf 'CHANGED [%s]: %s differs from protected baseline\n' "$label" "$soul" >&2
+    printf 'CHANGED [%s]: %s differs from recorded known-good baseline\n' "$label" "$soul" >&2
     return 1
   fi
 }
@@ -70,10 +70,23 @@ diff_one() {
 recover_one() {
   set_target "$1"
   verify_baseline || return
+  [[ -r "$soul" ]] || {
+    printf '%s live SOUL is not readable: %s\n' "$label" "$soul" >&2
+    return 4
+  }
   backup="$state_dir/$label.SOUL.md.before-recover-$(date +%Y%m%d-%H%M%S%z)"
-  install -m 600 -- "$soul" "$backup"
-  install -m 600 -- "$baseline" "$soul"
-  cmp --silent -- "$baseline" "$soul"
+  install -m 600 -- "$soul" "$backup" || {
+    printf '%s SOUL backup failed: %s\n' "$label" "$backup" >&2
+    return 5
+  }
+  install -m 600 -- "$baseline" "$soul" || {
+    printf '%s SOUL restore failed: %s\n' "$label" "$soul" >&2
+    return 6
+  }
+  cmp --silent -- "$baseline" "$soul" || {
+    printf '%s SOUL verification failed after restore: %s\n' "$label" "$soul" >&2
+    return 7
+  }
   printf 'RECOVERED [%s]: %s\nBackup: %s\n' "$label" "$soul" "$backup"
 }
 
@@ -91,6 +104,10 @@ run_targets() {
 }
 
 action="${1:-check}"
+if [[ "$action" == recover && $# -lt 2 ]]; then
+  printf 'recover requires an explicit target: global, researcher, or all\n' >&2
+  exit 64
+fi
 target="${2:-all}"
 case "$target" in
   global|researcher|all) ;;
