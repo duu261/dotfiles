@@ -1,0 +1,121 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+state_dir="${HERMES_SOUL_GUARD_STATE:-${XDG_STATE_HOME:-$HOME/.local/state}/hermes-soul-guard}"
+global_soul="${HERMES_SOUL:-$HOME/.hermes/SOUL.md}"
+researcher_soul="${HERMES_RESEARCHER_SOUL:-$HOME/.hermes/profiles/researcher/SOUL.md}"
+
+usage() {
+  printf '%s\n' \
+    'Usage: soul-guard check|status|diff|recover [global|researcher|all]' \
+    '  check/status  Verify live SOUL files against protected baselines.' \
+    '  diff          Show changes from protected baselines.' \
+    '  recover       Back up live SOUL files, then restore protected baselines.' \
+    '  target        Defaults to all.'
+}
+
+set_target() {
+  case "$1" in
+    global)
+      label='global'
+      soul="$global_soul"
+      baseline="$state_dir/SOUL.md.known-good"
+      manifest="$state_dir/SOUL.md.sha256"
+      ;;
+    researcher)
+      label='researcher'
+      soul="$researcher_soul"
+      baseline="$state_dir/researcher.SOUL.md.known-good"
+      manifest="$state_dir/researcher.SOUL.md.sha256"
+      ;;
+    *)
+      printf 'Unknown SOUL target: %s\n' "$1" >&2
+      exit 64
+      ;;
+  esac
+}
+
+verify_baseline() {
+  [[ -r "$baseline" && -r "$manifest" ]] || {
+    printf '%s SOUL baseline missing: %s\n' "$label" "$state_dir" >&2
+    return 2
+  }
+  (cd "$state_dir" && sha256sum --check --status "$(basename "$manifest")") || {
+    printf '%s SOUL baseline is corrupted: %s\n' "$label" "$state_dir" >&2
+    return 3
+  }
+}
+
+check_one() {
+  set_target "$1"
+  verify_baseline || return
+  if cmp --silent -- "$baseline" "$soul"; then
+    printf 'OK [%s]: %s matches protected baseline\n' "$label" "$soul"
+  else
+    printf 'CHANGED [%s]: %s differs from protected baseline\n' "$label" "$soul" >&2
+    return 1
+  fi
+}
+
+diff_one() {
+  set_target "$1"
+  verify_baseline || return
+  diff --unified \
+    --label "protected-$label-SOUL.md" \
+    --label "live-$label-SOUL.md" \
+    -- "$baseline" "$soul" || status=$?
+  [[ "${status:-0}" -le 1 ]] || return "$status"
+}
+
+recover_one() {
+  set_target "$1"
+  verify_baseline || return
+  backup="$state_dir/$label.SOUL.md.before-recover-$(date +%Y%m%d-%H%M%S%z)"
+  install -m 600 -- "$soul" "$backup"
+  install -m 600 -- "$baseline" "$soul"
+  cmp --silent -- "$baseline" "$soul"
+  printf 'RECOVERED [%s]: %s\nBackup: %s\n' "$label" "$soul" "$backup"
+}
+
+run_targets() {
+  fn="$1"
+  requested="$2"
+  rc=0
+  if [[ "$requested" == all ]]; then
+    "$fn" global || rc=$?
+    "$fn" researcher || rc=$?
+  else
+    "$fn" "$requested" || rc=$?
+  fi
+  return "$rc"
+}
+
+action="${1:-check}"
+target="${2:-all}"
+case "$target" in
+  global|researcher|all) ;;
+  *) usage >&2; exit 64 ;;
+esac
+
+case "$action" in
+  check|status)
+    if ! run_targets check_one "$target"; then
+      printf 'Run: soul-guard diff %s\n' "$target" >&2
+      printf 'Recover: soul-guard recover %s\n' "$target" >&2
+      exit 1
+    fi
+    ;;
+  diff)
+    run_targets diff_one "$target"
+    ;;
+  recover)
+    run_targets recover_one "$target"
+    ;;
+  -h|--help|help)
+    usage
+    ;;
+  *)
+    usage >&2
+    exit 64
+    ;;
+esac
