@@ -15,7 +15,11 @@ staging="$(mktemp -d "${TMPDIR:-/tmp}/ecosystem-backup.XXXXXX")"
 trap 'rm -rf "$staging"' EXIT
 mkdir -p "$staging/hermes" "$staging/omniroute/db_backups"
 
-hermes backup --output "$staging/hermes/hermes-backup.zip"
+# Daily ecosystem backups need critical Hermes state, not disposable worktrees,
+# caches, logs, and other bulk data. The separate weekly full snapshot covers
+# the slower whole-state recovery tier.
+hermes backup --quick --label ecosystem-daily \
+  --output "$staging/hermes/hermes-backup.zip"
 unzip -tq "$staging/hermes/hermes-backup.zip" >/dev/null
 
 source_db="$HOME/.omniroute/storage.sqlite"
