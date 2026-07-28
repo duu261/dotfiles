@@ -1,10 +1,10 @@
 ---
 - name: Clone dotfiles repository with submodules
   ansible.builtin.git:
-    repo: git@github.com:duu261/dotfiles.git
+    repo: "{{ dotfiles_repo }}"
     dest: ~/dotfiles
     recursive: true
-    version: main
+    version: "{{ dotfiles_version }}"
     update: false          # clone only if absent; never reset an existing working repo
     accept_hostkey: true
   async: 1200

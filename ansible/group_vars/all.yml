@@ -5,6 +5,11 @@
 # Tier-1 CLI packages (official repos).
 profile: tui
 
+# Production uses main. Override with a pushed branch or commit when testing
+# the playbook on the disposable Arch VM.
+dotfiles_repo: git@github.com:duu261/dotfiles.git
+dotfiles_version: main
+
 # Stable external Hermes-ecosystem service intent. Runtime state remains in
 # ~/.hermes and ~/.omniroute and must never be copied into Git.
 hermes_dashboard_port: 9119
