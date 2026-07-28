@@ -1,0 +1,25 @@
+[Unit]
+Description=OmniRoute native AI gateway
+Documentation=https://github.com/diegosouzapw/OmniRoute
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h
+Environment=DATA_DIR=%h/.omniroute
+Environment=NODE_ENV=production
+Environment=PORT={{ omniroute_port }}
+Environment=OMNIROUTE_SERVER_HOST=127.0.0.1
+Environment=NODE_OPTIONS=--max-old-space-size=1024
+ExecStart=%h/.npm-global/bin/omniroute serve --port {{ omniroute_port }} --no-open --no-tray --no-recovery
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+KillMode=mixed
+NoNewPrivileges=true
+PrivateTmp=true
+LimitNOFILE=65536
+
+[Install]
+WantedBy=default.target

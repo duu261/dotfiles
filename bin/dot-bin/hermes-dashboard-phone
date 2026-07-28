@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+TS_IP="$(tailscale ip -4 | awk 'NR==1 {print; exit}')"
+if [[ -z "${TS_IP}" ]]; then
+  echo "error: tailscale ip -4 returned nothing" >&2
+  exit 1
+fi
+
+systemctl --user start hermes-dashboard.service
+
+for _ in {1..30}; do
+  if ss -tln | grep -q "${TS_IP}:9119"; then
+    echo "Hermes dashboard ready"
+    echo "URL: http://${TS_IP}:9119"
+    echo "Service: hermes-dashboard.service"
+    exit 0
+  fi
+  sleep 1
+done
+
+echo "dashboard service did not bind ${TS_IP}:9119 in time" >&2
+systemctl --user status hermes-dashboard.service --no-pager -l >&2 || true
+exit 1

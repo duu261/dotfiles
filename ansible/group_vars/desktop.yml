@@ -79,3 +79,13 @@ desktop_stow_packages:
   - gtk-3.0
   - gtk-4.0
   - kvantum
+
+# NetworkManager profile receiving explicit Cloudflare DNS. Keep this visible:
+# provisioning must fail rather than silently modify an unexpected connection.
+networkmanager_primary_connection: "Wired connection 1"
+cloudflare_dns4:
+  - 1.1.1.1
+  - 1.0.0.1
+cloudflare_dns6:
+  - 2606:4700:4700::1111
+  - 2606:4700:4700::1001

@@ -28,5 +28,8 @@
     - dotfiles        # clone repo (--recurse-submodules) + stow
     - role: desktop   # hyprland/wayland stack + theming
       when: profile == 'desktop'
+    - role: network   # explicit Cloudflare DNS on the known NetworkManager profile
+      when: profile == 'desktop'
+    - ecosystem       # dashboard + OmniRoute external user-service definitions
     - role: dev       # languages/toolchains, opt-in
       tags: [dev, never]

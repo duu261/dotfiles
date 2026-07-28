@@ -1,0 +1,20 @@
+# Allow duu to toggle power mode and reboot without password
+# Used by: server-mode / desktop-mode / reboot-machine scripts in dotfiles
+# Deploy: sudo cp this file /etc/sudoers.d/hermes-power && sudo chmod 440 /etc/sudoers.d/hermes-power
+duu ALL=(ALL) NOPASSWD: /usr/bin/tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+duu ALL=(ALL) NOPASSWD: /usr/bin/tee /sys/devices/system/cpu/cpufreq/boost
+duu ALL=(ALL) NOPASSWD: /usr/bin/tee /proc/sys/kernel/nmi_watchdog
+duu ALL=(ALL) NOPASSWD: /usr/bin/tee /sys/bus/pci/devices/0000\:01\:00.0/power/control
+duu ALL=(ALL) NOPASSWD: /usr/bin/tee /sys/bus/pci/devices/0000\:01\:00.1/power/control
+duu ALL=(ALL) NOPASSWD: /usr/bin/tee /sys/module/pcie_aspm/parameters/policy
+duu ALL=(ALL) NOPASSWD: /usr/bin/nvidia-smi *
+duu ALL=(ALL) NOPASSWD: /usr/bin/systemctl stop bluetooth, /usr/bin/systemctl start bluetooth
+duu ALL=(ALL) NOPASSWD: /usr/bin/systemctl stop docker, /usr/bin/systemctl start docker
+duu ALL=(ALL) NOPASSWD: /usr/bin/systemctl stop docker.socket
+duu ALL=(ALL) NOPASSWD: /usr/bin/systemctl stop containerd
+duu ALL=(ALL) NOPASSWD: /usr/bin/systemctl stop libvirtd
+duu ALL=(ALL) NOPASSWD: /usr/bin/systemctl stop libvirtd.socket, /usr/bin/systemctl stop libvirtd-ro.socket, /usr/bin/systemctl stop libvirtd-admin.socket
+duu ALL=(ALL) NOPASSWD: /usr/bin/systemctl stop wpa_supplicant
+duu ALL=(ALL) NOPASSWD: /usr/bin/systemctl start sddm
+duu ALL=(ALL) NOPASSWD: /usr/bin/ddcutil setvcp D6 04, /usr/bin/ddcutil setvcp D6 01
+duu ALL=(ALL) NOPASSWD: /usr/bin/systemctl reboot

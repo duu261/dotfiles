@@ -1,0 +1,16 @@
+[Unit]
+Description=Expose OmniRoute on the Tailscale interface only
+After=network-online.target omniroute.service
+Wants=network-online.target
+BindsTo=omniroute.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/socat TCP4-LISTEN:{{ omniroute_port }},bind={{ ecosystem_tailscale_ipv4 }},reuseaddr,fork TCP4:127.0.0.1:{{ omniroute_port }}
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=default.target

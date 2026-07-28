@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Open OmniRoute dashboard
+echo "OmniRoute — AI Gateway"
+echo "  Local:      http://localhost:20128/dashboard"
+echo "  Tailscale:  http://100.99.253.20:20128/dashboard"
+echo "  API:        http://localhost:20128/v1/chat/completions"
+echo "  Port:       20128"
+echo ""
+echo "systemd user service: omniroute.service"
+echo "  Status:  systemctl --user status omniroute.service"
+echo "  Logs:    journalctl --user -u omniroute.service -f"
+echo "  Restart: systemctl --user restart omniroute.service"
+echo ""
+if systemctl --user is-active --quiet omniroute.service; then
+  echo "✓ Running"
+else
+  echo "✗ Not running"
+fi

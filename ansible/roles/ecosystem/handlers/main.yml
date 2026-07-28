@@ -1,0 +1,24 @@
+---
+- name: Restart Hermes dashboard
+  ansible.builtin.systemd_service:
+    name: hermes-dashboard.service
+    scope: user
+    state: restarted
+    daemon_reload: true
+  when: ecosystem_hermes_executable.stat.executable | default(false)
+
+- name: Restart OmniRoute
+  ansible.builtin.systemd_service:
+    name: omniroute.service
+    scope: user
+    state: restarted
+    daemon_reload: true
+  when: ecosystem_omniroute_executable.stat.executable | default(false)
+
+- name: Restart OmniRoute Tailscale proxy
+  ansible.builtin.systemd_service:
+    name: omniroute-tailscale-proxy.service
+    scope: user
+    state: restarted
+    daemon_reload: true
+  when: ecosystem_omniroute_executable.stat.executable | default(false)

@@ -1,0 +1,10 @@
+---
+- name: Reactivate NetworkManager connection
+  ansible.builtin.command:
+    argv:
+      - nmcli
+      - connection
+      - up
+      - "{{ networkmanager_primary_connection }}"
+  become: true
+  changed_when: true

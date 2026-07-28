@@ -1,0 +1,57 @@
+---
+- name: Verify the intended NetworkManager connection exists
+  ansible.builtin.command:
+    argv:
+      - nmcli
+      - connection
+      - show
+      - "{{ networkmanager_primary_connection }}"
+  changed_when: false
+
+- name: Read current DNS policy
+  ansible.builtin.command:
+    argv:
+      - nmcli
+      - --escape
+      - "no"
+      - --get-values
+      - ipv4.ignore-auto-dns,ipv4.dns,ipv6.ignore-auto-dns,ipv6.dns
+      - connection
+      - show
+      - "{{ networkmanager_primary_connection }}"
+  register: network_current_dns_policy
+  changed_when: false
+  check_mode: false
+
+- name: Apply Cloudflare DNS censorship-bypass policy
+  ansible.builtin.command:
+    argv:
+      - nmcli
+      - connection
+      - modify
+      - "{{ networkmanager_primary_connection }}"
+      - ipv4.ignore-auto-dns
+      - "yes"
+      - ipv4.dns
+      - "{{ cloudflare_dns4 | join(',') }}"
+      - ipv6.ignore-auto-dns
+      - "yes"
+      - ipv6.dns
+      - "{{ cloudflare_dns6 | join(',') }}"
+  become: true
+  vars:
+    expected_dns_policy: |-
+      yes
+      {{ cloudflare_dns4 | join(',') }}
+      yes
+      {{ cloudflare_dns6 | join(',') }}
+  when: network_current_dns_policy.stdout != expected_dns_policy
+  changed_when: network_current_dns_policy.stdout != expected_dns_policy
+  notify: Reactivate NetworkManager connection
+
+- name: Explain DNS policy purpose
+  ansible.builtin.debug:
+    msg: >-
+      Cloudflare DNS is explicit to bypass ISP DNS censorship (including
+      Reddit); Tailscale remains connected but does not replace host DNS.
+  changed_when: false

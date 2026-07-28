@@ -1,0 +1,14 @@
+[Unit]
+Description=Hermes dashboard for phone via Tailscale
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+Environment=PATH={{ ansible_env.HOME }}/.local/bin:/usr/local/bin:/usr/bin:/bin
+ExecStart={{ ansible_env.HOME }}/.local/bin/hermes dashboard --host {{ ecosystem_tailscale_ipv4 }} --port {{ hermes_dashboard_port }} --no-open --skip-build
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target

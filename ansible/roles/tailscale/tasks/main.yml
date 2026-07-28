@@ -37,3 +37,16 @@
   register: tailscale_result
   changed_when: "'Success' in tailscale_result.stdout"
   no_log: true
+
+# Preserve the tunnel while keeping host DNS under NetworkManager control.
+- name: Read Tailscale DNS preference
+  ansible.builtin.command: tailscale debug prefs
+  register: tailscale_prefs
+  changed_when: false
+  check_mode: false
+
+- name: Disable Tailscale DNS acceptance
+  ansible.builtin.command: tailscale set --accept-dns=false
+  become: true
+  when: (tailscale_prefs.stdout | from_json).CorpDNS | default(true)
+  changed_when: true

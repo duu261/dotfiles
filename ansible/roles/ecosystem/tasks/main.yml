@@ -1,0 +1,103 @@
+---
+- name: Install external ecosystem service dependencies
+  community.general.pacman:
+    name:
+      - socat
+    state: present
+  become: true
+
+- name: Resolve Tailscale IPv4 for interface-only listeners
+  ansible.builtin.command:
+    argv:
+      - tailscale
+      - ip
+      - -4
+  register: ecosystem_tailscale_ipv4_result
+  changed_when: false
+  check_mode: false
+
+- name: Validate Tailscale IPv4
+  ansible.builtin.assert:
+    that:
+      - ecosystem_tailscale_ipv4_result.stdout_lines | length > 0
+      - ecosystem_tailscale_ipv4_result.stdout_lines[0] | ansible.utils.ipaddr
+    fail_msg: "Tailscale must be connected before ecosystem user units are deployed"
+
+- name: Record primary Tailscale IPv4
+  ansible.builtin.set_fact:
+    ecosystem_tailscale_ipv4: "{{ ecosystem_tailscale_ipv4_result.stdout_lines[0] }}"
+
+- name: Ensure systemd user directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.config/systemd/user"
+    state: directory
+    mode: "0755"
+
+- name: Check Hermes executable
+  ansible.builtin.stat:
+    path: "{{ ansible_env.HOME }}/.local/bin/hermes"
+  register: ecosystem_hermes_executable
+
+- name: Check OmniRoute executable
+  ansible.builtin.stat:
+    path: "{{ ansible_env.HOME }}/.npm-global/bin/omniroute"
+  register: ecosystem_omniroute_executable
+
+- name: Deploy Hermes dashboard user service
+  ansible.builtin.template:
+    src: hermes-dashboard.service.j2
+    dest: "{{ ansible_env.HOME }}/.config/systemd/user/hermes-dashboard.service"
+    mode: "0644"
+  notify: Restart Hermes dashboard
+
+- name: Deploy OmniRoute user service
+  ansible.builtin.template:
+    src: omniroute.service.j2
+    dest: "{{ ansible_env.HOME }}/.config/systemd/user/omniroute.service"
+    mode: "0644"
+  notify: Restart OmniRoute
+
+- name: Deploy OmniRoute Tailscale proxy user service
+  ansible.builtin.template:
+    src: omniroute-tailscale-proxy.service.j2
+    dest: "{{ ansible_env.HOME }}/.config/systemd/user/omniroute-tailscale-proxy.service"
+    mode: "0644"
+  notify: Restart OmniRoute Tailscale proxy
+
+- name: Enable user lingering
+  ansible.builtin.command:
+    argv:
+      - loginctl
+      - enable-linger
+      - "{{ ansible_user_id }}"
+  become: true
+  args:
+    creates: "/var/lib/systemd/linger/{{ ansible_user_id }}"
+
+- name: Enable external ecosystem user services
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    scope: user
+    enabled: true
+    daemon_reload: true
+  loop:
+    - hermes-dashboard.service
+    - omniroute.service
+    - omniroute-tailscale-proxy.service
+
+- name: Start Hermes dashboard when Hermes is installed
+  ansible.builtin.systemd_service:
+    name: hermes-dashboard.service
+    scope: user
+    state: started
+  when: ecosystem_hermes_executable.stat.executable | default(false)
+
+- name: Start OmniRoute services when OmniRoute is installed
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    scope: user
+    state: started
+  loop:
+    - omniroute.service
+    - omniroute-tailscale-proxy.service
+  when: ecosystem_omniroute_executable.stat.executable | default(false)
