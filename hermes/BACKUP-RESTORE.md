@@ -148,3 +148,38 @@ Expected SQLite output: `ok`. On actual disaster recovery, install Hermes and
 OmniRoute first, import the restored Hermes archive with `hermes import
 --force`, and restore OmniRoute through its dashboard/native restore workflow.
 Do not overwrite the live OmniRoute database while its service is running.
+
+## Fresh-machine recovery checklist
+
+These steps remain intentionally manual because they cross external trust or
+destructive restore boundaries:
+
+1. Clone the dotfiles repository and run the desktop Ansible profile twice;
+   enter the Ansible Vault password, and require `failed=0 changed=0` on the
+   identical second converge.
+2. Run `rclone config` and authenticate a remote named `gdrive`. OAuth state is
+   runtime-owned and is not committed to Git.
+3. Source `~/.secrets`; confirm `restic snapshots --tag ecosystem-minimal`
+   opens the expected repository.
+4. Restore the latest snapshot to a disposable directory and run the ZIP and
+   SQLite checks above. Do not target live paths.
+5. Install Hermes/OmniRoute definitions through Ansible, import the selected
+   Hermes ZIP, then restore OmniRoute through its dashboard/native workflow.
+6. Recreate Firecrawl/Squid runtime `.env` only when required. Their
+   definitions are reconstructed from Git/Ansible; Firecrawl historical data
+   is intentionally excluded from the minimal backup.
+
+The Ansible Vault password must remain known outside the lost machine. It
+unlocks both `~/.secrets` and the vaulted Restic password file. Run 4 tracks
+the separate clean-Arch-VM reconstruction proof.
+
+## Automation policy
+
+- Daily: deterministic `backup-minimal.sh`; no LLM required.
+- Weekly: cheap-agent health review checks latest snapshot age and repository
+  integrity, then reports failures/staleness.
+- Monthly: reminder to perform the disposable restore proof manually.
+
+Cron jobs are operational state managed by Hermes, not committed secrets. List
+them with `hermes cron list`. Backup execution must source `~/.secrets` so the
+Restic repository and password-file path are available.

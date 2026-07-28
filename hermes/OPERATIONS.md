@@ -76,3 +76,10 @@ restic snapshots --tag ecosystem-minimal
 See [BACKUP-RESTORE.md](BACKUP-RESTORE.md) for required Restic environment,
 retention, and disposable restore proof. Laptop access normally remains SSH
 over Tailscale; this backup is for loss of the primary PC/disk.
+
+Automation cadence: daily deterministic backup, weekly cheap-agent repository
+health review, monthly human restore-proof reminder. Inspect with:
+
+```bash
+hermes cron list
+```
