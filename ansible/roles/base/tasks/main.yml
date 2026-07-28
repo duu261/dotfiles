@@ -72,6 +72,48 @@
     state: started
   become: true
 
+- name: Ensure user systemd directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.config/systemd/user"
+    state: directory
+    mode: '0755'
+
+- name: Deploy 30-day Trash cleanup service
+  ansible.builtin.copy:
+    dest: "{{ ansible_facts['env']['HOME'] }}/.config/systemd/user/trash-cleanup.service"
+    mode: '0644'
+    content: |
+      [Unit]
+      Description=Remove files older than 30 days from the user Trash
+
+      [Service]
+      Type=oneshot
+      ExecStart=/usr/bin/trash-empty -f 30
+
+- name: Deploy weekly Trash cleanup timer
+  ansible.builtin.copy:
+    dest: "{{ ansible_facts['env']['HOME'] }}/.config/systemd/user/trash-cleanup.timer"
+    mode: '0644'
+    content: |
+      [Unit]
+      Description=Weekly cleanup of files older than 30 days in Trash
+
+      [Timer]
+      OnCalendar=weekly
+      Persistent=true
+      RandomizedDelaySec=30m
+
+      [Install]
+      WantedBy=timers.target
+
+- name: Enable weekly Trash cleanup timer
+  ansible.builtin.systemd_service:
+    name: trash-cleanup.timer
+    scope: user
+    enabled: true
+    state: started
+    daemon_reload: true
+
 - name: Enable pkgfile-update timer (command-not-found database refresh)
   ansible.builtin.systemd:
     name: pkgfile-update.timer
