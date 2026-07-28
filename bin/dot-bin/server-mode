@@ -22,7 +22,7 @@ run() {
     fi
 }
 
-profile="$(powerprofilesctl get)"
+profile="$(/usr/bin/python3 /usr/bin/powerprofilesctl get)"
 sddm_active=no
 bluetooth_active=no
 systemctl is-active --quiet sddm && sddm_active=yes
@@ -42,16 +42,11 @@ else
 fi
 
 log 'Power profile → power-saver'
-run powerprofilesctl set power-saver
+run sudo /usr/bin/python3 /usr/bin/powerprofilesctl set power-saver
 
 if [[ "$bluetooth_active" == yes ]]; then
     log 'Bluetooth → stopped'
     run sudo systemctl stop bluetooth
-fi
-
-if command -v ddcutil >/dev/null && [[ "$sddm_active" == yes ]]; then
-    log 'Monitor → power off'
-    run sudo ddcutil setvcp D6 04 || log 'Warning: DDC monitor power-off failed; continuing'
 fi
 
 if [[ "$sddm_active" == yes ]]; then
@@ -59,6 +54,11 @@ if [[ "$sddm_active" == yes ]]; then
     run sudo systemctl stop sddm
 else
     log 'SDDM already stopped'
+fi
+
+if command -v ddcutil >/dev/null && [[ "$sddm_active" == yes ]]; then
+    log 'Monitor → power off'
+    run sudo ddcutil setvcp D6 04 --noverify || log 'Warning: DDC monitor power-off failed; continuing'
 fi
 
 log 'Preserved: LAN, NetworkManager, Tailscale, Docker, Hermes, OmniRoute'

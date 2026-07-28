@@ -41,7 +41,7 @@ case "$profile" in
 esac
 
 log "Power profile → $profile"
-run powerprofilesctl set "$profile"
+run sudo /usr/bin/python3 /usr/bin/powerprofilesctl set "$profile"
 
 if [[ "$sddm_active" == yes ]] && ! systemctl is-active --quiet sddm; then
     log 'SDDM → started'

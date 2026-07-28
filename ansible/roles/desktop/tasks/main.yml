@@ -39,11 +39,14 @@
     mode: '0440'
     validate: /usr/sbin/visudo -cf %s
     content: |
-      {{ ansible_user_id }} ALL=(root) NOPASSWD: /usr/bin/systemctl stop sddm.service
-      {{ ansible_user_id }} ALL=(root) NOPASSWD: /usr/bin/systemctl start sddm.service
-      {{ ansible_user_id }} ALL=(root) NOPASSWD: /usr/bin/systemctl stop bluetooth.service
-      {{ ansible_user_id }} ALL=(root) NOPASSWD: /usr/bin/systemctl start bluetooth.service
-      {{ ansible_user_id }} ALL=(root) NOPASSWD: /usr/bin/ddcutil setvcp D6 04
+      {{ ansible_user_id }} ALL=(root) NOPASSWD: /usr/bin/python3 /usr/bin/powerprofilesctl set power-saver
+      {{ ansible_user_id }} ALL=(root) NOPASSWD: /usr/bin/python3 /usr/bin/powerprofilesctl set balanced
+      {{ ansible_user_id }} ALL=(root) NOPASSWD: /usr/bin/python3 /usr/bin/powerprofilesctl set performance
+      {{ ansible_user_id }} ALL=(root) NOPASSWD: /usr/bin/systemctl stop sddm
+      {{ ansible_user_id }} ALL=(root) NOPASSWD: /usr/bin/systemctl start sddm
+      {{ ansible_user_id }} ALL=(root) NOPASSWD: /usr/bin/systemctl stop bluetooth
+      {{ ansible_user_id }} ALL=(root) NOPASSWD: /usr/bin/systemctl start bluetooth
+      {{ ansible_user_id }} ALL=(root) NOPASSWD: /usr/bin/ddcutil setvcp D6 04 --noverify
       {{ ansible_user_id }} ALL=(root) NOPASSWD: /usr/bin/ddcutil setvcp D6 01
   become: true
 
