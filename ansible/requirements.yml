@@ -4,4 +4,3 @@ collections:
     version: "0.13.0"
   - name: community.general
   - name: ansible.posix
-  - name: ansible.utils

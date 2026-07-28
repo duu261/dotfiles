@@ -20,7 +20,9 @@
   ansible.builtin.assert:
     that:
       - ecosystem_tailscale_ipv4_result.stdout_lines | length > 0
-      - ecosystem_tailscale_ipv4_result.stdout_lines[0] | ansible.utils.ipaddr
+      - >-
+        ecosystem_tailscale_ipv4_result.stdout_lines[0]
+        is match('^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$')
     fail_msg: "Tailscale must be connected before ecosystem user units are deployed"
 
 - name: Record primary Tailscale IPv4
