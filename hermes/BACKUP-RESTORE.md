@@ -22,6 +22,11 @@ export RESTIC_PASSWORD_FILE="$HOME/.config/restic/duu-ecosystem-password"
 ~/dotfiles/hermes/backup-minimal.sh
 ```
 
+For Google Drive storage, configure an `rclone` remote once with `rclone
+config`, then use a repository such as
+`rclone:gdrive:backups/duu-ecosystem`. Restic encrypts content before rclone
+uploads it.
+
 The script creates temporary private staging, verifies the Hermes ZIP, uses
 SQLite's online backup API for OmniRoute (including committed WAL content),
 uploads both to encrypted off-machine Restic storage, retains 7 daily, 4

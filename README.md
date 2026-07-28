@@ -87,6 +87,7 @@ The disposable libvirt workflow is documented in `ansible/VM-TESTING.md`.
 - `hermes/` — Hermes ecosystem architecture, operations, and recovery docs
 - `nvim/dot-config/nvim` — separate Git submodule; edit in its own repository
 - `zsh/dot-secrets` — Ansible Vault ciphertext deployed as `~/.secrets`
+- `secrets-save` — safely refresh that ciphertext after editing `~/.secrets`
 
 Mutable Hermes/Hindsight/OmniRoute state, databases, auth files, sessions, logs,
 and `.env` files do not belong in Git. See `hermes/README.md` and

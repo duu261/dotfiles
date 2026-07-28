@@ -61,6 +61,8 @@ base_packages:
   - pkgfile # find which package owns a missing command/file
   - rebuild-detector # detect AUR packages needing rebuild after python/perl upgrade
   - restic # backups
+  - rclone # Restic cloud-storage transport
+  - sqlite # consistent OmniRoute database snapshots and integrity checks
   - smartmontools # disk health checks
   - shellcheck # shell script lint
   - man-db
