@@ -1,0 +1,53 @@
+---
+- name: Gather facts for tagged run
+  ansible.builtin.setup:
+
+- name: Ensure Squid directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/docker/squid-proxy"
+    state: directory
+    mode: "0755"
+
+- name: Deploy Squid configuration
+  ansible.builtin.copy:
+    src: squid.conf
+    dest: "{{ ansible_env.HOME }}/docker/squid-proxy/squid.conf"
+    mode: "0644"
+
+- name: Deploy Squid docker compose configuration
+  ansible.builtin.copy:
+    src: docker-compose.yml
+    dest: "{{ ansible_env.HOME }}/docker/squid-proxy/docker-compose.yml"
+    mode: "0644"
+
+- name: Deploy Squid environment example
+  ansible.builtin.copy:
+    src: env.example
+    dest: "{{ ansible_env.HOME }}/docker/squid-proxy/.env.example"
+    mode: "0644"
+
+- name: Initialize Squid environment file if missing
+  ansible.builtin.copy:
+    src: env.example
+    dest: "{{ ansible_env.HOME }}/docker/squid-proxy/.env"
+    mode: "0600"
+    force: false
+
+- name: Deploy Squid connection test script
+  ansible.builtin.copy:
+    src: test-connection.sh
+    dest: "{{ ansible_env.HOME }}/docker/squid-proxy/test-connection.sh"
+    mode: "0755"
+
+- name: Deploy Squid health monitor script
+  ansible.builtin.copy:
+    src: monitor-squid.sh
+    dest: "{{ ansible_env.HOME }}/docker/squid-proxy/monitor-squid.sh"
+    mode: "0755"
+
+- name: Start Squid proxy service via docker compose
+  ansible.builtin.command:
+    cmd: docker compose up -d --remove-orphans
+    chdir: "{{ ansible_env.HOME }}/docker/squid-proxy"
+  register: squid_compose_up
+  changed_when: "'Started' in squid_compose_up.stdout or 'Created' in squid_compose_up.stdout or 'Recreated' in squid_compose_up.stdout"
