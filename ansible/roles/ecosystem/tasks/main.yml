@@ -1,10 +1,14 @@
 ---
+- name: Gather facts for tagged run
+  ansible.builtin.setup:
+
 - name: Install external ecosystem service dependencies
   community.general.pacman:
     name:
       - socat
     state: present
   become: true
+  tags: [ecosystem_become]
 
 - name: Resolve Tailscale IPv4 for interface-only listeners
   ansible.builtin.command:
@@ -34,6 +38,24 @@
     path: "{{ ansible_env.HOME }}/.config/systemd/user"
     state: directory
     mode: "0755"
+
+- name: Ensure npm-global directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.npm-global"
+    state: directory
+    mode: "0755"
+
+- name: Deploy user npm configuration
+  ansible.builtin.copy:
+    dest: "{{ ansible_env.HOME }}/.npmrc"
+    content: "prefix={{ ansible_env.HOME }}/.npm-global\n"
+    mode: "0600"
+
+- name: Install OmniRoute global npm package
+  community.general.npm:
+    name: omniroute
+    version: 3.8.48
+    global: true
 
 - name: Check Hermes executable
   ansible.builtin.stat:
@@ -75,6 +97,7 @@
   become: true
   args:
     creates: "/var/lib/systemd/linger/{{ ansible_user_id }}"
+  tags: [ecosystem_become]
 
 - name: Enable external ecosystem user services
   ansible.builtin.systemd_service:
