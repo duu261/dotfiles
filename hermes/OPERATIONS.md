@@ -65,3 +65,14 @@ Hindsight is an on-demand Hermes memory plugin, not a separately enabled unit. `
 ## Power mode
 
 See [POWER-MODE.md](POWER-MODE.md). Server mode deliberately preserves LAN, NetworkManager, Tailscale, Docker, Hermes, and OmniRoute.
+
+## Minimal disaster backup
+
+```bash
+~/dotfiles/hermes/backup-minimal.sh
+restic snapshots --tag ecosystem-minimal
+```
+
+See [BACKUP-RESTORE.md](BACKUP-RESTORE.md) for required Restic environment,
+retention, and disposable restore proof. Laptop access normally remains SSH
+over Tailscale; this backup is for loss of the primary PC/disk.
