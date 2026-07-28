@@ -58,7 +58,7 @@ Ansible deploys the user units and manages a pinned reproducible installation (v
 
 ## Firecrawl & Squid
 
-Both services are fully containerized and managed by Ansible roles. The playbook clones the Firecrawl repository at a pinned revision, deploys custom compose configs (with explicit restart/bind rules), and ensures both proxy and extraction stacks are running.
+Both services are containerized with opt-in Ansible roles (`--tags firecrawl` or `--tags squid`). Ansible owns pinned source/image and Compose/config definitions; existing `.env` files, credentials, logs, caches, and Docker volumes remain runtime-owned and are never overwritten.
 
 ## Deferred
 

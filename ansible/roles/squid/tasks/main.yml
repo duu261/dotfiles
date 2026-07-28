@@ -26,13 +26,6 @@
     dest: "{{ ansible_env.HOME }}/docker/squid-proxy/.env.example"
     mode: "0644"
 
-- name: Initialize Squid environment file if missing
-  ansible.builtin.copy:
-    src: env.example
-    dest: "{{ ansible_env.HOME }}/docker/squid-proxy/.env"
-    mode: "0600"
-    force: false
-
 - name: Deploy Squid connection test script
   ansible.builtin.copy:
     src: test-connection.sh

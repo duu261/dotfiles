@@ -45,10 +45,12 @@
     state: directory
     mode: "0755"
 
-- name: Deploy user npm configuration
-  ansible.builtin.copy:
-    dest: "{{ ansible_env.HOME }}/.npmrc"
-    content: "prefix={{ ansible_env.HOME }}/.npm-global\n"
+- name: Configure user npm prefix
+  ansible.builtin.lineinfile:
+    path: "{{ ansible_env.HOME }}/.npmrc"
+    regexp: '^prefix='
+    line: "prefix={{ ansible_env.HOME }}/.npm-global"
+    create: true
     mode: "0600"
 
 - name: Install OmniRoute global npm package
@@ -56,6 +58,8 @@
     name: omniroute
     version: 3.8.48
     global: true
+  environment:
+    NPM_CONFIG_PREFIX: "{{ ansible_env.HOME }}/.npm-global"
 
 - name: Check Hermes executable
   ansible.builtin.stat:

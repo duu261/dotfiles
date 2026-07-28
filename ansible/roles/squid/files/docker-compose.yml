@@ -1,7 +1,7 @@
 services:
   squid:
-    image: yegor256/squid-proxy:latest
-    
+    image: yegor256/squid-proxy@sha256:607e6d908a1679380a0d1bd2d79896a2c3ed26262e4bd33f9f9cd2d1f6b60dc4
+
     restart: unless-stopped
     ports:
       - "${SQUID_HOST:-127.0.0.1}:${SQUID_PORT:-3128}:3128"

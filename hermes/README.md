@@ -24,7 +24,7 @@ Never commit `~/.hermes`, `~/.omniroute`, backup archives, OAuth/auth files, `.e
 | Hermes dashboard | Phone dashboard on Tailscale | user unit | Ansible |
 | Tailscale | Remote access | system service | Ansible |
 | Cloudflare DNS | Bypass ISP DNS blocking, including Reddit | NetworkManager connection + Tailscale DNS preference | Ansible |
-| Docker/Firecrawl | Local web extraction stack | `~/apps/firecrawl`, Docker volumes | Repository checkout, env configs, and Compose services managed via Ansible |
+| Docker/Firecrawl | Local web extraction stack | `~/apps/firecrawl`, Docker volumes | Pinned checkout + Compose definition via Ansible; `.env` and volumes remain runtime-owned |
 | Squid proxies | Local proxy pool | containers plus `~/docker/squid-proxy/` configs | Configs, Compose service, monitor, and test script managed via Ansible |
 | Power mode | Preserve server stack while desktop sleeps | stowed scripts + sudoers/udev | Existing desktop role/scripts |
 
@@ -34,7 +34,7 @@ Never commit `~/.hermes`, `~/.omniroute`, backup archives, OAuth/auth files, `.e
 2. Install/restore Hermes using its supported CLI and full backup.
 3. Configure Hindsight through `hermes memory setup` if restore did not reactivate it.
 4. Restore OmniRoute/external mutable data from encrypted backup.
-5. Complete later-run Firecrawl/Squid reconstruction.
+5. Supply runtime-owned Firecrawl/Squid `.env` files, then run their opt-in Ansible tags.
 6. Validate with [OPERATIONS.md](OPERATIONS.md).
 
 ## Files

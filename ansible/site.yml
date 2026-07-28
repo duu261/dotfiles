@@ -33,8 +33,8 @@
     - role: ecosystem
       tags: [ecosystem]
     - role: firecrawl
-      tags: [firecrawl]
+      tags: [firecrawl, never]
     - role: squid
-      tags: [squid]
+      tags: [squid, never]
     - role: dev       # languages/toolchains, opt-in
       tags: [dev, never]

@@ -21,12 +21,6 @@
     dest: "{{ ansible_env.HOME }}/apps/firecrawl/docker-compose.yaml"
     mode: "0644"
 
-- name: Deploy Firecrawl environment configuration
-  ansible.builtin.copy:
-    src: env
-    dest: "{{ ansible_env.HOME }}/apps/firecrawl/.env"
-    mode: "0600"
-
 - name: Start Firecrawl docker compose services
   ansible.builtin.command:
     cmd: docker compose up -d --remove-orphans
