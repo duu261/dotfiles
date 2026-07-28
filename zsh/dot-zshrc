@@ -22,7 +22,7 @@ source ~/.zsh/autoreload.plugin.zsh
 source ~/.zsh/atuin.plugin.zsh
 source ~/.zsh/direnv.plugin.zsh
 
-# === Local & Secret Configuration ===
+# === Local Secret Configuration ===
 source ~/.zshrc.local
 [ -f ~/.secrets ] && source ~/.secrets
 
@@ -40,9 +40,4 @@ eval "$(zoxide init zsh)"
 # === Tools & Utilities ===
 eval "$(pay-respects zsh --alias fk)"
 export LIBVIRT_DEFAULT_URI="qemu:///system"
-
-# >>> grok installer >>>
-export PATH="$HOME/.grok/bin:$PATH"
-fpath=(~/.grok/completions/zsh $fpath)
-autoload -Uz compinit && compinit -C
-# <<< grok installer <<<
+eval "$(hermes completion zsh)"

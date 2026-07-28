@@ -1,0 +1,86 @@
+#!/usr/bin/env python3
+"""Show Hermes custom quick_commands in a compact table."""
+from __future__ import annotations
+
+import os
+import shlex
+import subprocess
+import sys
+from pathlib import Path
+
+
+def get_quick_commands() -> str:
+    res = subprocess.run(
+        ["hermes", "config", "get", "quick_commands"],
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+    if res.returncode != 0:
+        msg = (res.stderr or res.stdout).strip()
+        if msg:
+            print(msg)
+        return ""
+    return res.stdout
+
+
+def parse_quick_commands(text: str) -> dict[str, dict[str, str]]:
+    out: dict[str, dict[str, str]] = {}
+    current: str | None = None
+    for raw in text.splitlines():
+        if not raw.strip():
+            continue
+        if not raw.startswith(" ") and raw.rstrip().endswith(":"):
+            current = raw.strip()[:-1]
+            out[current] = {}
+            continue
+        if current and raw.startswith("  ") and ":" in raw:
+            key, value = raw.strip().split(":", 1)
+            out[current][key.strip()] = value.strip()
+    return out
+
+
+def helper_status(command: str) -> str:
+    if not command:
+        return ""
+    try:
+        parts = shlex.split(command)
+    except ValueError:
+        return "BADQUOTE"
+    if not parts:
+        return ""
+    first = parts[0]
+    if first.startswith("/") or first.startswith("~"):
+        p = Path(os.path.expanduser(first))
+        if not p.exists():
+            return "MISSING"
+        if not os.access(p, os.X_OK):
+            return "NOEXEC"
+        return "OK"
+    return "PATH"
+
+
+def main() -> int:
+    cmds = parse_quick_commands(get_quick_commands())
+    if not cmds:
+        print("No quick_commands configured.")
+        return 0
+
+    rows: list[tuple[str, str, str, str]] = []
+    for name in sorted(cmds):
+        item = cmds[name]
+        typ = item.get("type", "")
+        target = item.get("target") if typ == "alias" else item.get("command", "")
+        status = "ALIAS" if typ == "alias" else helper_status(target or "")
+        rows.append(("/" + name, typ, status, target or ""))
+
+    print(f"{'Command':<20} {'Type':<6} {'Status':<8} Target/Command")
+    print(f"{'-' * 20} {'-' * 6} {'-' * 8} {'-' * 14}")
+    for name, typ, status, target in rows:
+        print(f"{name:<20} {typ:<6} {status:<8} {target}")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
