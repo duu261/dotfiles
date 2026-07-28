@@ -36,6 +36,11 @@ staging is deleted on exit.
 Do not put the Restic password, repository credential, archives, or snapshots
 in Git. `RESTIC_PASSWORD_COMMAND` may replace `RESTIC_PASSWORD_FILE`.
 
+The Restic password file is stored in Git only as Ansible Vault ciphertext at
+`ansible/roles/secrets/files/restic-password.vault`; the `secrets` role decrypts
+it to `~/.config/restic/duu-ecosystem-password` with mode `0600`. Recovery now
+depends on retaining the Ansible Vault password outside the lost machine.
+
 ## Hermes + Hindsight
 
 Use Hermes' full backup/export path. It covers `~/.hermes` and asks the active memory provider for declared external paths; Hindsight therefore stays inside the Hermes backup workflow.
