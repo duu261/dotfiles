@@ -10,6 +10,7 @@
   async: 1200
   poll: 0
   register: dotfiles_clone
+  changed_when: false
 
 - name: Wait for dotfiles clone to complete
   ansible.builtin.async_status:
@@ -19,6 +20,7 @@
   retries: 120
   delay: 10
   failed_when: dotfiles_clone_result.failed | default(false)
+  changed_when: dotfiles_clone_result.changed | default(false)
 
 # /etc/skel (useradd) and first-run zsh both drop plain files at these paths.
 # stow refuses to symlink over a pre-existing regular file - remove only real
@@ -51,15 +53,35 @@
     - .local/share
 
 - name: Stow shared packages
-  ansible.builtin.command: stow --dotfiles -d "{{ ansible_env.HOME }}/dotfiles" -t "{{ ansible_env.HOME }}" {{ item }}
+  ansible.builtin.command:
+    argv:
+      - stow
+      - --dotfiles
+      - --verbose=1
+      - -d
+      - "{{ ansible_facts['env']['HOME'] }}/dotfiles"
+      - -t
+      - "{{ ansible_facts['env']['HOME'] }}"
+      - "{{ item }}"
   loop: "{{ stow_packages }}"
-  changed_when: true
+  register: dotfiles_stow_shared
+  changed_when: dotfiles_stow_shared.stderr | length > 0
 
 - name: Stow desktop packages (when profile=desktop)
-  ansible.builtin.command: stow --dotfiles -d "{{ ansible_env.HOME }}/dotfiles" -t "{{ ansible_env.HOME }}" {{ item }}
+  ansible.builtin.command:
+    argv:
+      - stow
+      - --dotfiles
+      - --verbose=1
+      - -d
+      - "{{ ansible_facts['env']['HOME'] }}/dotfiles"
+      - -t
+      - "{{ ansible_facts['env']['HOME'] }}"
+      - "{{ item }}"
   loop: "{{ desktop_stow_packages | default([]) }}"
   when: profile == 'desktop'
-  changed_when: true
+  register: dotfiles_stow_desktop
+  changed_when: dotfiles_stow_desktop.stderr | length > 0
 
 # package.toml locks flavor + plugin deps (ya pkg add/ya pkg install), not
 # pacman/AUR - without this, flavors/plugins referenced in yazi.toml/init.lua
