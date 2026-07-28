@@ -22,20 +22,24 @@
     state: started
   become: true
 
-# authkey lives in the deploying user's ~/.secrets (deployed by the secrets
-# role). become runs this as root whose $HOME is /root, so reference the real
-# user's home explicitly - `~/.secrets` under become would read /root/.secrets
-# (missing) and tailscale up would fall back to interactive browser login.
-- name: Join tailnet
+- name: Read Tailscale backend state
+  ansible.builtin.command: tailscale status --json
+  register: tailscale_status
+  changed_when: false
+  check_mode: false
+
+# The auth key is bootstrap-only. Existing machines retain their node identity;
+# only a logged-out or fresh machine runs `tailscale up`.
+- name: Join tailnet when not already connected
   ansible.builtin.shell: |
     set -o pipefail
-    set -a; source {{ ansible_env.HOME }}/.secrets; set +a
+    set -a; source {{ ansible_facts["env"]["HOME"] | quote }}/.secrets; set +a
     tailscale up --authkey="$TAILSCALE_AUTHKEY"
   args:
     executable: /bin/bash
   become: true
-  register: tailscale_result
-  changed_when: "'Success' in tailscale_result.stdout"
+  when: (tailscale_status.stdout | from_json).BackendState != "Running"
+  changed_when: true
   no_log: true
 
 # Preserve the tunnel while keeping host DNS under NetworkManager control.
