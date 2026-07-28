@@ -1,0 +1,35 @@
+---
+- name: Gather facts for tagged run
+  ansible.builtin.setup:
+
+- name: Ensure apps directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/apps"
+    state: directory
+    mode: "0755"
+
+- name: Clone Firecrawl repository
+  ansible.builtin.git:
+    repo: https://github.com/firecrawl/firecrawl.git
+    dest: "{{ ansible_env.HOME }}/apps/firecrawl"
+    version: ece430987522c929ca45aa2e49495c237552988b
+    update: false
+
+- name: Deploy Firecrawl docker compose configuration
+  ansible.builtin.copy:
+    src: docker-compose.yaml
+    dest: "{{ ansible_env.HOME }}/apps/firecrawl/docker-compose.yaml"
+    mode: "0644"
+
+- name: Deploy Firecrawl environment configuration
+  ansible.builtin.copy:
+    src: env
+    dest: "{{ ansible_env.HOME }}/apps/firecrawl/.env"
+    mode: "0600"
+
+- name: Start Firecrawl docker compose services
+  ansible.builtin.command:
+    cmd: docker compose up -d --remove-orphans
+    chdir: "{{ ansible_env.HOME }}/apps/firecrawl"
+  register: firecrawl_compose_up
+  changed_when: "'Started' in firecrawl_compose_up.stdout or 'Created' in firecrawl_compose_up.stdout or 'Recreated' in firecrawl_compose_up.stdout"
