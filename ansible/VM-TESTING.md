@@ -10,7 +10,7 @@ The VM clones GitHub, so the branch or commit must exist on `origin`. Never
 assume a local unpushed commit is being tested.
 
 ```bash
-git push -u origin feat/hermes-ecosystem-run1
+git push -u origin <feature-branch>
 ```
 
 ## 2. Reset and boot the VM
@@ -39,7 +39,7 @@ ansible-playbook \
   -K \
   --vault-password-file /absolute/path/to/vault-password-file \
   -e profile=desktop \
-  -e dotfiles_version=feat/hermes-ecosystem-run1 \
+  -e dotfiles_version=<pushed-branch-or-commit> \
   site.yml
 ```
 
