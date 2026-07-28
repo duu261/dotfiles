@@ -30,6 +30,11 @@
       when: profile == 'desktop'
     - role: network   # explicit Cloudflare DNS on the known NetworkManager profile
       when: profile == 'desktop'
-    - ecosystem       # dashboard + OmniRoute external user-service definitions
+    - role: ecosystem
+      tags: [ecosystem]
+    - role: firecrawl
+      tags: [firecrawl]
+    - role: squid
+      tags: [squid]
     - role: dev       # languages/toolchains, opt-in
       tags: [dev, never]

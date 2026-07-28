@@ -20,12 +20,12 @@ Never commit `~/.hermes`, `~/.omniroute`, backup archives, OAuth/auth files, `.e
 |---|---|---|---|
 | Hermes gateway | Telegram/other channel agent | `~/.hermes`, generated user unit | Install/restore via Hermes CLI + full backup |
 | Hindsight | Active external memory provider | Hermes plugin plus provider-declared external paths | `hermes memory`; full Hermes backup |
-| OmniRoute | Local AI gateway/router | npm binary, `~/.omniroute`, user units | Ansible units now; install strategy + off-machine data backup in later runs |
+| OmniRoute | Local AI gateway/router | npm binary, `~/.omniroute`, user units | Pinned version (3.8.48) and user units managed via Ansible |
 | Hermes dashboard | Phone dashboard on Tailscale | user unit | Ansible |
 | Tailscale | Remote access | system service | Ansible |
 | Cloudflare DNS | Bypass ISP DNS blocking, including Reddit | NetworkManager connection + Tailscale DNS preference | Ansible |
-| Docker/Firecrawl | Local web extraction stack | `~/apps/firecrawl`, Docker volumes | Docker already Ansible; deployment/volume recovery later |
-| Squid proxies | Local proxy pool | containers plus `~/docker/squid-proxy/squid.conf` | Later Ansible/backup run |
+| Docker/Firecrawl | Local web extraction stack | `~/apps/firecrawl`, Docker volumes | Repository checkout, env configs, and Compose services managed via Ansible |
+| Squid proxies | Local proxy pool | containers plus `~/docker/squid-proxy/` configs | Configs, Compose service, monitor, and test script managed via Ansible |
 | Power mode | Preserve server stack while desktop sleeps | stowed scripts + sudoers/udev | Existing desktop role/scripts |
 
 ## Fresh-machine order

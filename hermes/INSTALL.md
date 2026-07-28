@@ -54,14 +54,15 @@ Do not duplicate its config in Ansible. Full Hermes backup asks the active provi
 
 ## OmniRoute
 
-Run-1 Ansible deploys the known-good user units. A later run must make installation/versioning reproducible and restore `~/.omniroute` from encrypted backup.
+Ansible deploys the user units and manages a pinned reproducible installation (version `3.8.48`) in user-scope via npm configurations. Preserve `~/.omniroute` data state for restore.
+
+## Firecrawl & Squid
+
+Both services are fully containerized and managed by Ansible roles. The playbook clones the Firecrawl repository at a pinned revision, deploys custom compose configs (with explicit restart/bind rules), and ensures both proxy and extraction stacks are running.
 
 ## Deferred
 
 Separate later runs own:
 
-- OmniRoute pinned installation/version policy
-- Firecrawl Compose deployment and consistent Docker-volume recovery
-- Squid deployment
 - scheduled encrypted backups and tested restores
 - Agent Reach/browser external-state inventory, if retained
