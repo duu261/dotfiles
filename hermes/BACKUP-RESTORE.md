@@ -159,7 +159,7 @@ destructive restore boundaries:
    identical second converge.
 2. Run `rclone config` and authenticate a remote named `gdrive`. OAuth state is
    runtime-owned and is not committed to Git.
-3. Source `~/.secrets`; confirm `restic snapshots --tag ecosystem-minimal`
+3. Source `~/.env.local`; confirm `restic snapshots --tag ecosystem-minimal`
    opens the expected repository.
 4. Restore the latest snapshot to a disposable directory and run the ZIP and
    SQLite checks above. Do not target live paths.
@@ -170,7 +170,7 @@ destructive restore boundaries:
    is intentionally excluded from the minimal backup.
 
 The Ansible Vault password must remain known outside the lost machine. It
-unlocks both `~/.secrets` and the vaulted Restic password file. Run 4 tracks
+unlocks both `~/.env.local` and the vaulted Restic password file. Run 4 tracks
 the separate clean-Arch-VM reconstruction proof.
 
 ## Automation policy
@@ -181,5 +181,5 @@ the separate clean-Arch-VM reconstruction proof.
 - Monthly: reminder to perform the disposable restore proof manually.
 
 Cron jobs are operational state managed by Hermes, not committed secrets. List
-them with `hermes cron list`. Backup execution must source `~/.secrets` so the
+them with `hermes cron list`. Backup execution must source `~/.env.local` so the
 Restic repository and password-file path are available.

@@ -1,5 +1,5 @@
 # auto re-source zshrc/local env in every open pane when file changes on disk
-_autoreload_files=(~/.zshrc ~/.zshrc.local ~/.secrets)
+_autoreload_files=(~/.zshrc ~/.zshrc.local ~/.env.local)
 typeset -gA _autoreload_mtimes
 
 _autoreload_check() {

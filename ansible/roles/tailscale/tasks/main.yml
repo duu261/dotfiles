@@ -33,7 +33,7 @@
 - name: Join tailnet when not already connected
   ansible.builtin.shell: |
     set -o pipefail
-    set -a; source {{ ansible_facts["env"]["HOME"] | quote }}/.secrets; set +a
+    set -a; source {{ ansible_facts["env"]["HOME"] | quote }}/.env.local; set +a
     tailscale up --authkey="$TAILSCALE_AUTHKEY"
   args:
     executable: /bin/bash

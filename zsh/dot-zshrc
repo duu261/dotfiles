@@ -24,7 +24,7 @@ source ~/.zsh/direnv.plugin.zsh
 
 # === Local Secret Configuration ===
 source ~/.zshrc.local
-[ -f ~/.secrets ] && source ~/.secrets
+[ -f ~/.env.local ] && source ~/.env.local
 
 # === SSH: resume tmux session on connect ===
 # Reattach existing session (or start one) so a dropped mobile connection
