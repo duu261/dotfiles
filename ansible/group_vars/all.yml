@@ -18,6 +18,7 @@ omniroute_port: 20128
 base_packages:
   - archlinux-keyring # stale keys break pacman PGP checks on fresh installs
   - base-devel # fakeroot/gcc/make, required by makepkg (paru AUR builds)
+  - ansible-lint # ansible playbook linting
   - reflector # auto mirror ranking, keeps mirrorlist fast/fresh
   - stow
   - tree-sitter-cli
