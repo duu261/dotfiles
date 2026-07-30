@@ -3,11 +3,11 @@ set -euo pipefail
 
 state_dir="${HERMES_SOUL_GUARD_STATE:-${XDG_STATE_HOME:-$HOME/.local/state}/hermes-soul-guard}"
 global_soul="${HERMES_SOUL:-$HOME/.hermes/SOUL.md}"
-researcher_soul="${HERMES_RESEARCHER_SOUL:-$HOME/.hermes/profiles/researcher/SOUL.md}"
+profile_root="${HERMES_PROFILE_ROOT:-$HOME/.hermes/profiles}"
 
 usage() {
   printf '%s\n' \
-    'Usage: soul-guard check|status|diff|recover [global|researcher|all]' \
+    'Usage: soul-guard check|status|diff|recover [global|coder|researcher|writter|power|all]' \
     '  check/status  Verify live SOUL files against recorded known-good baselines.' \
     '  diff          Show changes from recorded known-good baselines.' \
     '  recover       Back up live SOUL files, then restore recorded known-good baselines.' \
@@ -22,11 +22,11 @@ set_target() {
       baseline="$state_dir/SOUL.md.known-good"
       manifest="$state_dir/SOUL.md.sha256"
       ;;
-    researcher)
-      label='researcher'
-      soul="$researcher_soul"
-      baseline="$state_dir/researcher.SOUL.md.known-good"
-      manifest="$state_dir/researcher.SOUL.md.sha256"
+    coder|researcher|writter|power)
+      label="$1"
+      soul="$profile_root/$1/SOUL.md"
+      baseline="$state_dir/$1.SOUL.md.known-good"
+      manifest="$state_dir/$1.SOUL.md.sha256"
       ;;
     *)
       printf 'Unknown SOUL target: %s\n' "$1" >&2
@@ -96,7 +96,10 @@ run_targets() {
   rc=0
   if [[ "$requested" == all ]]; then
     "$fn" global || rc=$?
+    "$fn" coder || rc=$?
     "$fn" researcher || rc=$?
+    "$fn" writter || rc=$?
+    "$fn" power || rc=$?
   else
     "$fn" "$requested" || rc=$?
   fi
@@ -105,12 +108,12 @@ run_targets() {
 
 action="${1:-check}"
 if [[ "$action" == recover && $# -lt 2 ]]; then
-  printf 'recover requires an explicit target: global, researcher, or all\n' >&2
+  printf 'recover requires an explicit target or all\n' >&2
   exit 64
 fi
 target="${2:-all}"
 case "$target" in
-  global|researcher|all) ;;
+  global|coder|researcher|writter|power|all) ;;
   *) usage >&2; exit 64 ;;
 esac
 
