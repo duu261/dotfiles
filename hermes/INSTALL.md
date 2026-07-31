@@ -54,7 +54,7 @@ Do not duplicate its config in Ansible. Full Hermes backup asks the active provi
 
 ## OmniRoute
 
-Ansible deploys the user units and manages a pinned reproducible installation (version `3.8.48`) in user-scope via npm configurations. Preserve `~/.omniroute` data state for restore.
+Ansible deploys the user units and manages a pinned reproducible installation (version `3.8.49`) in user-scope via npm configurations. Preserve `~/.omniroute` data state for restore.
 
 ## Firecrawl & Squid
 

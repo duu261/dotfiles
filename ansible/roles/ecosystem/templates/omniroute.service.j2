@@ -10,6 +10,7 @@ WorkingDirectory=%h
 Environment=DATA_DIR=%h/.omniroute
 Environment=NODE_ENV=production
 Environment=PORT={{ omniroute_port }}
+Environment=REQUIRE_API_KEY=true
 Environment=OMNIROUTE_SERVER_HOST=127.0.0.1
 Environment=NODE_OPTIONS=--max-old-space-size=1024
 ExecStart=%h/.npm-global/bin/omniroute serve --port {{ omniroute_port }} --no-open --no-tray --no-recovery

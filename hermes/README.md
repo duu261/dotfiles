@@ -20,7 +20,7 @@ Never commit `~/.hermes`, `~/.omniroute`, backup archives, OAuth/auth files, `.e
 |---|---|---|---|
 | Hermes gateway | Telegram/other channel agent | `~/.hermes`, generated user unit | Install/restore via Hermes CLI + full backup |
 | Hindsight | Active external memory provider | Hermes plugin plus provider-declared external paths | `hermes memory`; full Hermes backup |
-| OmniRoute | Local AI gateway/router | npm binary, `~/.omniroute`, user units | Pinned version (3.8.48) and user units managed via Ansible |
+| OmniRoute | Local AI gateway/router | npm binary, `~/.omniroute`, user units | Pinned version (3.8.49) and user units managed via Ansible |
 | Hermes dashboard | Phone dashboard on Tailscale | user unit | Ansible |
 | Tailscale | Remote access | system service | Ansible |
 | Cloudflare DNS | Bypass ISP DNS blocking, including Reddit | NetworkManager connection + Tailscale DNS preference | Ansible |
